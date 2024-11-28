@@ -19,7 +19,8 @@ const Login = () => {
 
           <p>Forgot Password?</p>
 
-          <button type="submit"><Link to="/">Login</Link></button>
+          <Link to="/"><button type="submit">Login</button></Link>
+          
 
         
         

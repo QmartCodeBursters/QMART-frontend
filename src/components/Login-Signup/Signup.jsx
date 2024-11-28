@@ -29,7 +29,8 @@ const Signup = () => {
             </CheckboxWrapper>
           </p>
 
-          <button type="submit"><Link to="/verify">Create Account</Link></button>
+          <Link  to="/verify"><button type="submit">Create Account</button></Link>
+          
 
         
         

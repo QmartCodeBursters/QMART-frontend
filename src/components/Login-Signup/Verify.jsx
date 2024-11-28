@@ -14,13 +14,15 @@ const Verify = () => {
           <label> <br/>
             <article>
               <p>Verification code</p>
-              <span>Resend code</span> <br/>
+              <Link to= "/verify"><span>Resend code</span> <br/></Link>
+              
             </article>
             
           <input type="text"  placeholder="Enter verification code"/>
           </label>
- 
-          <button type="submit"><Link to= "/login">Verify Me <MdArrowRightAlt/></Link> </button>
+
+          <Link to= "/login"><button type="submit">Verify Me <MdArrowRightAlt/></button></Link>
+          
           
         </form>
 
@@ -84,6 +86,10 @@ const LoginContainer = styled.div`
         margin-left: 120px;
         color: #1B6392;
         font-size: 14px;
+      }
+      a {
+        color: black;
+        text-decoration: none;
       }
 
     }

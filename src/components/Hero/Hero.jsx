@@ -1,5 +1,6 @@
 import heroimage from "../../assets/png/heroimagone.png"
 import { MdArrowRightAlt } from "react-icons/md";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Hero = () => {
@@ -15,7 +16,7 @@ const Hero = () => {
                     <h3>Empowering merchants with seamless payments — scan, pay, and confirm in <span>seconds!</span> </h3>
                     <p>Seamless shopping, anytime, anywhere!</p>
 
-                    <button>Get started <MdArrowRightAlt/> </button>
+                    <Link to= "/signup"><button>Get started <MdArrowRightAlt/> </button></Link>
                 </HeroDetails>
             </HeroContents>
 
@@ -110,6 +111,9 @@ const HeroDetails = styled.div`
     }
     }
 
+    a {
+        text-decoration: none;
+    }
     span {
         color: red;
     }

@@ -32,8 +32,14 @@ const Header = () => {
           </Navlist>
 
           <Signcont>
-            <LoginButton><Link to="/login">Login</Link> </LoginButton>
-            <SigninButton><Link to="/signup" >Sign up</Link>  </SigninButton>
+              <Link to="/login">
+                  <LoginButton LoginButton>Login </LoginButton>
+              </Link>
+          
+              <Link to="/signup">
+              <SigninButton>Sign up </SigninButton>
+              </Link>
+            
           </Signcont>
 
           <Sidenav onClick={handleToggle} ><IoReorderTwoOutline/></Sidenav>

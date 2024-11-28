@@ -1,11 +1,29 @@
 import styled from 'styled-components'
 import qlogo from '../../assets/png/logo.png'
+
 // import './Footer.css'
 
 const Footer = () =>{
     return(
+<>
+      
      <Wrapper>
+        <Newscont>
+              <ContentWrapper>
+              <Subscribe>
+                <h4>Subcribe our Newsletter</h4>
+                <p>Join Our Community: Fresh Deals and New Arrivals Straight to Your Inbox</p>
+                </Subscribe>
+
+                <Inputfield>
+                    <input type="text" placeholder='Your email address'/> <button>Subscribe</button>
+                </Inputfield>
+              </ContentWrapper>
+            </Newscont>
         <FooterCont>
+         
+          
+
           <FooterSection>
             <ul>
               <Logocont>
@@ -53,6 +71,7 @@ const Footer = () =>{
      </Hrline>
     </Wrapper>
 
+    </>
     )
   }
   
@@ -83,6 +102,103 @@ const Footer = () =>{
       align-items: center;
     }
   `
+const Newscont = styled.div`
+width: 100%;
+background-color: #f7f7f7;
+display: flex;
+justify-content: center;
+padding: 20px;
+
+@media (max-width: 768px) {
+  padding: 20px 10px;
+}
+`;
+
+const ContentWrapper = styled.div`
+max-width: 1280px;
+width: 80%;
+display: flex;
+align-items: center;
+justify-content: space-evenly;
+
+@media (max-width: 768px) {
+  flex-direction: column;
+  align-items: center;
+}
+`;
+
+const Subscribe = styled.div`
+flex: 1;
+text-align: left;
+
+h4 {
+  font-size: 18px;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 14px;
+  color: grey;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  text-align: center;
+  margin-bottom: 20px;
+}
+`;
+
+const Inputfield = styled.div`
+flex: 1;
+display: flex;
+align-items: center;
+justify-content: flex-end;
+gap: 10px;
+
+input {
+  flex: 1;
+  max-width: 400px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+  outline: none;
+  position: relative;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 14px;
+  background-color:#09456B;  
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  
+  ;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #333;
+  }
+}
+
+@media (max-width: 768px) {
+  justify-content: center;
+
+  input {
+    max-width: none;
+    width: 70%;
+  }
+
+  button {
+    flex: 0;
+  }
+}
+`;
+
+
   const FooterSection = styled.div`
     /* flex: 1; */
     /* min-width: 100px; */

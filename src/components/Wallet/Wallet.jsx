@@ -1,87 +1,97 @@
 import styled from "styled-components";
-import Card from "../../assets/png/card.svg";
+import Card from "../../assets/svg/card.svg";
 import { IoMdArrowDropright } from "react-icons/io";
+import innerbg from '../../assets/png/innerbg.png'
 
 function Wallet() {
   return (
     <>
-      <Container>
-        <Wrapper>
-          <Flex>
-            <img src={Card} alt="ATM card" />
-            <Button>
-              <Add>
-                <p>
-                  Add Money
-                  <IoMdArrowDropright size={25} />
-                </p>
-              </Add>
-              <Withdraw>
-                <p>Withdraw </p>
-                <IoMdArrowDropright size={30} />
-              </Withdraw>
-            </Button>
-          </Flex>
-          <Text>
-            <Transact>
-              <p>Transaction History</p>
-              <View>View all</View>
-            </Transact>
-            <Transaction>
-              <Transfer>
-                <div>
-                  <h4>Transfer to SAIL04 Supermarket</h4>
-                  <p>Nov 22nd, 18:40:26</p>
-                </div>
-                <div>
-                  <p>#30,000</p>
-                </div>
-              </Transfer>
-              <hr />
+      <Bgcolor>
+        <Container>
+          <Wrapper>
+            <Flex>
+              <img src={Card} alt="ATM card" />
+              <Button>
+                <Add>
+                  <p>
+                    Add Money
+                    <IoMdArrowDropright size={25} />
+                  </p>
+                </Add>
+                <Withdraw>
+                  <p>Withdraw </p>
+                  <IoMdArrowDropright size={30} />
+                </Withdraw>
+              </Button>
+            </Flex>
+            <Text>
+              <Transact>
+                <p>Transaction History</p>
+                <View>View all</View>
+              </Transact>
+              <Transaction>
+                <Transfer>
+                  <div>
+                    <h4>Transfer to SAIL04 Supermarket</h4>
+                    <p>Nov 22nd, 18:40:26</p>
+                  </div>
+                  <div>
+                    <p>#30,000</p>
+                  </div>
+                </Transfer>
+                <hr />
 
-              <Transfer>
-                <div>
-                  <h4>Transfer to EMMANUEL FROM WALLET</h4>
-                  <p>Nov 22nd, 18:40:26</p>
-                </div>
-                <div>
-                  <p>#100,000</p>
-                </div>
-              </Transfer>
-              <hr />
+                <Transfer>
+                  <div>
+                    <h4>Transfer to EMMANUEL FROM WALLET</h4>
+                    <p>Nov 22nd, 18:40:26</p>
+                  </div>
+                  <div>
+                    <p>#100,000</p>
+                  </div>
+                </Transfer>
+                <hr />
 
-              <Transfer>
-                <div>
-                  <h4>Transfer to SAIL04 Supermarket</h4>
-                  <p>Nov 22nd, 18:40:26</p>
-                </div>
-                <div>
-                  <p>#30,000</p>
-                </div>
-              </Transfer>
-              <hr />
+                <Transfer>
+                  <div>
+                    <h4>Transfer to SAIL04 Supermarket</h4>
+                    <p>Nov 22nd, 18:40:26</p>
+                  </div>
+                  <div>
+                    <p>#30,000</p>
+                  </div>
+                </Transfer>
+                <hr />
 
-              <Transfer>
-                <div>
-                  <h4>Transfer to SAIL04 Supermarket</h4>
-                  <p>Nov 22nd, 18:40:26</p>
-                </div>
-                <div>
-                  <p>#30,000</p>
-                </div>
-              </Transfer>
-              <hr />
-            </Transaction>
-          </Text>
-        </Wrapper>
-      </Container>
+                <Transfer>
+                  <div>
+                    <h4>Transfer to SAIL04 Supermarket</h4>
+                    <p>Nov 22nd, 18:40:26</p>
+                  </div>
+                  <div>
+                    <p>#30,000</p>
+                  </div>
+                </Transfer>
+                <hr />
+              </Transaction>
+            </Text>
+          </Wrapper>
+        </Container>
+      </Bgcolor>
     </>
   );
 }
 export default Wallet;
 
+const Bgcolor = styled.div`
+  width: 100%;
+  background-image: url(${innerbg});
+  background-color: #edeff2;
+  background-size: contain;
+  background-position: top;
+  height: auto;
+`;
 const Container = styled.div`
-  /* background-color: #edeff2; */
   max-width: 1280px;
   width: 85%;
   margin: auto;

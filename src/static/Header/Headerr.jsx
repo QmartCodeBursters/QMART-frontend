@@ -23,20 +23,11 @@ const Header = () => {
           </Logocont>
 
           <Navlist>
-            <p>
-              <Link to="./">Home</Link>
-            </p>
-            <Dash>
-              Dashboard
-              <span>
-                <IoIosArrowDown />
-              </span>
-            </Dash>
-            <p>
-              <Link to="/wallet">Wallet</Link>
-            </p>
-            <p>About Us</p>
-            <p>Contact us</p>
+              <p><Link to= "./">Home</Link></p>
+              <p><Link to="/dashboard">Dashboard <IoIosArrowDown /></Link></p>
+              <p>Wallet</p>
+              <p>About Us</p>
+              <p>Contact us</p>
           </Navlist>
 
           <Signcont>

@@ -6,6 +6,7 @@ import Signup from "./components/Login-Signup/Signup"
 
 import Verify from "./components/Login-Signup/Verify"
 import Login from "./components/Login-Signup/Login"
+import MainDashboard from "./components/dashboard/Maindashboard"
 
 
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="/verify" element={<Verify/>}/>
           <Route path="/signup" element={<Signup/>}/>
           <Route path="/login" element={<Login/>}/>
+          <Route path="/dashboard" element={<MainDashboard />} />
 
         </Routes>
       <Footer/>

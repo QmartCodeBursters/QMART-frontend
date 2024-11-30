@@ -25,7 +25,7 @@ const Header = () => {
 
           <Navlist>
               <p><Link to= "./">Home</Link></p>
-              <p>Dashboard <IoIosArrowDown/> </p>
+              <p><Link to="/dashboard">Dashboard <IoIosArrowDown /></Link></p>
               <p>Wallet</p>
               <p>About Us</p>
               <p>Contact us</p>

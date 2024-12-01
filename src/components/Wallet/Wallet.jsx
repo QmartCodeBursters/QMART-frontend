@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Card from "../../assets/svg/card.svg";
 import { IoMdArrowDropright } from "react-icons/io";
-import innerbg from '../../assets/png/innerbg.png'
+import innerbg from "../../assets/png/innerbg.png";
 
 function Wallet() {
   return (
@@ -12,18 +12,15 @@ function Wallet() {
             <Flex>
               <img src={Card} alt="ATM card" />
               <Button>
-                <Add>
-                  <p>
-                    Add Money
-                    <IoMdArrowDropright size={25} />
-                  </p>
-                </Add>
                 <Withdraw>
-                  <p>Withdraw </p>
-                  <IoMdArrowDropright size={30} />
+                  <span>Withdraw</span>
+                  <span>
+                    <IoMdArrowDropright size={20} />
+                  </span>
                 </Withdraw>
               </Button>
             </Flex>
+
             <Text>
               <Transact>
                 <p>Transaction History</p>
@@ -97,6 +94,7 @@ const Container = styled.div`
   margin: auto;
   padding: 0px 10px;
   min-height: calc(100vh - 70px);
+  padding-bottom: 30px;
 `;
 const Wrapper = styled.div`
   /* border: 2px solid purple; */
@@ -107,55 +105,59 @@ const Flex = styled.div`
   /* border: 2px solid green; */
   padding: 20px 0;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   img {
     width: 300px;
   }
+
+  @media (max-width: 800px) {
+    /* background-color: red; */
+    display: block;
+    /* text-align: center; */
+
+    img {
+      width: 250px;
+      margin-bottom: 5px;
+    }
+  }
 `;
 const Button = styled.div`
   /* border: 2px solid yellow; */
-  width: 50%;
   display: flex;
-  justify-content: center;
-  margin-top: 60px;
-`;
-const Add = styled.button`
-  background-color: #ff3b30;
-  color: white;
-  border-color: transparent;
-  outline: none;
-  border-radius: 4px;
-  font-size: 15px;
-  width: 120px;
-  padding: 7px;
-  margin-right: 5px;
+  margin-left: 40px;
+  margin-top: 127px;
+  /* align-items: center; */
 
-  p {
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  @media (max-width: 800px) {
+    margin-top: 5px;
+    /* padding: auto; */
   }
 `;
 
-const Withdraw = styled.button`
+const Withdraw = styled.p`
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  border-color: transparent;
+  margin-right: 5px;
   background-color: #fa8232;
   color: white;
-  border-color: transparent;
-  outline: none;
-  font-size: 15px;
-  padding: 7px;
-  margin-right: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   border-radius: 4px;
-  p {
-    text-align: center;
+  padding: 10px;
+
+  span {
     display: flex;
-    justify-content: center;
+    justify-items: center;
     align-items: center;
+    font-size: 17px;
+
+    /* margin-left: 5px; */
+  }
+
+  @media (max-width: 800px) {
+    span {
+      margin: auto;
+    }
   }
 `;
 
@@ -165,6 +167,11 @@ const Transact = styled.div`
   align-items: center;
   justify-content: space-between;
   /* border: 2px solid hotpink; */
+  font-size: 17px;
+
+  @media (max-width: 800px) {
+    margin-top: 15px;
+  }
 `;
 
 const Transaction = styled.div`

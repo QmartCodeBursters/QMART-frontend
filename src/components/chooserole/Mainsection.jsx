@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import backgroundImage from "../chooserole/images/bg.png";
-import MerchantImage from "../chooserole/images/merchant-icon.png";
-import CustomerImage from "../chooserole/images/customer-icon.png";
+import backgroundImage from "../../assets/png/bg.png";
+import MerchantImage from "../../assets/png/merchant-icon.png";
+import CustomerImage from "../../assets/png/customer-icon.png";
 
 const MainSection = styled.main`
   flex: 1;

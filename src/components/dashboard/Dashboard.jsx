@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import ProfileImg from "../dashboard/images/Profileimage.png";
-import backgroundImage from "../chooserole/images/bg.png";
+import ProfileImg from "../../assets/png/Profileimage.png";
+import backgroundImage from "../../assets/png/bg.png";
 
 const DashboardWrapper = styled.div`
   display: flex;

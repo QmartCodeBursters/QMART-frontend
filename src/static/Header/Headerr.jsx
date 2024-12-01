@@ -23,11 +23,30 @@ const Header = () => {
           </Logocont>
 
           <Navlist>
-              <p><Link to= "./">Home</Link></p>
-              <p><Link to="/dashboard">Dashboard <IoIosArrowDown /></Link></p>
-              <p><Link to="/wallet">Wallet <IoIosArrowDown /></Link></p>
-              <p>About Us</p>
-              <p>Contact us</p>
+            <p>
+              <Link to="./">Home</Link>
+            </p>
+
+            <Link to="/dashboard">
+              <Dash>
+                <span>Dashboard</span>
+                <span>
+                  <IoIosArrowDown />
+                </span>
+              </Dash>
+            </Link>
+
+            <Link to="/wallet">
+              <Dash>
+                <span> Wallet </span>
+                <span>
+                  <IoIosArrowDown />
+                </span>
+              </Dash>
+            </Link>
+
+            <p>About Us</p>
+            <p>Contact us</p>
           </Navlist>
 
           <Signcont>
@@ -96,14 +115,16 @@ const Navlist = styled.div`
 `;
 const Dash = styled.p`
   display: flex;
-  justify-items: center;
+  /* justify-items: center; */
   align-items: center;
+  /* border: 2px solid red; */
 
   span {
+    /* border: 1px solid purple; */
     display: flex;
-    justify-items: center;
     align-items: center;
-    margin-left: 5px;
+    justify-items: center;
+    margin-left: 3px;
   }
 `;
 const Logocont = styled.div`

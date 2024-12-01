@@ -81,7 +81,6 @@ const Wrapper = styled.div`
   color: grey;
   /* text-align: center; */
   font-size: 12px;
-  margin-top: 30px;
 `;
 const FooterCont = styled.div`
   max-width: 1280px;
@@ -93,6 +92,7 @@ const FooterCont = styled.div`
   justify-content: space-around;
   color: rgb(255, 255, 255);
   padding: 30px 60px;
+
   /* margin-top: 80px; */
 
   @media (max-width: 768px) {

@@ -37,12 +37,7 @@ const Header = () => {
             </Link>
 
             <Link to="/wallet">
-              <Dash>
-                <span> Wallet </span>
-                <span>
-                  <IoIosArrowDown />
-                </span>
-              </Dash>
+              <p>Wallet</p>
             </Link>
 
             <p>About Us</p>

@@ -26,15 +26,20 @@ const Header = () => {
             <p>
               <Link to="./">Home</Link>
             </p>
-            <Dash>
-              Dashboard
-              <span>
-                <IoIosArrowDown />
-              </span>
-            </Dash>
-            <p>
-              <Link to="/wallet">Wallet</Link>
-            </p>
+
+            <Link to="/dashboard">
+              <Dash>
+                <span>Dashboard</span>
+                <span>
+                  <IoIosArrowDown />
+                </span>
+              </Dash>
+            </Link>
+
+            <Link to="/wallet">
+              <p>Wallet</p>
+            </Link>
+
             <p>About Us</p>
             <p>Contact us</p>
           </Navlist>
@@ -105,14 +110,16 @@ const Navlist = styled.div`
 `;
 const Dash = styled.p`
   display: flex;
-  justify-items: center;
+  /* justify-items: center; */
   align-items: center;
+  /* border: 2px solid red; */
 
   span {
+    /* border: 1px solid purple; */
     display: flex;
-    justify-items: center;
     align-items: center;
-    margin-left: 5px;
+    justify-items: center;
+    margin-left: 3px;
   }
 `;
 const Logocont = styled.div`
@@ -124,6 +131,10 @@ const Logocont = styled.div`
 
   img {
     width: 40px;
+  }
+
+  @media (max-width: 768px) {
+    margin-left: 10px;
   }
 `;
 const LoginButton = styled.button`

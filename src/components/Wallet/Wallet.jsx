@@ -101,6 +101,7 @@ const Wrapper = styled.div`
   /* border: 2px solid purple; */
   margin: auto;
   width: 90%;
+  margin-top: 70px;
 `;
 const Flex = styled.div`
   /* border: 2px solid green; */

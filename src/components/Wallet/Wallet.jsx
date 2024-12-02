@@ -111,13 +111,17 @@ const Flex = styled.div`
   }
 
   @media (max-width: 800px) {
-    /* background-color: red; */
+    /* border: 2px solid blue; */
     display: block;
-    /* text-align: center; */
+    width: 100%;
+    /*  width: 100%; */
 
     img {
-      width: 250px;
+      /* border: 2px solid yellow; */
+      text-align: center;
+      /* margin-left: 7px; */
       margin-bottom: 5px;
+      width: 300px;
     }
   }
 `;
@@ -129,7 +133,12 @@ const Button = styled.div`
   /* align-items: center; */
 
   @media (max-width: 800px) {
-    margin-top: 5px;
+    /* border: 2px solid blue; */
+    margin-left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
     /* padding: auto; */
   }
 `;
@@ -149,7 +158,7 @@ const Withdraw = styled.p`
     display: flex;
     justify-items: center;
     align-items: center;
-    font-size: 17px;
+    font-size: 15px;
 
     /* margin-left: 5px; */
   }

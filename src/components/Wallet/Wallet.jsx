@@ -261,5 +261,7 @@ const Bal = styled.div`
   span {
     font-size: 12px;
     color: white;
+    padding-bottom: 10px;
+  
   }
 `;

@@ -46,7 +46,8 @@ const HeroContents = styled.div`
     align-items: center;
     justify-content: space-evenly;
     width: 100%; 
-    margin: 40px 0;
+    margin: 0px 0;
+    margin-top: 120px;
 
     img {
         max-width: 45%; 

@@ -3,6 +3,13 @@ import { IoIosArrowDown } from "react-icons/io";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { IoReorderTwoOutline } from "react-icons/io5";
+import {
+  IoPersonOutline,
+  IoListOutline,
+  IoQrCodeOutline,
+  IoSettingsOutline,
+  IoNotificationsOutline,
+} from "react-icons/io5";
 import Sidebar from "../Sidebar/SideBar";
 import { useState } from "react";
 
@@ -23,34 +30,44 @@ const Header = () => {
           </Logocont>
 
           <Navlist>
-            <p>
-              <Link to="./">Home</Link>
-            </p>
+            <p><Link to="./">Home</Link></p>
 
-            <Link to="/dashboard">
-              <Dash>
-                <span>Dashboard</span>
-                <span>
-                  <IoIosArrowDown />
-                </span>
-              </Dash>
-            </Link>
+            <DropdownWrapper>
+              <Dropdown>
+                <p>
+                  Dashboard <IoIosArrowDown />
+                </p>
+                <DropdownMenu>
+                  <DropdownItem>
+                    <IoPersonOutline /> <Link to="/profile">Profile</Link>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <IoListOutline /> <Link to="/payment-history">Payment History</Link>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <IoQrCodeOutline /> <Link to="/qr-management">QR Code Management</Link>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <IoNotificationsOutline /> <Link to="/notifications">Notification Settings</Link>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <IoSettingsOutline /> <Link to="/account-settings">Account Settings</Link>
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </DropdownWrapper>
 
-            <Link to="/wallet">
-              <p>Wallet</p>
-            </Link>
-
+            <p><Link to="/wallet">Wallet <IoIosArrowDown /></Link></p>
             <p>About Us</p>
-            <p>Contact us</p>
+            <p>Contact Us</p>
           </Navlist>
 
           <Signcont>
             <Link to="/login">
-              <LoginButton LoginButton>Login </LoginButton>
+              <LoginButton>Login</LoginButton>
             </Link>
-
             <Link to="/signup">
-              <SigninButton>Sign up </SigninButton>
+              <SigninButton>Sign up</SigninButton>
             </Link>
           </Signcont>
 
@@ -73,13 +90,17 @@ const Wrapper = styled.div`
   background-color: #1b6392;
   display: flex;
   align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
+
 const Navbar = styled.div`
   max-width: 1800px;
   width: 95%;
-  /* border: 1px solid white; */
   margin: 0 auto;
-
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -89,10 +110,7 @@ const Navbar = styled.div`
     justify-content: space-between;
   }
 `;
-const Signcont = styled.div`
-  display: flex;
-  gap: 20px;
-`;
+
 const Navlist = styled.div`
   display: flex;
   gap: 20px;
@@ -108,35 +126,68 @@ const Navlist = styled.div`
     display: none;
   }
 `;
-const Dash = styled.p`
-  display: flex;
-  /* justify-items: center; */
-  align-items: center;
-  /* border: 2px solid red; */
 
-  span {
-    /* border: 1px solid purple; */
-    display: flex;
-    align-items: center;
-    justify-items: center;
-    margin-left: 3px;
+const DropdownWrapper = styled.div`
+  position: relative;
+`;
+
+const Dropdown = styled.div`
+  position: relative;
+  display: inline-block;
+
+  &:hover > div {
+    display: block;
   }
 `;
+
+const DropdownMenu = styled.div`
+  display: none;
+  position: absolute;
+  top: 15px;
+  left: 0;
+  background-color: #1b6392;
+  color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  width: 200px;
+`;
+
+const DropdownItem = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  gap: 10px;
+  font-size: 12px;
+  cursor: pointer;
+
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
+  &:hover {
+    background-color: #30506b;
+  }
+`;
+
 const Logocont = styled.div`
   display: flex;
   color: white;
-  font-size: 28px;
+  font-size: 20px;
   gap: 10px;
   cursor: pointer;
 
   img {
-    width: 40px;
-  }
-
-  @media (max-width: 768px) {
-    margin-left: 10px;
+    width: 35px;
   }
 `;
+
+const Signcont = styled.div`
+  display: flex;
+  gap: 20px;
+`;
+
 const LoginButton = styled.button`
   background-color: transparent;
   padding: 8px 24px;
@@ -149,15 +200,11 @@ const LoginButton = styled.button`
     background-color: #30506b;
   }
 
-  a {
-    text-decoration: none;
-    color: white;
-  }
-
   @media (max-width: 768px) {
     display: none;
   }
 `;
+
 const SigninButton = styled.button`
   padding: 8px 24px;
   border-radius: 4px;
@@ -170,15 +217,11 @@ const SigninButton = styled.button`
     background-color: #c96d05;
   }
 
-  a {
-    text-decoration: none;
-    color: white;
-  }
-
   @media (max-width: 768px) {
     display: none;
   }
 `;
+
 const Sidenav = styled.div`
   font-size: 40px;
   display: none;

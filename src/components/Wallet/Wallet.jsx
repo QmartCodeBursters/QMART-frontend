@@ -10,6 +10,7 @@ function Wallet() {
         <Container>
           <Wrapper>
             <Flex>
+              <Image></Image>
               <img src={Card} alt="ATM card" />
               <Button>
                 <Withdraw>
@@ -100,6 +101,7 @@ const Wrapper = styled.div`
   /* border: 2px solid purple; */
   margin: auto;
   width: 90%;
+  margin-top: 70px;
 `;
 const Flex = styled.div`
   /* border: 2px solid green; */
@@ -119,7 +121,6 @@ const Flex = styled.div`
     img {
       /* border: 2px solid yellow; */
       text-align: center;
-      /* margin-left: 7px; */
       margin-bottom: 5px;
       width: 300px;
     }
@@ -130,7 +131,6 @@ const Button = styled.div`
   display: flex;
   margin-left: 40px;
   margin-top: 127px;
-  /* align-items: center; */
 
   @media (max-width: 800px) {
     /* border: 2px solid blue; */
@@ -139,7 +139,6 @@ const Button = styled.div`
     justify-content: center;
     align-items: center;
     margin-top: 10px;
-    /* padding: auto; */
   }
 `;
 
@@ -159,8 +158,6 @@ const Withdraw = styled.p`
     justify-items: center;
     align-items: center;
     font-size: 15px;
-
-    /* margin-left: 5px; */
   }
 
   @media (max-width: 800px) {
@@ -216,4 +213,7 @@ const Transfer = styled.div`
 const View = styled.p`
   color: #747070cc;
   font-size: 12px;
+`;
+
+const Image = styled.div`
 `;

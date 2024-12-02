@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Card from "../../assets/svg/card.svg";
 import { IoMdArrowDropright } from "react-icons/io";
+import { MdVisibility } from "react-icons/md";
 import innerbg from "../../assets/png/innerbg.png";
 
 function Wallet() {
@@ -10,8 +11,17 @@ function Wallet() {
         <Container>
           <Wrapper>
             <Flex>
-              <Image></Image>
-              <img src={Card} alt="ATM card" />
+              <Image>
+                <img src={Card} alt="ATM card" />
+                <p>Settings</p>
+                <Bal>
+                  <span id="balance">
+                    #2,500,000.00 <MdVisibility size={18} />
+                  </span>
+                  <span>QMART Balance</span>
+                </Bal>
+              </Image>
+
               <Button>
                 <Withdraw>
                   <span>Withdraw</span>
@@ -116,7 +126,6 @@ const Flex = styled.div`
     /* border: 2px solid blue; */
     display: block;
     width: 100%;
-    /*  width: 100%; */
 
     img {
       /* border: 2px solid yellow; */
@@ -216,4 +225,44 @@ const View = styled.p`
 `;
 
 const Image = styled.div`
+  /* border: 2px solid blue; */
+  position: relative;
+
+  p {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    font-size: 12px;
+    color: white;
+  }
+
+  @media (max-width: 800px) {
+    p {
+      right: 5px;
+    }
+  }
+`;
+const Bal = styled.div`
+  color: red;
+  position: absolute;
+  bottom: 10px;
+  left: 30px;
+  display: flex;
+  flex-direction: column;
+
+  #balance {
+    position: absolute;
+    bottom: 20px;
+    font-size: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 220px;
+  }
+  span {
+    font-size: 12px;
+    color: white;
+    padding-bottom: 10px;
+  
+  }
 `;

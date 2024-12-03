@@ -3,6 +3,7 @@ import Card from "../../assets/svg/card.svg";
 import { IoMdArrowDropright } from "react-icons/io";
 import { MdVisibility } from "react-icons/md";
 import innerbg from "../../assets/png/innerbg.png";
+import { Link } from "react-router-dom";
 
 function Wallet() {
   return (
@@ -13,7 +14,10 @@ function Wallet() {
             <Flex>
               <Image>
                 <img src={Card} alt="ATM card" />
-                <p>Settings</p>
+                <Link to="/walletsettings">
+                  <p>Settings</p>
+                </Link>
+
                 <Bal>
                   <span id="balance">
                     #2,500,000.00 <MdVisibility size={18} />
@@ -263,6 +267,5 @@ const Bal = styled.div`
     font-size: 12px;
     color: white;
     padding-bottom: 10px;
-  
   }
 `;

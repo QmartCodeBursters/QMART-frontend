@@ -9,6 +9,7 @@ import Login from "./components/Login-Signup/Login";
 
 import MainDashboard from "./components/dashboard/Maindashboard";
 import Wallet from "./components/Wallet/Wallet";
+import WalletSettings from "./components/Wallet/WalletSettings";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/login" element={<Login />} />
 
         <Route path="/wallet" element={<Wallet />} />
+        <Route path="/walletsettings" element={<WalletSettings />} />
         <Route path="/dashboard" element={<MainDashboard />} />
       </Routes>
       <Footer />

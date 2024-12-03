@@ -246,3 +246,4 @@ const Withdraw = styled.p`
     margin: 15px auto 0;
   }
 `;
+

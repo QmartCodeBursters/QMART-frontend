@@ -91,6 +91,10 @@ const Flexed = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  @media (max-width: 800px) {
+    /* border: 2px solid blue; */
+    display: block;
+  }
 `;
 const Flex = styled.div`
   /* border: 2px solid green; */
@@ -100,14 +104,15 @@ const Flex = styled.div`
     width: 320px;
   }
   @media (max-width: 800px) {
-    /* border: 2px solid blue; */
+    /* border: 2px solid purple; */
+    margin: auto;
     display: block;
     width: 100%;
     img {
       /* border: 2px solid yellow; */
-      text-align: center;
       margin-bottom: 5px;
-      width: 300px;
+      /* width: 260px; */
+      width: 97%;
     }
   }
 `;
@@ -136,6 +141,21 @@ const FlexText = styled.div`
       outline: transparent;
     }
   }
+
+  @media (max-width: 800px) {
+    margin-top: 15px;
+    /* border: 2px solid red; */
+    width: 100%;
+    padding: 20px;
+    div {
+      /* border: 2px solid hotpink; */
+      text-align: center;
+      padding: 0;
+      input {
+        width: 100%;
+      }
+    }
+  }
 `;
 const Image = styled.div`
   /* border: 2px solid blue; */
@@ -148,6 +168,8 @@ const Image = styled.div`
     color: white;
   }
   @media (max-width: 800px) {
+    /* border: 2px solid red; */
+    text-align: center;
     p {
       right: 5px;
     }
@@ -174,6 +196,13 @@ const Bal = styled.div`
     color: white;
     padding-bottom: 10px;
   }
+  @media (max-width: 800px) {
+    #balance {
+      font-size: 22px;
+      /* border: 2px solid red; */
+      width: 190px;
+    }
+  }
 `;
 const Save = styled.p`
   text-align: center;
@@ -185,6 +214,10 @@ const Save = styled.p`
   padding: 10px;
   width: 36%;
   font-size: 14px;
+
+  @media (max-width: 800px) {
+    width: 70%;
+  }
 `;
 const Styledlink = styled(Link)`
   text-decoration: none;
@@ -195,7 +228,6 @@ const Withdraw = styled.p`
   justify-items: center;
   align-items: center;
   border-color: transparent;
-  /* margin-right: 5px; */
   background-color: #fa8232;
   color: white;
   border-radius: 4px;
@@ -210,9 +242,7 @@ const Withdraw = styled.p`
     align-items: center;
     font-size: 17px;
   }
-  /* @media (max-width: 800px) {
-    span {
-      margin: auto;
-    }
-  } */
+  @media (max-width: 800px) {
+    margin: 15px auto 0;
+  }
 `;

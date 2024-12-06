@@ -10,6 +10,8 @@ import Login from "./components/Login-Signup/Login";
 import MainDashboard from "./components/dashboard/Maindashboard";
 import Wallet from "./components/Wallet/Wallet";
 import WalletSettings from "./components/Wallet/WalletSettings";
+import About from "./components/About/About";
+import PrintQRcode from "./components/About/PrintQRcode";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
         <Route path="/wallet" element={<Wallet />} />
         <Route path="/walletsettings" element={<WalletSettings />} />
         <Route path="/dashboard" element={<MainDashboard />} />
+        <Route path="/aboutUs" element={ <About/>}/>
+        <Route path="/QRcode" element={<PrintQRcode/>}/>
       </Routes>
       <Footer />
     </BrowserRouter>

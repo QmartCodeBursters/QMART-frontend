@@ -58,7 +58,7 @@ const Header = () => {
             </DropdownWrapper>
 
             <p><Link to="/wallet">Wallet <IoIosArrowDown /></Link></p>
-            <p>About Us</p>
+            <p><Link to="/aboutUs">About Us</Link></p>
             <p>Contact Us</p>
           </Navlist>
 

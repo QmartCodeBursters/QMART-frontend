@@ -7,9 +7,12 @@ import Signup from "./components/Login-Signup/Signup";
 import Verify from "./components/Login-Signup/Verify";
 import Login from "./components/Login-Signup/Login";
 
-import MainDashboard from "./components/dashboard/Maindashboard";
+
 import Wallet from "./components/Wallet/Wallet";
 import WalletSettings from "./components/Wallet/WalletSettings";
+import Dashboard from "./components/dashboard/Dashboard";
+import MainUserProfile from "./components/userprofile/Mainuserprofile";
+import NotificationSettings from "./components/notification/Notification";
 
 function App() {
   return (
@@ -23,7 +26,9 @@ function App() {
 
         <Route path="/wallet" element={<Wallet />} />
         <Route path="/walletsettings" element={<WalletSettings />} />
-        <Route path="/dashboard" element={<MainDashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<MainUserProfile />} />
+        <Route path="/NotificationSettings" element={<NotificationSettings />} />
       </Routes>
       <Footer />
     </BrowserRouter>

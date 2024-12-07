@@ -1,5 +1,4 @@
 import qlogo from "../../assets/png/logo.png";
-import { IoIosArrowDown } from "react-icons/io";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { IoReorderTwoOutline } from "react-icons/io5";
@@ -31,12 +30,15 @@ const Header = () => {
 
           <Navlist>
             <p><Link to="./">Home</Link></p>
+            <p>
+  <Link to="/dashboard">
+    Dashboard 
+  </Link>
+</p>
 
-            <DropdownWrapper>
+            {/* <DropdownWrapper>
               <Dropdown>
-                <p>
-                  Dashboard <IoIosArrowDown />
-                </p>
+                
                 <DropdownMenu>
                   <DropdownItem>
                     <IoPersonOutline /> <Link to="/profile">Profile</Link>
@@ -55,9 +57,9 @@ const Header = () => {
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
-            </DropdownWrapper>
+            </DropdownWrapper> */}
 
-            <p><Link to="/wallet">Wallet <IoIosArrowDown /></Link></p>
+            <p><Link to="/wallet">Wallet </Link></p>
             <p>About Us</p>
             <p>Contact Us</p>
           </Navlist>

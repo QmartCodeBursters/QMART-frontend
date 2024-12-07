@@ -2,7 +2,6 @@ import styled from "styled-components";
 import Card from "../../assets/svg/card.svg";
 import { IoMdArrowDropright } from "react-icons/io";
 import { MdVisibility } from "react-icons/md";
-import innerbg from "../../assets/png/innerbg.png";
 import { Link } from "react-router-dom";
 
 function Wallet() {
@@ -96,12 +95,7 @@ function Wallet() {
 export default Wallet;
 
 const Bgcolor = styled.div`
-  width: 100%;
-  background-image: url(${innerbg});
-  background-color: #edeff2;
-  background-size: contain;
-  background-position: top;
-  height: auto;
+  
 `;
 const Container = styled.div`
   max-width: 1280px;

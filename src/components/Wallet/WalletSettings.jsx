@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import innerbg from "../../assets/png/innerbg.png";
 import Card from "../../assets/svg/card.svg";
 import { MdVisibility } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { IoMdArrowDropright } from "react-icons/io";
+
 function WalletSettings() {
   return (
     <>
@@ -59,13 +59,9 @@ function WalletSettings() {
   );
 }
 export default WalletSettings;
+
 const BgColor = styled.div`
-  width: 100%;
-  background-image: url(${innerbg});
-  background-color: #edeff2;
-  background-size: contain;
-  background-position: top;
-  height: auto;
+  
 `;
 const Container = styled.div`
   max-width: 1280px;

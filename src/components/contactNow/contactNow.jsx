@@ -1,277 +1,234 @@
-import styled from 'styled-components';
-import iconone  from '../../assets/png/Iconone.png';
-import icontwo from '../../assets/png/Icontwo.png';
-import truck from '../../assets/png/Truck.png';
-import arrowright from '../../assets/png/ArrowRight.png';
-import storefront from '../../assets/png/Storefront.png';
-import faq from '../../assets/png/Faq.png';
-import user from '../../assets/png/User.png';
-import lockopen from '../../assets/png/LockOpen.png';
-import plus from '../../assets/png/Plus.png';
-import backgroundImage from '../../assets/png/BG.png';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { RiTruckLine } from "react-icons/ri";
+import faq from "../../assets/png/faq.png";
+import { FaUnlockAlt, FaRegUser, FaPlus, FaMinus } from "react-icons/fa";
 
+const Contactnow = () => {
+  const [openFaqIndex, setOpenFaqIndex] = useState(null);
 
-function trackHandler(){
-    alert('Tracking in Progress');
-}
+  
+  const toggleFaq = (index) => {
+    if (openFaqIndex === index) {
+      setOpenFaqIndex(null);
+    } else {
+      setOpenFaqIndex(index);
+    }
+  };
 
-function resetHandler(){
-    alert('Forgotten Password? Reset Now');
-}
+  const Faqs = [
+    {
+      question: "How do merchants generate a QR code for payment?",
+      answer:
+        "Merchants can click the 'Generate QR Code' button in the app, and a unique code will be displayed instantly for the customer to scan.",
+    },
+    {
+      question: "How do customers make payments?",
+      answer:
+        "Customers open the app, click 'Scan QR Code,' and confirm the payment using an OTP generated from their linked wallet.",
+    },
+    {
+      question: "What happens after the payment is made?",
+      answer:
+        "Both the merchant and the customer receive instant confirmation of the transaction for their records.",
+    },
+    {
+      question: "Can customers use the app without linking a wallet?",
+      answer:
+        "No, linking a wallet is necessary to enable secure OTP-based payment verification.",
+    },
+    {
+      question: "Is the payment process secure?",
+      answer:
+        "Yes, QMart uses OTP verification and encrypted payment gateways to ensure secure transactions.",
+    },
+    {
+      question: "What if an OTP isn’t received?",
+      answer:
+        "Customers can request a new OTP directly from the payment page for uninterrupted processing.",
+    },
+  ];
 
-function sellHandler(){
-    alert('Sell your products seamlessly at this click');
-}
+  return (
+    <Wrapper>
+      <Contactwrapper>
 
-function userHandler(){
-    alert('View Profile');
-}
+        <Assisttoday>
 
-function contactHandler(){
-    alert('Reach out to us');
-}
+            <Link to = "/wallet">
+                <button>
+                <RiTruckLine />
+                Track Payment
+                </button>
+            </Link>
 
-function callHandler(){
-    alert('+1-202-555-0126');
-}
+            <Link to = "/reset-password">
+                <button>
+                <FaUnlockAlt />
+                Reset Password
+                </button>
+            </Link>
 
-function emailHandler(){
-  alert('For enquires, Email us today')
-}
+            <Link to = "/dashboard">
+                <button>
+                <FaRegUser />
+                User Account
+                </button>
+            </Link>
 
+        </Assisttoday>
 
-const ContactNow = () => {
-    return(
-        <ContactContainer>
-             <h2>What can we assist you with today?</h2>
+        <Faqlisting>
            
-            <Up>
-                <button onClick={trackHandler}> <img src={truck} alt=''/> Track Payment</button>
-                <button onClick={resetHandler}> <img src={lockopen} alt=''/> Reset Password</button>
-                <button onClick={sellHandler}> <img src={storefront} alt=''/> Sell on QMart</button>
-                <button onClick={userHandler}> <img src={user} alt=''/> User & Account</button>
-                
+          <Faqabout>
+          <h3>FAQs About QMart!</h3>
+          
+            {Faqs.map((faq, index) => (
+              <FaqItem key={index}>
+                <FaqQuestion onClick={() => toggleFaq(index)}>
+                    {faq.question}
+                    <span className="icon">
+                        {openFaqIndex === index ? <FaMinus /> : <FaPlus />}
+                    </span>
+                </FaqQuestion>
 
-            </Up>
+                {openFaqIndex === index && <FaqAnswer>{faq.answer}</FaqAnswer>}
+              </FaqItem>
+            ))}
+        </Faqabout>
 
-            <Down>
-                <Main>
-                <h1>FAQs About QMart!</h1>
-                <div><p>How do merchants generate a QR code for payment? <img src={plus} alt=''/></p></div>
-                <div><p>How do customers make payments?<img src={plus} alt=''/></p></div>
-                <div><p>What happens after the payment is made?<img src={plus} alt=''/></p></div>
-                <div><p>Can customers use the app without linking a wallet?<img src={plus} alt=''/></p></div>
-                <div><p>Is the payment process secure?<img src={plus} alt=''/></p></div>
-                <div><p>What if an OTP isn’t received?<img src={plus} alt=''/></p></div>
-
-                </Main>
-
-
-                <Aside>
-                 <img src ={faq} alt=''/>
-
-                </Aside>
-
-
-            </Down>
-
-            <First>
-                <button onClick={contactHandler}> CONTACT US</button>
-                <h2>Dont find your answer. <br/>Contact with us</h2>
-
-            </First>
-
-            <Second>
-                <div className='boxone'>
-                    <div>
-                        <img src= {icontwo} alt = 'iconone' />
-                    </div>
-                    <div>
-                        <h5>Call us now</h5>
-                        <p><small>we are available online from 9:00 AM to 5:00 PM <br/> (GMT95:45) Talk with use now</small></p>
-                        <h3>+1-202-555-0126</h3>
-                        <button onClick={callHandler}> CALL NOW<img src={arrowright} alt=''/> </button>
-                    </div>    
-                    
-                </div>
-
-                <div className='boxtwo'>
-                    <div>
-                        <img src = {iconone} alt='icontwo'/>
-                    </div> 
-
-                    <div>
-                        <h5>Chat with us</h5>
-                        <p><small>we are available online from 9:00 AM to 5:00 PM <br/>(GMT95:45) Talk with use now</small></p>
-                        <h3>Support@qmart.com</h3>
-                        <button onClick={emailHandler}> CONTACT US<img src={arrowright} alt=''/> </button>
-                    </div>    
-                    
-                </div>
-            </Second>
-
-        </ContactContainer>
-
-    );
+          <img src={faq} alt="faq" />
+        </Faqlisting>
+        
+      </Contactwrapper>
+    </Wrapper>
+  );
 };
 
+export default Contactnow;
 
+const Wrapper = styled.div``;
 
-const ContactContainer = styled.div`
-@media (max-width:768px) {
+const Contactwrapper = styled.div`
+max-width: 1280;
+width: 75%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+`;
 
-min-width: 100%;
+const Assisttoday = styled.div`
+  margin-top: 120px;
+  display: flex;
+  flex-wrap: wrap; 
+  /* gap: 20px; Space between buttons */
 
-
-}
-   background: url(${backgroundImage}) no-repeat;
-   background-color: #DAE5DA;
-   
-   h2{
-   text-align: center;
-   } 
-    
-`
-const Up = styled.div`
-    margin-top: 50px;
-    display: flex;
-    justify-content: space-evenly;
-    /* gap: 40px; */
-   
-
-button{
-    display: flex;
+  button {
+    margin: 20px 30px;
     align-items: center;
-    width: 300px;
-    height: 80px;
-    background-color: #FFFFFF;
-    border: 2px solid #FA8232;
-    text-align: center;
-    
-    img{
-        margin-left: 15px;
-    }
-    
-}
-`
-const Down = styled.div`
+    justify-content: center;
+    padding: 15px 30px;
+    border: 1px solid #fa823298;
+    background-color: white;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+      rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    cursor: pointer;
+    text-decoration: none;
+    color: black; 
+    gap: 10px; 
+  }
+
+  button:hover {
+    background-color: #fa8232; 
+    color: white; 
+  }
+
+  svg {
+    color: #fa8232; 
+    font-size: 18px; 
+    margin-right: 10px;
+  }
+
+  @media (max-width: 768px) {
+    justify-content: center;
+    gap: 15px; 
+  }
+`;
+
+const Faqlisting = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 20px;
+  max-width: 90%;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 100px;
+
+  img {
+    max-width: 40%;
+    flex-shrink: 0;
+  }
+
+  .icon {
+    width: 24px;
+    height: 24px;
     display: flex;
-    justify-content: space-evenly;
-    margin-top: 150px;
-    margin-bottom: 100px;
-    
-
-    
-
-   
-`
-const Main = styled.div`
-    div{
-        display: flex;
-        justify-content: space-between;
-    }
-
-div p{
-    display: flex;
+    justify-content: center;
     align-items: center;
-    text-align: center;
-   } 
+    color: white;
+    background-color: #fa8232;
+    border-radius: 50%; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    font-size: 12px;
+    flex-shrink: 0;
+  }
 
- div img{
-   
-}    
-`
-const Aside = styled.div`
-    
+  @media (max-width: 768px) {
+    flex-wrap: wrap; 
+    flex-direction: column; 
+    align-items: center;
 
-`
-
-
-const First = styled.div`
-   button{
-    width: 121px;
-    height: 36px;
-    background: #FF8A00;
-    color: #FFFFFF;
-    border-color: #FF8A00;
-   }
-   text-align :center ;
-   gap: 40px;
-`
-
-const Second = styled.div`
-    display: flex;
-    justify-content: space-evenly;
-    margin-top: 50px;
-    
-   
-   
-    .boxone{
-        display: flex;
-        justify-content: space-around;
-        box-shadow: #191C1F14;
-        background: #FFFFFF;
-        width:450px;
-
-        p{
-            color: #5F6C72;
-
-        }
-
-        img{
-            margin-top: 20px;
-        }
-
-
-        button{background: #EA4B48;
-               width: 168px;
-               height: 48px;
-               color: #FFFFFF;
-               display: flex;
-               align-items: center;
-               justify-content: center;
-
-            img{
-             margin-left:10px; 
-             margin-bottom: 20px;
-             }
-        }
-        
+    img {
+      max-width: 85%; 
+      margin-top: 20px;
     }
-
-    .boxtwo{
-        display: flex;
-        justify-content: space-around;
-        background: #FFFFFF;
-        width:450px;
-
-        p{
-            color: #5F6C72;
-        }
-
-        img{
-            margin-top: 20px;
-        }
-
-    button{
-           background: #1B6392;
-           width: 168px;
-           height: 48px;
-           color: #FFFFFF;
-           display: flex;
-           align-items: center;
-           justify-content: center;
-
-         img{
-            margin-left:15px;  
-            align-items: center;
-            margin-bottom: 20px;
-            }
-    }    
-        
-}
+  }
+`;
 
 
+const Faqabout = styled.div`
+  width: 100%;
+  margin-bottom: 20px;
 
-`
-export default ContactNow;
+  h3{
+    font-size: 30px;
+    margin: 20px 0;
+  }
+`;
+
+const FaqItem = styled.div`
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  background-color: white;
+  border-radius: 5px;
+  padding: 10px;
+`;
+
+const FaqQuestion = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  flex-shrink: 0;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 500;
+`;
+
+const FaqAnswer = styled.div`
+  margin-top: 10px;
+  font-size: 12px;
+  color: #555;
+`;

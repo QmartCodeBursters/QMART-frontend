@@ -1,5 +1,6 @@
 import Cta from "../../components/Hero/Cta"
 import Hero from "../../components/Hero/Hero"
+import Contactpage from "../Contactpage/Contactpage"
 
 
 const Homepage = () => {
@@ -7,6 +8,7 @@ const Homepage = () => {
     <div>
         <Hero/>
         <Cta/>
+        <Contactpage/>
     </div>
   )
 }

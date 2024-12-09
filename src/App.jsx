@@ -14,7 +14,7 @@ import Dashboard from "./components/dashboard/Dashboard";
 import MainUserProfile from "./components/userprofile/Mainuserprofile";
 import NotificationSettings from "./components/notification/Notification";
 import ResetPassword from "./components/Login-Signup/Reset";
-import Contactpage from "./pages/Contactpage/Contactpage";
+// import Contactpage from "./pages/Contactpage/Contactpage";
 
 
 function App() {
@@ -29,7 +29,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
 
 
-        <Route path="/contact" element={<Contactpage />} />
+        {/* <Route path="/contact" element={<Contactpage />} /> */}
         <Route path="/wallet" element={<Wallet />} />
         <Route path="/walletsettings" element={<WalletSettings />} />
         <Route path="/dashboard" element={<Dashboard />} />

@@ -1,6 +1,0 @@
-const Dashbboard = () => {
-    return(
-        <>
-        </>
-    )
-}

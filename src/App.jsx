@@ -9,6 +9,12 @@ import QrCode from "./pages/QRcodePage/QrCode";
 import Settingspage from "./pages/SettingsPage/Settingpage";
 import CustSettings from "./pages/CustSettingsPage/CustSettings"
 
+import Verify from "./components/Login-Signup/Verify";
+import Login from "./components/Login-Signup/Login";
+
+import MainDashboard from "./components/dashboard/Maindashboard";
+import Wallet from "./components/Wallet/Wallet";
+
 function App() {
   return (
     <BrowserRouter>
@@ -24,6 +30,9 @@ function App() {
         <Route path="/settings" element={<Settingspage />} />
         <Route path="/QrCode" element={<QrCode />} />
         <Route path="/CustomerSettings" element={<CustSettings/>}/>
+
+        <Route path="/wallet" element={<Wallet />} />
+        <Route path="/dashboard" element={<MainDashboard />} />
       </Routes>
       <Footer />
     </BrowserRouter>

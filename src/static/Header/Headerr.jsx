@@ -3,6 +3,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { IoReorderTwoOutline } from "react-icons/io5";
+import Sidebar from "../Sidebar/SideBar";
 import { useState } from "react";
 
 const Header = () => {
@@ -29,6 +30,20 @@ const Header = () => {
               Dashboard <IoIosArrowDown />{" "}
             </p>
             <p>Wallet</p>
+
+            <Link to="/dashboard">
+              <Dash>
+                <span>Dashboard</span>
+                <span>
+                  <IoIosArrowDown />
+                </span>
+              </Dash>
+            </Link>
+
+            <Link to="/wallet">
+              <p>Wallet</p>
+            </Link>
+
             <p>About Us</p>
             <p>Contact us</p>
           </Navlist>
@@ -97,6 +112,20 @@ const Navlist = styled.div`
     display: none;
   }
 `;
+const Dash = styled.p`
+  display: flex;
+  /* justify-items: center; */
+  align-items: center;
+  /* border: 2px solid red; */
+
+  span {
+    /* border: 1px solid purple; */
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    margin-left: 3px;
+  }
+`;
 const Logocont = styled.div`
   display: flex;
   color: white;
@@ -106,6 +135,10 @@ const Logocont = styled.div`
 
   img {
     width: 40px;
+  }
+
+  @media (max-width: 768px) {
+    margin-left: 10px;
   }
 `;
 const LoginButton = styled.button`

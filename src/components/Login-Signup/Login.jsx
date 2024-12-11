@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import innerbg from "../../assets/png/innerbg.png";
-import googleicon from "../../assets/png/googleicon.png"
-import appleicon from "../../assets/png/appleicon.png"
-
+import googleicon from "../../assets/png/googleicon.png";
+import appleicon from "../../assets/png/appleicon.png";
 
 const Login = () => {
   return (
@@ -11,43 +10,39 @@ const Login = () => {
       <FormContainer>
         <form>
           <h2>Login</h2>
-          
-          
+
           <input type="email" placeholder="Email" required name="email" />
-          <input type="password" placeholder="Enter your password" required name="password"/>
-         
+          <input
+            type="password"
+            placeholder="Enter your password"
+            required
+            name="password"
+          />
 
           <p>Forgot Password?</p>
 
-          <Link to="/"><button type="submit">Login</button></Link>
-          
-
-        
-        
+          <Link to="/">
+            <button type="submit">Login</button>
+          </Link>
 
           <ButtonWrapper>
-          <span>or</span>
+            <span>or</span>
 
             <GoogleButton>
-                <img src={googleicon} alt="googleicon" />
-                <span>Sign in with Google</span>
+              <img src={googleicon} alt="googleicon" />
+              <span>Sign in with Google</span>
             </GoogleButton>
 
             <AppleButton>
-                <img src={appleicon} alt="appleicon" />
-                <span>Sign in with Apple</span>
+              <img src={appleicon} alt="appleicon" />
+              <span>Sign in with Apple</span>
             </AppleButton>
 
-
-            <p>Don't have an account<Link to="/signup"> Register</Link> </p>
+            <p>
+              Dont have an account<Link to="/signup"> Register</Link>{" "}
+            </p>
           </ButtonWrapper>
-
-
-
-          
-          
         </form>
-
       </FormContainer>
     </Wrapper>
   );
@@ -61,7 +56,6 @@ const Wrapper = styled.div`
   background-color: #edeff2;
   background-size: contain;
   background-position: top;
-  
 `;
 
 const FormContainer = styled.div`
@@ -81,7 +75,8 @@ const FormContainer = styled.div`
     background-color: white;
     padding: 20px 40px;
     border-radius: 10px;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+      rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
     margin: 40px 0;
     animation: slideInFromTop 1s ease-out;
 
@@ -134,9 +129,9 @@ const FormContainer = styled.div`
     }
 
     a {
-        text-decoration: none; 
-        color: black;
-        font-weight: bold;
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
     }
   }
 `;
@@ -150,7 +145,6 @@ const ButtonWrapper = styled.div`
   margin-top: 20px;
   text-align: center;
   span {
-   
   }
 
   p {
@@ -159,7 +153,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const GoogleButton = styled.div`
-  background-color:white; 
+  background-color: white;
   border: 1px solid grey;
   display: flex;
   align-items: center;
@@ -179,7 +173,7 @@ const GoogleButton = styled.div`
 `;
 
 const AppleButton = styled.div`
-background-color:white; 
+  background-color: white;
   border: 1px solid grey;
   display: flex;
   align-items: center;
@@ -198,6 +192,3 @@ background-color:white;
     background-color: #e8e8e8;
   }
 `;
-
-
-

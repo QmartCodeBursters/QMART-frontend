@@ -7,6 +7,7 @@ import Verify from "./components/Login-Signup/Verify";
 import Login from "./components/Login-Signup/Login";
 import QrCode from "./pages/QRcodePage/QrCode";
 import Settingspage from "./pages/SettingsPage/Settingpage";
+import CustSettings from "./pages/CustSettingsPage/CustSettings"
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         </Route> */}
         <Route path="/settings" element={<Settingspage />} />
         <Route path="/QrCode" element={<QrCode />} />
+        <Route path="/CustomerSettings" element={<CustSettings/>}/>
       </Routes>
       <Footer />
     </BrowserRouter>

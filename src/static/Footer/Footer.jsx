@@ -11,7 +11,7 @@ const Footer = () =>{
         <Newscont>
               <ContentWrapper>
               <Subscribe>
-                <h4>Subcribe our Newsletter</h4>
+                <h4>Subcribe to our Newsletter</h4>
                 <p>Join Our Community: Fresh Deals and New Arrivals Straight to Your Inbox</p>
                 </Subscribe>
 

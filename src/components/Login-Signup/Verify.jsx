@@ -1,6 +1,5 @@
 import { MdArrowRightAlt } from "react-icons/md";
 import styled from "styled-components";
-import innerbg from "../../assets/png/innerbg.png";
 import { Link } from "react-router-dom";
 
 const Verify = () => {
@@ -34,12 +33,7 @@ const Verify = () => {
 export default Verify;
 
 const Wrapper = styled.div`
-  width: 100%;
-  background-image: url(${innerbg});
-  background-color: #edeff2;
-  background-size: contain;
-  background-position: top;
-  /* height: calc(100vh - 70px); */
+ 
 `;
 
 const LoginContainer = styled.div`

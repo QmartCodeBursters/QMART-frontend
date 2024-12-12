@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import innerbg from "../../assets/png/innerbg.png";
 import Card from "../../assets/svg/card.svg";
 import { Link } from "react-router-dom";
+
 
 // Mock API to simulate fetching the wallet balance, name, and account number
 const fetchWalletData = () => {
@@ -17,13 +17,67 @@ const fetchWalletData = () => {
   });
 };
 
+import { IoMdArrowDropright } from "react-icons/io";
+
+function WalletSettings() {
+  return (
+    <>
+      <BgColor>
+        <Container>
+          <Wrapper>
+            <Flexed>
+              <Flex>
+                <Text>
+                  <Styledlink to="/wallet">
+                    <p>Back</p>
+                  </Styledlink>
+                </Text>
+                <Image>
+                  <img src={Card} alt="ATM card" />
+                  <Bal>
+                    <span id="balance">
+                      #2,500,000.00 <MdVisibility size={18} />
+                    </span>
+                    <span>QMART Balance</span>
+                  </Bal>
+                </Image>
+              </Flex>
+              <FlexText>
+                <p id="settings">Wallet Settings</p>
+                <div>
+                  <div>
+                    <p>Wallet Name</p>
+                    <input type="text" placeholder="Andrew Smith" />
+                  </div>
+                  <div>
+                    <p>Account Number</p>
+                    <input type="text" placeholder="012345678" />
+                  </div>
+                  <div>
+                    <p>Change PIN</p>
+                    <input type="text" placeholder="(603) 555-0123" />
+                  </div>
+                </div>
+                <Save>Save Changes</Save>
+              </FlexText>
+            </Flexed>
+            <Withdraw>
+              <span>Withdraw</span>
+              <span>
+                <IoMdArrowDropright size={30} />
+              </span>
+            </Withdraw>
+          </Wrapper>
+        </Container>
+      </BgColor>
+    </>
+  );
+}
+export default WalletSettings;
+
+
 const BgColor = styled.div`
-  width: 100%;
-  background-image: url(${innerbg});
-  background-color: #edeff2;
-  background-size: contain;
-  background-position: top;
-  height: auto;
+  
 `;
 
 const Container = styled.div`

@@ -1,16 +1,108 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+
 import WalletCard from "./WalletCard";
 import TransactionHistory from "./TransactionHistory";
 import innerbg from "../../assets/png/innerbg.png";
 
+import Card from "../../assets/svg/card.svg";
+import { IoMdArrowDropright } from "react-icons/io";
+import { MdVisibility } from "react-icons/md";
+import { Link } from "react-router-dom";
+
+function Wallet() {
+  return (
+    <>
+      <Bgcolor>
+        <Container>
+          <Wrapper>
+            <Flex>
+              <Image>
+                <img src={Card} alt="ATM card" />
+                <Link to="/walletsettings">
+                  <p>Settings</p>
+                </Link>
+
+                <Bal>
+                  <span id="balance">
+                    #2,500,000.00 <MdVisibility size={18} />
+                  </span>
+                  <span>QMART Balance</span>
+                </Bal>
+              </Image>
+
+              <Button>
+                <Withdraw>
+                  <span>Withdraw</span>
+                  <span>
+                    <IoMdArrowDropright size={20} />
+                  </span>
+                </Withdraw>
+              </Button>
+            </Flex>
+
+            <Text>
+              <Transact>
+                <p>Transaction History</p>
+                <View>View all</View>
+              </Transact>
+              <Transaction>
+                <Transfer>
+                  <div>
+                    <h4>Transfer to SAIL04 Supermarket</h4>
+                    <p>Nov 22nd, 18:40:26</p>
+                  </div>
+                  <div>
+                    <p>#30,000</p>
+                  </div>
+                </Transfer>
+                <hr />
+
+                <Transfer>
+                  <div>
+                    <h4>Transfer to EMMANUEL FROM WALLET</h4>
+                    <p>Nov 22nd, 18:40:26</p>
+                  </div>
+                  <div>
+                    <p>#100,000</p>
+                  </div>
+                </Transfer>
+                <hr />
+
+                <Transfer>
+                  <div>
+                    <h4>Transfer to SAIL04 Supermarket</h4>
+                    <p>Nov 22nd, 18:40:26</p>
+                  </div>
+                  <div>
+                    <p>#30,000</p>
+                  </div>
+                </Transfer>
+                <hr />
+
+                <Transfer>
+                  <div>
+                    <h4>Transfer to SAIL04 Supermarket</h4>
+                    <p>Nov 22nd, 18:40:26</p>
+                  </div>
+                  <div>
+                    <p>#30,000</p>
+                  </div>
+                </Transfer>
+                <hr />
+              </Transaction>
+            </Text>
+          </Wrapper>
+        </Container>
+      </Bgcolor>
+    </>
+  );
+}
+export default Wallet;
+
+
 const Bgcolor = styled.div`
-  width: 100%;
-  background-image: url(${innerbg});
-  background-color: #edeff2;
-  background-size: contain;
-  background-position: top;
-  height: auto;
+  
 `;
 
 const Container = styled.div`

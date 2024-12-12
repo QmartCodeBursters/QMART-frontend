@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import innerbg from "../../assets/png/innerbg.png";
 import googleicon from "../../assets/png/googleicon.png"
 import appleicon from "../../assets/png/appleicon.png"
 
@@ -66,12 +65,7 @@ const Signup = () => {
 export default Signup;
 
 const Wrapper = styled.div`
-  width: 100%;
-  background-image: url(${innerbg});
-  background-color: #edeff2;
-  background-size: contain;
-  background-position: top;
-  height: auto;
+
 `;
 
 const FormContainer = styled.div`

@@ -13,11 +13,17 @@ import WalletSettings from "./components/Wallet/WalletSettings";
 import Dashboard from "./components/dashboard/Dashboard";
 import MainUserProfile from "./components/userprofile/Mainuserprofile";
 import NotificationSettings from "./components/notification/Notification";
+
 import WithdrawalHistory from "./components/Withdrawalhistory/WithdrawalHistory";
 import TransactionDetails from "./Components/Withdrawalhistory/TransactionDetails";
 import ForgotPassword from "./Components/forgotpassword/ForgotPassword";
 import ResetPassword from "./Components/forgotpassword/ResetPassword";
 import OTPPage from "./Components/forgotpassword/OTPPage";
+
+import ResetPassword from "./components/Login-Signup/Reset";
+// import Contactpage from "./pages/Contactpage/Contactpage";
+
+
 
 function App() {
   return (
@@ -28,7 +34,10 @@ function App() {
         <Route path="/verify" element={<Verify />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
+
+        {/* <Route path="/contact" element={<Contactpage />} /> */}
         <Route path="/wallet" element={<Wallet />} />
         <Route path="/walletsettings" element={<WalletSettings />} />
         <Route path="/dashboard" element={<Dashboard />} />

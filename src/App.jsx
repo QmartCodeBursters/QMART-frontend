@@ -15,6 +15,9 @@ import MainUserProfile from "./components/userprofile/Mainuserprofile";
 import NotificationSettings from "./components/notification/Notification";
 import WithdrawalHistory from "./components/Withdrawalhistory/WithdrawalHistory";
 import TransactionDetails from "./Components/Withdrawalhistory/TransactionDetails";
+import ForgotPassword from "./Components/forgotpassword/ForgotPassword";
+import ResetPassword from "./Components/forgotpassword/ResetPassword";
+import OTPPage from "./Components/forgotpassword/OTPPage";
 
 function App() {
   return (
@@ -33,6 +36,9 @@ function App() {
         <Route path="/NotificationSettings" element={<NotificationSettings />} />
         <Route path="WithdrawalHistory" element={<WithdrawalHistory/>} />
         <Route path="/withdrawaldetails" element={<TransactionDetails />} />
+        <Route path="/forgetpassword" element={<ForgotPassword />} />
+          <Route path="/resetpassword" element={<ResetPassword />} />
+          <Route path="/otppage" element={<OTPPage />} />
       </Routes>
       <Footer />
     </BrowserRouter>

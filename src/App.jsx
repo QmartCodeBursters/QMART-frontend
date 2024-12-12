@@ -7,13 +7,11 @@ import Verify from "./components/Login-Signup/Verify";
 import Login from "./components/Login-Signup/Login";
 import QrCode from "./pages/QRcodePage/QrCode";
 import Settingspage from "./pages/SettingsPage/Settingpage";
-import CustSettings from "./pages/CustSettingsPage/CustSettings"
-
-import Verify from "./components/Login-Signup/Verify";
-import Login from "./components/Login-Signup/Login";
+import CustSettings from "./pages/UserSettingsPage/UserSettings"
 
 import MainDashboard from "./components/dashboard/Maindashboard";
 import Wallet from "./components/Wallet/Wallet";
+import UserWallet from "./components/Wallet/UserWallet"
 
 function App() {
   return (
@@ -30,8 +28,11 @@ function App() {
         <Route path="/settings" element={<Settingspage />} />
         <Route path="/QrCode" element={<QrCode />} />
         <Route path="/CustomerSettings" element={<CustSettings/>}/>
-
         <Route path="/wallet" element={<Wallet />} />
+
+        
+        <Route path="/Customerwallet" element={<UserWallet/>} />
+
         <Route path="/dashboard" element={<MainDashboard />} />
       </Routes>
       <Footer />

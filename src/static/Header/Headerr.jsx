@@ -3,7 +3,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { IoReorderTwoOutline } from "react-icons/io5";
-import Sidebar from "../Sidebar/SideBar";
+// import Sidebar from "../Sidebar/SideBar";
 import { useState } from "react";
 
 const Header = () => {

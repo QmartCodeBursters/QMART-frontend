@@ -21,7 +21,7 @@ import ResetPassword from "./Components/forgotpassword/ResetPassword";
 import OTPPage from "./Components/forgotpassword/OTPPage";
 
 import ResetPassword from "./components/Login-Signup/Reset";
-// import Contactpage from "./pages/Contactpage/Contactpage";
+import Contactpage from "./pages/Contactpage/Contactpage";
 
 
 
@@ -37,7 +37,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
 
 
-        {/* <Route path="/contact" element={<Contactpage />} /> */}
+        <Route path="/contact" element={<Contactpage />} />
         <Route path="/wallet" element={<Wallet />} />
         <Route path="/walletsettings" element={<WalletSettings />} />
         <Route path="/dashboard" element={<Dashboard />} />

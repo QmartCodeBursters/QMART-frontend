@@ -175,8 +175,9 @@ button {
   color: #fff;
   border: none;
   border-radius: 5px;
+  margin-left: -30px;
+  z-index: 1;
   
-  ;
   cursor: pointer;
 
   &:hover {

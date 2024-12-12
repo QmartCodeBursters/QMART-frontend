@@ -13,6 +13,8 @@ import WalletSettings from "./components/Wallet/WalletSettings";
 import Dashboard from "./components/dashboard/Dashboard";
 import MainUserProfile from "./components/userprofile/Mainuserprofile";
 import NotificationSettings from "./components/notification/Notification";
+import WithdrawalHistory from "./components/Withdrawalhistory/WithdrawalHistory";
+import TransactionDetails from "./Components/Withdrawalhistory/TransactionDetails";
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<MainUserProfile />} />
         <Route path="/NotificationSettings" element={<NotificationSettings />} />
+        <Route path="WithdrawalHistory" element={<WithdrawalHistory/>} />
+        <Route path="/withdrawaldetails" element={<TransactionDetails />} />
       </Routes>
       <Footer />
     </BrowserRouter>

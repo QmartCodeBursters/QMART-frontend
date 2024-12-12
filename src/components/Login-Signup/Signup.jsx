@@ -35,17 +35,7 @@ const Signup = () => {
         
 
           <ButtonWrapper>
-          <span>or</span>
-
-            <GoogleButton>
-                <img src={googleicon} alt="googleicon" />
-                <span>Sign in with Google</span>
-            </GoogleButton>
-
-            <AppleButton>
-                <img src={appleicon} alt="appleicon" />
-                <span>Sign in with Apple</span>
-            </AppleButton>
+          
 
 
             <p>Already have an account<Link to="/login"> Login</Link> </p>
@@ -86,7 +76,7 @@ const FormContainer = styled.div`
     padding: 20px 40px;
     border-radius: 10px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-    margin: 40px 0;
+    margin: 100px 0;
     animation: slideInFromTop 1s ease-out;
 
     @keyframes slideInFromTop {
@@ -188,47 +178,6 @@ const ButtonWrapper = styled.div`
         color: lightgray;
         font-weight: bold;
     }
-`;
-
-const GoogleButton = styled.div`
-  background-color:white; 
-  border: 1px solid grey;
-  display: flex;
-  align-items: center;
-  height: 40px;
-  border-radius: 5px;
-  font-size: 12px;
-  justify-content: center;
-  cursor: pointer;
-
-  img {
-    width: 20px;
-    margin-right: 20px;
-  }
-  &:hover {
-    background-color: #e8e8e8;
-  }
-`;
-
-const AppleButton = styled.div`
-background-color:white; 
-  border: 1px solid grey;
-  display: flex;
-  align-items: center;
-  height: 40px;
-  border-radius: 5px;
-  font-size: 12px;
-  justify-content: center;
-  cursor: pointer;
-
-  img {
-    width: 20px;
-    margin-right: 20px;
-  }
-
-  &:hover {
-    background-color: #e8e8e8;
-  }
 `;
 
 

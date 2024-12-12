@@ -23,7 +23,7 @@ const Contactcta = () => {
                     <Cardonedetails>
                         <h4>Call us now</h4>
                         <p>We are available online from 9:00 AM to 5:00 PM (GMT+5:45). Talk to us now!</p>
-                        <span>+1-202-555-0126</span>
+                        <span>+234 123 456 789</span>
 
                         {/* <Link to= "/signup"><button>CALL NOW <MdArrowRightAlt/> </button></Link> */}
                     </Cardonedetails>

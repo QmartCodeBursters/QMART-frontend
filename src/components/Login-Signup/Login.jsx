@@ -61,7 +61,7 @@ const FormContainer = styled.div`
   align-items: center;
   justify-content: center;
   /* height: 100vh; */
-  margin: 0 auto;
+  margin: 70px auto;
 
   form {
     display: flex;

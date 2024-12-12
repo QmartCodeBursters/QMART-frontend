@@ -60,7 +60,8 @@ const OTPPage = () => {
           />
         ))}
       </OTPInputContainer>
-      {error && <ErrorMessage>{error}</ErrorMessage>} {/* Display error message */}
+      {error && <ErrorMessage>{error}</ErrorMessage>}{" "}
+      {/* Display error message */}
       <SendOtpButton onClick={handleSendOtp}>Send OTP</SendOtpButton>
     </PageWrapper>
   );
@@ -79,6 +80,7 @@ const PageWrapper = styled.div`
   padding: 20px;
   box-sizing: border-box;
   padding-top: 40px;
+  margin-top: 70px;
 
   @media (max-width: 768px) {
     padding: 15px;

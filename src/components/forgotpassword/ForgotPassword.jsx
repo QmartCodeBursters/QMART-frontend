@@ -9,6 +9,7 @@ const Container = styled.div`
   align-items: center;
   height: auto;
   background-color: #f4f4f4;
+  margin-top: 70px;
   padding-bottom: 15rem;
   padding-top: 4rem;
 `;

@@ -14,6 +14,11 @@ import Dashboard from "./components/dashboard/Dashboard";
 
 
 import Contactpage from "./pages/Contactpage/Contactpage";
+import Wallet from "./components/Wallet/Wallet"
+import WalletSettings from "./components/Wallet/WalletSettings";
+import WithdrawalHistory from "./components/Withdrawalhistory/WithdrawalHistory";
+import TransactionDetails from "./components/Withdrawalhistory/TransactionDetails";
+
 
 
 
@@ -33,6 +38,12 @@ function App() {
         
         
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="Wallet" element={<Wallet/>} />
+        <Route path="WalletSettings" element={<WalletSettings />} />
+        <Route path="WithdrawalHistory" element={<WithdrawalHistory/>} />
+        <Route path="/withdrawaldetails" element={<TransactionDetails />} />
+
+        
         
         
         

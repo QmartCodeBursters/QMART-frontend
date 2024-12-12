@@ -16,7 +16,7 @@ import Dashboard from "./components/dashboard/Dashboard";
 import Contactpage from "./pages/Contactpage/Contactpage";
 import ForgotPassword from "./components/forgotpassword/ForgotPassword";
 import OTPPage from "./components/forgotpassword/OTPPage";
-import ResetPassword from "./Components/forgotpassword/ResetPassword";
+import ResetPassword from "./components/forgotpassword/ResetPassword";
 
 
 

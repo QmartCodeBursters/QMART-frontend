@@ -14,6 +14,9 @@ import Dashboard from "./components/dashboard/Dashboard";
 
 
 import Contactpage from "./pages/Contactpage/Contactpage";
+import ForgotPassword from "./components/forgotpassword/ForgotPassword";
+import OTPPage from "./components/forgotpassword/OTPPage";
+import ResetPassword from "./Components/forgotpassword/ResetPassword";
 
 
 
@@ -33,6 +36,10 @@ function App() {
         
         
         <Route path="/dashboard" element={<Dashboard />} />
+
+        <Route path="/forgetpassword" element={<ForgotPassword />} />
+        <Route path="/otppage" element={<OTPPage />} />
+        <Route path="/resetpassword" element={<ResetPassword/>} />
         
         
         

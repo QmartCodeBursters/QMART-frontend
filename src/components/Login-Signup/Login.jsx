@@ -18,7 +18,9 @@ const Login = () => {
             name="password"
           />
 
-          <p>Forgot Password?</p>
+<p>
+  <Link to="/forgetpassword">Forgot Password?</Link>
+</p>
 
           <Link to="/">
             <button type="submit">Login</button>

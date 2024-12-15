@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import image from "../../assets/png/settingsImg.png";
-import { Button } from "./AddressForm";
+// import AddresForm from "./AddressForm";
+// import PasswordChange from "./PasswordChange";
 
-const AccountSettings = () => {
+const PersonalDetails = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -14,7 +15,6 @@ const AccountSettings = () => {
   const [profileimage, setProfileImage] = useState(image);
 
   const handleForm = (e) => {
-    e.preventDefault()
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -34,7 +34,7 @@ const AccountSettings = () => {
       <Container>
         <AcctSettingsContainer>
           <AccountSetting>
-            <header> Account Settings</header>
+            <header> Customer Account Settings</header>
             <Settingform>
               <Left>
                 <form>
@@ -61,7 +61,7 @@ const AccountSettings = () => {
                   </div>
                   <br />
                   <div>
-                    <label>Email </label>
+                    <label>CustomerbEmail </label>
 
                     <br />
                     <input
@@ -86,28 +86,8 @@ const AccountSettings = () => {
                   </div>
                   <br /> 
 
-                  <div>
-                  <label>Business/Store Name </label> <br />
-                  <input type="text" name="businessName" />
-                  <br /><br />
-                  </div>
-                  
 
-                  <div>
-                  <label>Business/Store Description (Max : 100 words)  </label> <br />
-                  <input type="text" name="businessDescr"
-                  rows= "3" />
-                  <br /><br />
-                  </div>
-                  
-                  <div>
-                  <label>Business/Store Registration Number </label> <br />
-                  <input type="Number" name="regNumber"/>
-                  <br /><br />
-                  </div>
-
-
-                  <SettingsButton type="submit">save changes</SettingsButton>
+                  <button type="submit">save changes</button>
                 </form>
               </Left>
 
@@ -134,7 +114,8 @@ const AccountSettings = () => {
   );
 };
 
-export default AccountSettings;
+export default PersonalDetails;
+
 const Container = styled.div`
   background-color: #edeff2;
   max-width: 100%;
@@ -195,13 +176,23 @@ const Left = styled.div`
     padding: 0.8rem;
     border-radius: 5px;
     border: 1px solid #ccc;
-  }`;
+  }
+  button {
+    padding: 15px 20px;
+    /* max-width: 150px; */
+    width: 20%;
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    background-color: #fa8232;
+    cursor: pointer;
 
-  const SettingsButton= styled(Button)`
-  width: 100%;
-  `
-   
-  ;
+    @media (max-width:768px) {
+      width: 30%;
+      
+    }
+  }
+`;
 
 const Right = styled.div`
   display: flex;

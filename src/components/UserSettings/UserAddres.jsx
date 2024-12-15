@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-const AddresForm = () => {
+const CustAddresForm = () => {
   const [formData, setFormData] = useState({
     companyName: "",
     streetAddress: "",
@@ -156,11 +156,11 @@ const AddresForm = () => {
     </Container>
   );
 };
-export default AddresForm;
+export default CustAddresForm;
 
 const Container = styled.div`
   background-color: #edeff2;
-  /* max-width: 100%; */
+  max-width: 100%;
   display: flex;
   justify-content: center;
   font-size: 14px;
@@ -169,9 +169,10 @@ const Container = styled.div`
 
 const AddrContainer = styled.div`
   background-color: #ffffff;
+  width: 90%;
   max-width: 1280px;
   margin: auto;
-  padding: 12px;
+  padding: 12px ;
   border: 1px solid #e6e6e6;
   border-radius: 5px;
 
@@ -200,10 +201,9 @@ const FormSection = styled.div`
 const NameSection = styled.div`
   flex: 1;
   flex-wrap: wrap;
-  width: 100%;
 
   input {
-    width: 100%;
+    width: 75rem;
     margin: 0.5rem 0;
     padding: 0.8rem;
     border-radius: 5px;
@@ -217,7 +217,7 @@ const NameSection = styled.div`
 `;
 const Street = styled.div`
   input {
-    width: 70rem;
+    width: 75rem;
     margin: 0.5rem 0;
     padding: 0.8rem;
     border: 1px solid #e6e6e6;
@@ -246,7 +246,7 @@ const Country = styled.div`
   }
 
   input {
-    width: 22.5rem;
+    width: 24rem;
     gap: 20px;
     padding: 0.8rem;
     border: 1px solid #e6e6e6;
@@ -255,7 +255,7 @@ const Country = styled.div`
   }
 
   select {
-    width: 23rem;
+    width: 23.5rem;
     margin: 0.5rem 0;
     padding: 0.8rem;
     border: 1px solid #e6e6e6;
@@ -283,12 +283,12 @@ const EmailNum = styled.div`
   }
 `;
 
-export const Button = styled.div`
+const Button = styled.div`
   padding: 12px 20px;
   border-radius: 8px;
   background-color: #fa8232;
-  max-width: 150px;
-  width: 100%;
+  width: 14%;
+  /* max-width: 150px; */
   margin-top: 10px;
   text-align: center;
   color: white;
@@ -296,6 +296,6 @@ export const Button = styled.div`
   cursor: pointer;
 
   @media (max-width: 768px) {
-    width: 38%;
+    width: 28%;
   }
 `;

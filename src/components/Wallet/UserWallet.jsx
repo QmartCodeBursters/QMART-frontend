@@ -126,7 +126,7 @@ const Flex = styled.div`
   }
 `;
 
-const ButtonsContainer = style.div`
+const ButtonsContainer = styled.div`
 display: flex;
 gap: 10px;
 `;

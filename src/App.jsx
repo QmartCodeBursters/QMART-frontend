@@ -18,6 +18,9 @@ import Wallet from "./components/Wallet/Wallet"
 import WalletSettings from "./components/Wallet/WalletSettings";
 import WithdrawalHistory from "./components/Withdrawalhistory/WithdrawalHistory";
 import TransactionDetails from "./components/Withdrawalhistory/TransactionDetails";
+import QrCode from "./pages/QRcodePage/QrCode";
+import Settings from "./pages/SettingsPage/SettingsPage"
+import Settingspage from "./pages/SettingsPage/SettingsPage";
 
 
 
@@ -42,6 +45,9 @@ function App() {
         <Route path="WalletSettings" element={<WalletSettings />} />
         <Route path="WithdrawalHistory" element={<WithdrawalHistory/>} />
         <Route path="/withdrawaldetails" element={<TransactionDetails />} />
+
+        <Route path="/qrcode"  element={<QrCode/>}/>
+        <Route path ="/Settings" element= {<Settingspage/>}/>
 
         
         

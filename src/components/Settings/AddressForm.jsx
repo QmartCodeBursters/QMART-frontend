@@ -30,11 +30,9 @@ const AddresForm = () => {
         <Header>Current Address</Header>
 
         <FormSection onSubmit={handleSubmit}>
-
-
           <NameSection>
             <label>
-            Company name <span>(optional)</span>
+              Company name <span>(optional)</span>
               <br />
               <input
                 type="text"
@@ -46,11 +44,11 @@ const AddresForm = () => {
             </label>
             <br />
           </NameSection>
-          <br />
+          {/* <br /> */}
 
-<Street>
-  <label>
-  Street Address
+          <Street>
+            <label>
+              Street Address
               <br />
               <input
                 type="text"
@@ -60,24 +58,24 @@ const AddresForm = () => {
                 onChange={handleChange}
               />
             </label>
-            </Street>
+          </Street>
 
+          {/* <br /> */}
 
-            <br />
           <Country>
             <label>
               Country/Region
               <br />
               <select>
-                {/* <option value="">Select country</option>
-                {Object.keys(countries).map((country) => (
+                <option value="">Select country</option>
+                {/* {Object.keys(countries).map((country) => (
                   <option key={country} value={country}>
                     {country}
-                  </option>
-                ))} */}
+                  </option> */}
+                {/* ))} */}
               </select>
             </label>
-            <br />
+
             <label>
               States <br />
               <select
@@ -94,10 +92,9 @@ const AddresForm = () => {
                 ))}
               </select>
             </label>
-            <br />
+
             <label>
-                
-            Zip Codes
+              Zip Codes
               <br />
               <input
                 type="number"
@@ -107,14 +104,14 @@ const AddresForm = () => {
                 onChange={handleChange}
               />
             </label>
-            <br />
-            </Country>
-          <br />
+          </Country>
+
+          {/* <br /> */}
+
           <EmailNum>
             <label>
               Email
               <br />
-
               <input
                 type="text"
                 placeholder="Enter Email address"
@@ -122,11 +119,10 @@ const AddresForm = () => {
                 onChange={handleChange}
               />
             </label>
-            <br />
+            {/* <br /> */}
 
             <label>
-
-            Phone
+              Phone
               <br />
               <input
                 type="number"
@@ -136,38 +132,38 @@ const AddresForm = () => {
                 onChange={handleChange}
               />
             </label>
-            <br />
+            {/* <br /> */}
+          </EmailNum>
+          {/* <br /> */}
 
-            </EmailNum>
-            <br />
-
-            <Button type="submit" onClick={handleSubmit}>
+          <Button type="submit" onClick={handleSubmit}>
             save changes
           </Button>
         </FormSection>
       </AddrContainer>
     </Container>
-     );
-    };
+  );
+};
 
-    export default AddresForm;
+export default AddresForm;
 
-    const Container = styled.div`
+const Container = styled.div`
   background-color: #edeff2;
-   /* max-width: 100%; */
-   display: flex;
+  display: flex;
   justify-content: center;
   font-size: 14px;
   padding: 1rem;
 `;
 
 const AddrContainer = styled.div`
- background-color: #ffffff;
+  background-color: #ffffff;
   max-width: 1280px;
+  width: 90%;
   margin: auto;
   padding: 12px;
   border: 1px solid #e6e6e6;
   border-radius: 5px;
+
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 5px;
@@ -183,94 +179,102 @@ const Header = styled.div`
 `;
 
 const FormSection = styled.div`
- padding: 20px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
+  gap: 15px;
   justify-content: center;
   align-items: start;
   flex-wrap: wrap;
 `;
 
 const NameSection = styled.div`
-display:flex;
-gap:10px;
+  display: flex;
   flex: 1;
   flex-wrap: wrap;
+  width: 100%;
+
+  label {
+    width: 100%;
+  }
+
+  input {
+    width: 100%;
+    border: 2px solid pink;
+    margin: 0.5rem 0;
+    padding: 0.8rem;
+    border-radius: 5px;
+    border: 1px solid #e6e6e6;
+    margin-top: 5px;
+  }
+`;
+
+const Street = styled.div`
   width: 100%;
 
   input {
     width: 100%;
     margin: 0.5rem 0;
     padding: 0.8rem;
-    border-radius: 5px;
-    border: 1px solid #e6e6e6;
-    margin-top: 5px;
-
-    @media (max-width: 768px) {
-      width: 20rem;
-    }
-  }
-`;
-
-const Street = styled.div`
- input {
-    width: 70rem;
-    margin: 0.5rem 0;
-    padding: 0.8rem;
     border: 1px solid #e6e6e6;
     border-radius: 5px;
     margin-top: 5px;
-    @media (max-width: 768px) {
-      width: 20rem;
-    }
   }
 `;
 
 const Country = styled.div`
   display: flex;
-  flex-wrap: wrap;
   gap: 15px;
+  width: 100%;
+
   @media (max-width: 768px) {
     flex-direction: column;
-    gap: 0.1px;
+    gap: 15px;
   }
+
   label {
     flex: 1;
-  min-width: 200px;
+    border: 2px solid red;
+    width: 100%;
   }
 
   input {
-    width: 22.5rem;
-    gap: 20px;
+    width: 100%;
+    gap: 30px;
     padding: 0.8rem;
     border: 1px solid #e6e6e6;
     border-radius: 5px;
     margin-top: 5px;
   }
+
   select {
-    width: 23rem;
+    width: 100%;
     margin: 0.5rem 0;
     padding: 0.8rem;
     border: 1px solid #e6e6e6;
     border-radius: 5px;
     margin-top: 5px;
-    }
-    `;
+  }
+`;
 
-    const EmailNum = styled.div`
-    display: flex;
-  flex-wrap: wrap;
+const EmailNum = styled.div`
+  display: flex;
   gap: 15px;
+  width: 100%;
 
-  @media (max-width: 768px){
-    gap: 5px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  label {
+    width: 100%;
   }
 
   input {
-    width: 36.5rem;
-    /* max-width: 500px; */
     padding: 0.8rem;
     border: 1px solid #e6e6e6;
+    width: 100%;
     border-radius: 5px;
     margin-top: 5px;
   }
@@ -291,5 +295,3 @@ export const Button = styled.div`
     width: 38%;
   }
 `;
-
-

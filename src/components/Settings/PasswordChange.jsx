@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { Button } from "./AddressForm";
+
 export default function changePassword (){
   return (
     <Container>
@@ -23,7 +25,7 @@ export default function changePassword (){
               <i class="far fa-eye"></i>
             </label>
           </NewPass>
-          <button>Change Password </button>
+          <ChangeButton>Change Password </ChangeButton>
         </PasswordSection>
       </PasswordContainer>
     </Container>
@@ -32,7 +34,7 @@ export default function changePassword (){
 const Container = styled.div`
  background-color: #edeff2;
   width: 100%;
-  padding: 20px 15px;
+  padding: 1rem;
   font-size: 14px;
   color: #1a1a1a;
   display: flex;
@@ -43,9 +45,10 @@ const PasswordContainer = styled.div`
   width: 90%;
   max-width: 1280px;
   margin: auto;
+  border: 2px solid gold;
   margin-bottom:4rem;
-  padding: 1rem;
-  border: 1px solid #e6e6e6;
+  padding: 1.5rem;
+  /* border: 1px solid #e6e6e6; */
   border-radius: 5px;
   header {
     font-weight: 600;
@@ -66,10 +69,10 @@ const PasswordSection = styled.div`
     border-radius: 5px;
     border: 1px solid #e6e6e6;
 }
-    button{
+    /* button{
       width: 14%;
       /* max-width: 150px; */
-      padding: 16px 20px;
+      /* padding: 16px 20px;
       border: none;
       border-radius: 8px;
       color: #ffffff;
@@ -82,17 +85,21 @@ const PasswordSection = styled.div`
       @media (max-width: 768px) {
       width: 28%;
     }
-  }
+  } */ 
 `;
+
+const ChangeButton = styled (Button)`
+    
+`
 const NewPass = styled.div`
   display: flex;
   gap: 30px;
   flex-wrap: wrap;
   label {
-    width: 48.2%;
+    width: 100%;
   }
   input {
-    width: 100%;
+    width: 99%;
     padding: 0.8rem;
     border-radius: 5px;
     margin-top: 5px;

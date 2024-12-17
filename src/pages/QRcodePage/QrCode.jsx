@@ -57,12 +57,14 @@ const Header = styled.div`
   font-weight: 700;
   font-size: 1.5rem;
   text-align: center;;
-  border: 2px solid red;
+  /* border: 2px solid red; */
+  padding-top: 70px;
 
   @media (max-width: 768px) {
     font-size: 1.5rem;
   }
 `;
+
  const Image = styled.img`
     width:30%;
     max-width: 400px;

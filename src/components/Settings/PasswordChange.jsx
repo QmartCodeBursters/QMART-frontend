@@ -39,7 +39,7 @@ const Container = styled.div`
  background-color: #edeff2;
   width: 100%;
   padding: 1rem;
-  font-size: 14px;
+  /* font-size: 14px; */
   color: #1a1a1a;
   display: flex;
   justify-content: center;
@@ -53,7 +53,7 @@ const PasswordContainer = styled.div`
   padding: 1.5rem;
   border: 1px solid #e6e6e6;
   border-radius: 5px;
-  
+
   header {
     font-weight: 600;
     margin-bottom: 10px;

@@ -147,7 +147,7 @@ const Container = styled.div`
   background-color: #edeff2;
   display: flex;
   justify-content: center;
-  font-size: 14px;
+  /* font-size: 14px; */
   padding: 1rem;
 `;
 

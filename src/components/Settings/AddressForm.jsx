@@ -44,7 +44,6 @@ const AddresForm = () => {
             </label>
             <br />
           </NameSection>
-          {/* <br /> */}
 
           <Street>
             <label>
@@ -60,7 +59,6 @@ const AddresForm = () => {
             </label>
           </Street>
 
-          {/* <br /> */}
 
           <Country>
             <label>
@@ -106,7 +104,6 @@ const AddresForm = () => {
             </label>
           </Country>
 
-          {/* <br /> */}
 
           <EmailNum>
             <label>
@@ -134,7 +131,6 @@ const AddresForm = () => {
             </label>
             {/* <br /> */}
           </EmailNum>
-          {/* <br /> */}
 
           <Button type="submit" onClick={handleSubmit}>
             save changes
@@ -234,7 +230,6 @@ const Country = styled.div`
 
   label {
     flex: 1;
-    border: 2px solid red;
     width: 100%;
   }
 
@@ -280,7 +275,7 @@ const EmailNum = styled.div`
   }
 `;
 
-export const Button = styled.div`
+export const Button = styled.button`
   padding: 12px 20px;
   border-radius: 8px;
   background-color: #fa8232;
@@ -291,6 +286,11 @@ export const Button = styled.div`
   color: white;
   border: none;
   cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+
   @media (max-width: 768px) {
     width: 38%;
   }

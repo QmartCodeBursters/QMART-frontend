@@ -14,16 +14,20 @@ export default function changePassword (){
             Current Password <br />
             <input type="text,number" />
           </label>
+
           <br />
           <br />
+
           <NewPass>
             <label>
               New Password <br /> <input type="text" value="password" />
             </label>
+
             <label>
               Confirm Password <br /> <input type="text,number"/>
               <i class="far fa-eye"></i>
             </label>
+
           </NewPass>
           <ChangeButton>Change Password </ChangeButton>
         </PasswordSection>
@@ -45,11 +49,11 @@ const PasswordContainer = styled.div`
   width: 90%;
   max-width: 1280px;
   margin: auto;
-  border: 2px solid gold;
   margin-bottom:4rem;
   padding: 1.5rem;
-  /* border: 1px solid #e6e6e6; */
+  border: 1px solid #e6e6e6;
   border-radius: 5px;
+  
   header {
     font-weight: 600;
     margin-bottom: 10px;
@@ -59,45 +63,28 @@ const PasswordContainer = styled.div`
 `;
 const PasswordSection = styled.div`
   padding-left: 15px;
-  /* display: flex; */
-  /* flex-direction: column; */
+
   input {
     width: 99%;
-    /* max-width: 500px; */
     margin-top: 5px;
     padding: 0.8rem;
     border-radius: 5px;
     border: 1px solid #e6e6e6;
 }
-    /* button{
-      width: 14%;
-      /* max-width: 150px; */
-      /* padding: 16px 20px;
-      border: none;
-      border-radius: 8px;
-      color: #ffffff;
-      background-color: #fa8232;
-      margin-top:25px;
-      margin-bottom: 20px;
-      font-size: 12px;
-      text-align: center;
-      cursor: pointer;
-      @media (max-width: 768px) {
-      width: 28%;
-    }
-  } */ 
 `;
 
-const ChangeButton = styled (Button)`
-    
+const ChangeButton =styled(Button)`
 `
+
 const NewPass = styled.div`
   display: flex;
   gap: 30px;
   flex-wrap: wrap;
+
   label {
     width: 100%;
   }
+
   input {
     width: 99%;
     padding: 0.8rem;

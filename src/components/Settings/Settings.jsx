@@ -1,33 +1,33 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import image from "../../assets/png/Profileimage.png"
+import image from "../../assets/png/Profileimage.png";
 import { Button } from "./AddressForm";
 
 const AccountSettings = () => {
-    const [formData, setFormData] = useState({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phoneNumber: "",
-      });
-      const [profileimage, setProfileImage] = useState(image);
-      const handleForm = (e) => {
-        e.preventDefault()
-        setFormData({
-          ...formData,
-          [e.target.name]: e.target.value,
-        });
-      };
-      const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          const imageURL = URL.createObjectURL(file); 
-          setProfileImage(imageURL);
-        }
-      };
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+  });
+  const [profileimage, setProfileImage] = useState(image);
+  const handleForm = (e) => {
+    e.preventDefault();
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageURL = URL.createObjectURL(file);
+      setProfileImage(imageURL);
+    }
+  };
 
-      return (
-        <>
+  return (
+    <>
       <Container>
         <AcctSettingsContainer>
           <AccountSetting>
@@ -67,7 +67,7 @@ const AccountSettings = () => {
                       onChange={handleForm}
                     />
                   </div>
-                  
+
                   <br />
                   <div>
                     <label>Phone Number </label>
@@ -79,24 +79,27 @@ const AccountSettings = () => {
                       onChange={handleForm}
                     />
                   </div>
-                  <br /> 
+                  <br />
                   <div>
-                  <label>Business/Store Name </label> <br />
-                  <input type="text" name="businessName" />
-                  <br /><br />
+                    <label>Business/Store Name </label> <br />
+                    <input type="text" name="businessName" />
+                    <br />
+                    <br />
                   </div>
-                  
+
                   <div>
-                  <label>Business/Store Description (Max : 100 words)  </label> <br />
-                  <input type="text" name="businessDescr"
-                  rows= "3" />
-                  <br /><br />
+                    <label>Business/Store Description (Max : 100 words) </label>{" "}
+                    <br />
+                    <input type="text" name="businessDescr" rows="3" />
+                    <br />
+                    <br />
                   </div>
-                  
+
                   <div>
-                  <label>Business/Store Registration Number </label> <br />
-                  <input type="Number" name="regNumber"/>
-                  <br /><br />
+                    <label>Business/Store Registration Number </label> <br />
+                    <input type="Number" name="regNumber" />
+                    <br />
+                    <br />
                   </div>
                   <SettingsButton type="submit">save changes</SettingsButton>
                 </form>
@@ -121,20 +124,24 @@ const AccountSettings = () => {
         </AcctSettingsContainer>
       </Container>
     </>
-     );
-    };
-    
-    export default AccountSettings;
-    const Container = styled.div`
-        max-width: 100%;
-        justify-content: center;
-        /* padding: 1rem; */
-        width: 90%;
+  );
+};
+
+export default AccountSettings;
+const Container = styled.div`
+  max-width: 100%;
+  justify-content: center;
+  width: 90%;
   max-width: 1280px;
   margin: auto;
-  margin-top:190px;
+  margin-top: 190px;
   border: 1px solid #e6e6e6;
   border-radius: 5px;
+
+  @media (max-width:768px)
+{
+    margin-top: 95px;
+}
 `;
 
 const AccountSetting = styled.div`
@@ -142,7 +149,6 @@ const AccountSetting = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
-  ;
   header {
     font-weight: 600;
     margin-bottom: 10px;
@@ -151,17 +157,17 @@ const AccountSetting = styled.div`
   }
 `;
 
-const AcctSettingsContainer= styled.div``
+const AcctSettingsContainer = styled.div``;
 const Settingform = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   padding: 12px;
-  
+
   @media (max-width: 768px) {
     flex-direction: column-reverse;
     justify-content: center;
-    /* align-items: center; */
+    align-items: center;
   }
 `;
 
@@ -171,23 +177,20 @@ const Left = styled.div`
     padding: 20px;
     display: flex;
     flex-direction: column;
-}
+  }
+
   input {
-    width: 20rem;
-    height: 25px;
     width: 100%;
     max-width: 500px;
     margin: 0.5rem 0;
     padding: 0.8rem;
     border-radius: 5px;
-    border: 1px solid #ccc;
-}`;
+    border: 1px solid #e6e6e6;
+  }
+`;
 
-const SettingsButton= styled(Button)`
-width: 100%;
-`
- 
-;
+const SettingsButton = styled(Button)`
+`;
 
 const Right = styled.div`
   display: flex;
@@ -196,26 +199,39 @@ const Right = styled.div`
   align-items: center;
   margin: auto;
   margin-right: 150px;
-  
+
+  @media (max-width:768px){
+    margin:auto;
+    justify-content: center;
+  };
+
+
   img {
     height: 300px;
     width: 300px;
     border-radius: 50%;
     object-fit: cover;
     flex-direction: column;
+
     @media (max-width: 768px) {
       height: 200px;
       width: 200px;
       flex-direction: column;
       justify-content: center;
       /* align-items: center; */
+      /* margin-left:70px; */
     }
   }
-  button {
+
+button {
     border: none;
     margin-top: 20px;
     padding: 12px 20px;
     border: 2px solid #e6e6e6;
     border-radius: 4px;
+
+    &:hover {
+      background-color: #0056b3;
+    }
   }
 `;

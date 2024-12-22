@@ -31,7 +31,6 @@ const Button = styled.div`
     margin-left: 0;
     width: 100%;
     justify-content: center;
-
   }
 `;
 
@@ -64,34 +63,34 @@ const Withdraw = styled.p`
   }
 `;
 
-// const AddMoney = styled.p`
-//   display: flex;
-//   align-items: center;
-//   background-color: #FF3B30;
-//   ;
-//   color: white;
-//   border-radius: 4px;
-//   padding: 12px 20px;
-//   font-weight: bold;
-//   cursor: pointer;
-//   transition: background-color 0.3s ease;
-//   max-width: 200px;
-//   justify-content: center;
-//   text-align: center;
-//   span {
-//     display: flex;
-//     align-items: center;
-//     font-size: 16px;
-//     margin-left: 5px;
-//   }
-//   &:hover {
-//   background-color: #f53026;
-//   }
-//   @media (max-width: 800px) {
-//     padding: 12px 25px;
-//     font-size: 18px;
-//   }
-// `;
+const AddMoney = styled.p`
+ display: flex;
+  align-items: center;
+  background-color:#FF3B30;
+  color: white;
+  border-radius: 4px;
+  padding: 12px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  max-width: 200px;
+  justify-content: center;
+  text-align: center;
+  span {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    margin-left: 5px;
+  }
+  &:hover {
+    background-color: #f85e0a;
+  }
+  @media (max-width: 800px) {
+    padding: 12px 25px;
+    font-size: 18px;
+  }
+  
+`
 
 // Image container with card and settings
 const Image = styled.div`
@@ -228,7 +227,7 @@ const DoneButton = styled.div`
   }
 `;
 
-function WalletCard({ balance }) {
+function UserWalletCard({ balance }) {
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState("");
@@ -313,13 +312,12 @@ function WalletCard({ balance }) {
           </Bal>
         </Image>
         <Button>
-          {/* <AddMoney onClick={toggleModal}>
-            <span>Add Money</span>
+          <AddMoney >
+          <span>Add Money</span>
             <span>
               <IoMdArrowDropright size={20} />
             </span>
-          </AddMoney> */}
-
+          </AddMoney>
           <Withdraw onClick={toggleModal}>
             <span>Withdraw</span>
             <span>
@@ -392,5 +390,5 @@ function WalletCard({ balance }) {
   );
 }
 
-export default WalletCard;
+export default UserWalletCard;
 

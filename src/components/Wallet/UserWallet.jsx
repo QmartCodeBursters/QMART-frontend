@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import WalletCard from "./WalletCard";
+import UserWalletCard from "./UserWalletCard";
 import TransactionHistory from "./TransactionHistory"
 import innerbg from "../../assets/png/innerbg.png";
 
@@ -29,7 +29,7 @@ const Wrapper = styled.div`
   padding-bottom: 40px;
 `;
 
-function Wallet() {
+function UserWallet() {
   const [transactions, setTransactions] = useState([]);
 
   // Mock data for wallet balance
@@ -109,12 +109,11 @@ function Wallet() {
     fetchTransactions();
   }, []);
 
-
   return (
     <Bgcolor>
       <Container>
         <Wrapper>
-          <WalletCard balance={storeData.balance} />
+          <UserWalletCard balance={storeData.balance} />
           <TransactionHistory transactions={transactions.slice(0, 4)} />
         </Wrapper>
       </Container>
@@ -122,6 +121,6 @@ function Wallet() {
   );
 }
 
-export default Wallet;
+export default UserWallet;
 
 

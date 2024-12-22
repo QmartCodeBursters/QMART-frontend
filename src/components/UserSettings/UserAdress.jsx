@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-const AddresForm = () => {
+const UserAddress= () => {
   const [formData, setFormData] = useState({
     companyName: "",
     streetAddress: "",
@@ -10,16 +10,11 @@ const AddresForm = () => {
     email: "",
     phone: "",
   });
-  // const states = {
+  // const countries = {
   //   USA: ["California", "New York", "Texas"],
   //   Canada: ["Ontario", "Quebec", "Alberta"],
   // };
-  // const [states, setStates] = useState([]);
-
-  
-  const states =[
-    "Abia", "Adamawa", "Akwa", "Anambra", "Bauchi", "Bayelsa", "Abia", "Adamawa", "Akwa", "Anambra", "Bauchi", "Bayelsa", "Adamawa", "Akwa", "Anambra", "Bauchi", "Bayelsa", "Abia", "Adamawa", "Akwa", "Anambra", "Bauchi", "Bayelsa", "Adamawa", "Akwa", "Anambra", "Bauchi", "Bayelsa", "Abia", "Adamawa", "Akwa", "Anambra", "Bauchi", "Bayelsa"
-  ]
+  const [states, setStates] = useState([]);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -35,20 +30,6 @@ const AddresForm = () => {
         <Header>Current Address</Header>
 
         <FormSection onSubmit={handleSubmit}>
-          <NameSection>
-            <label>
-              Company name <span>(optional)</span>
-              <br />
-              <input
-                type="text"
-                placeholder="Enter company name"
-                name="companyName"
-                value={formData.companyName}
-                onChange={handleChange}
-              />
-            </label>
-            <br />
-          </NameSection>
 
           <Street>
             <label>
@@ -89,13 +70,13 @@ const AddresForm = () => {
               >
                 <option value="Select state">Select state</option>
                 {states.map((state) => (
-                  <option
-                  key={state} value={state}>
+                  <option key={state} value={state}>
                     {state}
                   </option>
                 ))}
               </select>
             </label>
+
             <label>
               Zip Codes
               <br />
@@ -121,7 +102,6 @@ const AddresForm = () => {
                 onChange={handleChange}
               />
             </label>
-            {/* <br /> */}
 
             <label>
               Phone
@@ -134,7 +114,6 @@ const AddresForm = () => {
                 onChange={handleChange}
               />
             </label>
-            {/* <br /> */}
           </EmailNum>
 
           <Button type="submit" onClick={handleSubmit}>
@@ -146,23 +125,21 @@ const AddresForm = () => {
   );
 };
 
-export default AddresForm;
+export default UserAddress;
 
 const Container = styled.div`
   background-color: #edeff2;
   display: flex;
   justify-content: center;
-  /* font-size: 14px; */
-  padding: 1rem;
+  padding: 1rem 0rem;
 `;
-
 
 const AddrContainer = styled.div`
   background-color: #ffffff;
   max-width: 1280px;
   width: 90%;
   margin: auto;
-  padding: 12px;
+  padding: 12px ;
   border: 1px solid #e6e6e6;
   border-radius: 5px;
 
@@ -181,7 +158,7 @@ const Header = styled.div`
 `;
 
 const FormSection = styled.div`
-  padding: 20px;
+  padding: 10px 20px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -190,26 +167,6 @@ const FormSection = styled.div`
   flex-wrap: wrap;
 `;
 
-const NameSection = styled.div`
-  display: flex;
-  flex: 1;
-  flex-wrap: wrap;
-  width: 100%;
-
-  label {
-    width: 100%;
-  }
-
-  input {
-    width: 100%;
-    border: 2px solid pink;
-    margin: 0.5rem 0;
-    padding: 0.8rem;
-    border-radius: 5px;
-    border: 1px solid #e6e6e6;
-    margin-top: 5px;
-  }
-`;
 
 const Street = styled.div`
   width: 100%;

@@ -48,21 +48,21 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   margin: auto;
-  /* box-sizing: border-box; */
   gap: 10px;
 
 `;
 
 const Header = styled.div`
-  font-weight: 700;
+  font-weight: 600;
   font-size: 1.5rem;
-  text-align: center;;
-  border: 2px solid red;
+  text-align: center;
+  padding-top: 70px;
 
   @media (max-width: 768px) {
     font-size: 1.5rem;
   }
 `;
+
  const Image = styled.img`
     width:30%;
     max-width: 400px;
@@ -110,9 +110,8 @@ const Buttons = styled.div`
     border-radius: 4px;
     background-color: #fa8232;
     color: white;
-    border: none;
-    margin: 10px 0;
     cursor: pointer;
+    width: 100%;
 
     &:hover {
       background-color: #d96c29;

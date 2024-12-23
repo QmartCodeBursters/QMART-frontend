@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { Button } from "./AddressForm";
+// import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { Button } from "./UserAdress";
 
 export default function changePassword (){
   return (
@@ -12,8 +12,7 @@ export default function changePassword (){
         <PasswordSection>
           <label>
             Current Password <br />
-            <input type="text,number" placeholder="Enter current password"
-            />
+            <input type="text,number" />
           </label>
 
           <br />
@@ -21,11 +20,11 @@ export default function changePassword (){
 
           <NewPass>
             <label>
-              New Password <br /> <input type="text"  placeholder="Enter new password" />
+              New Password <br /> <input type="text" value="password" />
             </label>
 
             <label>
-              Confirm Password <br /> <input type="text,number" placeholder="Confirm password"/>
+              Confirm Password <br /> <input type="text,number"/>
               <i class="far fa-eye"></i>
             </label>
 
@@ -39,17 +38,18 @@ export default function changePassword (){
 const Container = styled.div`
  background-color: #edeff2;
   width: 100%;
-  padding-top: 1rem;
   color: #1a1a1a;
   display: flex;
   justify-content: center;
 `;
+
 const PasswordContainer = styled.div`
  background-color: #ffffff;
   width: 90%;
   max-width: 1280px;
   margin: auto;
   margin-bottom:4rem;
+  padding: 12px;
   border: 1px solid #e6e6e6;
   border-radius: 5px;
 
@@ -61,7 +61,8 @@ const PasswordContainer = styled.div`
   }
 `;
 const PasswordSection = styled.div`
-  padding: 32px;
+  padding-left: 15px;
+  padding: 10px;
 
   input {
     width: 99%;
@@ -72,9 +73,9 @@ const PasswordSection = styled.div`
 }
 `;
 
-const ChangeButton =styled(Button)`
-margin-top: 32px;
-`
+const ChangeButton =styled(Button) `
+margin-top: 25px;
+ `
 
 const NewPass = styled.div`
   display: flex;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import image from "../../assets/png/Profileimage.png";
-import { Button } from "./AddressForm";
+import { Button } from "./UserAdress";
 
 const AccountSettings = () => {
   const [formData, setFormData] = useState({
@@ -31,7 +31,7 @@ const AccountSettings = () => {
       <Container>
         <AcctSettingsContainer>
           <AccountSetting>
-            <header> Account Settings</header>
+            <header>User Account Settings</header>
             <Settingform>
               <Left>
                 <form>
@@ -42,7 +42,6 @@ const AccountSettings = () => {
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleForm}
-                      placeholder="First name"
                     />
                   </div>
                   <br />
@@ -54,7 +53,6 @@ const AccountSettings = () => {
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleForm}
-                        placeholder="Last name"
                       />
                     </label>
                   </div>
@@ -67,7 +65,6 @@ const AccountSettings = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleForm}
-                      placeholder="Email address"
                     />
                   </div>
 
@@ -80,31 +77,10 @@ const AccountSettings = () => {
                       name="phoneNumber"
                       value={formData.phoneNumber}
                       onChange={handleForm}
-                      placeholder="Phone number"
                     />
                   </div>
                   <br />
-                  <div>
-                    <label>Business/Store Name </label> <br />
-                    <input type="text" name="businessName" placeholder="Business name"/>
-                    <br />
-                    <br />
-                  </div>
 
-                  <div>
-                    <label>Business/Store Description (Max : 100 words) </label>{" "}
-                    <br />
-                    <input type="text" name="businessDescr" rows="3" placeholder=" Business description"/>
-                    <br />
-                    <br />
-                  </div>
-
-                  <div>
-                    <label>Business/Store Registration Number </label> <br />
-                    <input type="Number" name="regNumber" placeholder="Business registration number" />
-                    <br />
-                    <br />
-                  </div>
                   <SettingsButton type="submit">save changes</SettingsButton>
                 </form>
               </Left>
@@ -142,10 +118,9 @@ const Container = styled.div`
   border: 1px solid #e6e6e6;
   border-radius: 5px;
 
-  @media (max-width:768px)
-{
+  @media (max-width: 768px) {
     margin-top: 95px;
-}
+  }
 `;
 
 const AccountSetting = styled.div`
@@ -156,7 +131,6 @@ const AccountSetting = styled.div`
   header {
     font-weight: 600;
     margin-bottom: 10px;
-    /* padding-left: 15px; */
     padding: 15px;
     box-shadow: 0px 1px #e5e5e5;
   }
@@ -179,7 +153,7 @@ const Settingform = styled.div`
 const Left = styled.div`
   flex: 1;
   form {
-    padding: 20px;
+    padding:0px 20px 10px;
     display: flex;
     flex-direction: column;
   }
@@ -196,8 +170,7 @@ const Left = styled.div`
 
 const SettingsButton = styled(Button)`
 margin-top: 0px;
-
-`;
+ `;
 
 const Right = styled.div`
   display: flex;
@@ -207,11 +180,10 @@ const Right = styled.div`
   margin: auto;
   margin-right: 150px;
 
-  @media (max-width:768px){
-    margin:auto;
+  @media (max-width: 768px) {
+    margin: auto;
     justify-content: center;
-  };
-
+  }
 
   img {
     height: 300px;
@@ -219,6 +191,7 @@ const Right = styled.div`
     border-radius: 50%;
     object-fit: cover;
     flex-direction: column;
+    margin-right: 20px;
 
     @media (max-width: 768px) {
       height: 200px;
@@ -230,7 +203,7 @@ const Right = styled.div`
     }
   }
 
-button {
+  button {
     border: none;
     margin-top: 20px;
     padding: 12px 20px;

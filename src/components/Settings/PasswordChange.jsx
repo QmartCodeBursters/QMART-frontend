@@ -38,7 +38,7 @@ export default function changePassword (){
 const Container = styled.div`
  background-color: #edeff2;
   width: 100%;
-  padding: 1rem;
+  padding-top: 1rem;
   /* font-size: 14px; */
   color: #1a1a1a;
   display: flex;
@@ -50,7 +50,7 @@ const PasswordContainer = styled.div`
   max-width: 1280px;
   margin: auto;
   margin-bottom:4rem;
-  padding: 1.5rem;
+  /* padding: 1.5rem; */
   border: 1px solid #e6e6e6;
   border-radius: 5px;
 
@@ -62,7 +62,7 @@ const PasswordContainer = styled.div`
   }
 `;
 const PasswordSection = styled.div`
-  padding-left: 15px;
+  padding: 32px;
 
   input {
     width: 99%;
@@ -74,6 +74,7 @@ const PasswordSection = styled.div`
 `;
 
 const ChangeButton =styled(Button)`
+margin-top: 32px;
 `
 
 const NewPass = styled.div`

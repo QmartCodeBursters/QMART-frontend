@@ -129,7 +129,7 @@ const AccountSettings = () => {
 
 export default AccountSettings;
 const Container = styled.div`
-  max-width: 100%;
+  /* max-width: 100%; */
   justify-content: center;
   width: 90%;
   max-width: 1280px;
@@ -152,6 +152,7 @@ const AccountSetting = styled.div`
   header {
     font-weight: 600;
     margin-bottom: 10px;
+    /* padding-left: 15px; */
     padding: 15px;
     box-shadow: 0px 1px #e5e5e5;
   }
@@ -163,6 +164,7 @@ const Settingform = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
   padding: 12px;
+  border: 2px solid red;
 
   @media (max-width: 768px) {
     flex-direction: column-reverse;
@@ -190,6 +192,8 @@ const Left = styled.div`
 `;
 
 const SettingsButton = styled(Button)`
+margin-top: 0px;
+
 `;
 
 const Right = styled.div`

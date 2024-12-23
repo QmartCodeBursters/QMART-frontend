@@ -153,7 +153,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   /* font-size: 14px; */
-  padding: 1rem;
+  padding-top: 1rem;
 `;
 
 
@@ -162,7 +162,7 @@ const AddrContainer = styled.div`
   max-width: 1280px;
   width: 90%;
   margin: auto;
-  padding: 12px;
+  /* padding: 12px; */
   border: 1px solid #e6e6e6;
   border-radius: 5px;
 
@@ -175,15 +175,16 @@ const AddrContainer = styled.div`
 const Header = styled.div`
   font-weight: 600;
   margin-bottom: 10px;
-  padding-left: 15px;
+  /* padding-left: 15px; */
   padding: 15px;
   box-shadow: 1px 1px #e5e5e5;
 `;
 
 const FormSection = styled.div`
-  padding: 20px;
+  padding:32px;
   display: flex;
   flex-direction: column;
+  border: 2px solid gold;
   gap: 15px;
   justify-content: center;
   align-items: start;

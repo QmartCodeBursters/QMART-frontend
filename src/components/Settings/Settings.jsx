@@ -42,6 +42,7 @@ const AccountSettings = () => {
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleForm}
+                      placeholder="First name"
                     />
                   </div>
                   <br />
@@ -53,6 +54,7 @@ const AccountSettings = () => {
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleForm}
+                        placeholder="Last name"
                       />
                     </label>
                   </div>
@@ -65,6 +67,7 @@ const AccountSettings = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleForm}
+                      placeholder="Email address"
                     />
                   </div>
 
@@ -77,12 +80,13 @@ const AccountSettings = () => {
                       name="phoneNumber"
                       value={formData.phoneNumber}
                       onChange={handleForm}
+                      placeholder="Phone number"
                     />
                   </div>
                   <br />
                   <div>
                     <label>Business/Store Name </label> <br />
-                    <input type="text" name="businessName" />
+                    <input type="text" name="businessName" placeholder="Business name"/>
                     <br />
                     <br />
                   </div>
@@ -90,14 +94,14 @@ const AccountSettings = () => {
                   <div>
                     <label>Business/Store Description (Max : 100 words) </label>{" "}
                     <br />
-                    <input type="text" name="businessDescr" rows="3" />
+                    <input type="text" name="businessDescr" rows="3" placeholder=" Business description"/>
                     <br />
                     <br />
                   </div>
 
                   <div>
                     <label>Business/Store Registration Number </label> <br />
-                    <input type="Number" name="regNumber" />
+                    <input type="Number" name="regNumber" placeholder="Business registration number" />
                     <br />
                     <br />
                   </div>
@@ -164,7 +168,6 @@ const Settingform = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
   padding: 12px;
-  border: 2px solid red;
 
   @media (max-width: 768px) {
     flex-direction: column-reverse;

@@ -12,7 +12,8 @@ export default function changePassword (){
         <PasswordSection>
           <label>
             Current Password <br />
-            <input type="text,number" />
+            <input type="text,number" placeholder="Enter current password"
+            />
           </label>
 
           <br />
@@ -20,11 +21,11 @@ export default function changePassword (){
 
           <NewPass>
             <label>
-              New Password <br /> <input type="text" value="password" />
+              New Password <br /> <input type="text"  placeholder="Enter new password" />
             </label>
 
             <label>
-              Confirm Password <br /> <input type="text,number"/>
+              Confirm Password <br /> <input type="text,number" placeholder="Confirm password"/>
               <i class="far fa-eye"></i>
             </label>
 
@@ -39,7 +40,6 @@ const Container = styled.div`
  background-color: #edeff2;
   width: 100%;
   padding-top: 1rem;
-  /* font-size: 14px; */
   color: #1a1a1a;
   display: flex;
   justify-content: center;
@@ -50,7 +50,6 @@ const PasswordContainer = styled.div`
   max-width: 1280px;
   margin: auto;
   margin-bottom:4rem;
-  /* padding: 1.5rem; */
   border: 1px solid #e6e6e6;
   border-radius: 5px;
 

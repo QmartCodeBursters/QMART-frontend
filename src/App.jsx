@@ -1,4 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
+
 import Header from "./static/Header/Headerr";
 import Footer from "./static/Footer/Footer";
 import Homepage from "./pages/Homepage/Homepage";
@@ -24,6 +26,7 @@ import Settingspage from "./pages/SettingsPage/SettingsPage";
 import UserSettingspage from "./pages/SettingsPage/UserSettings";
 import UserQRbutton from "./pages/QRcodePage/UserScan";
 import UserWallet from "./components/Wallet/UserWallet"
+import Otpgen from "./components/Login-Signup/otpVerification";
 
 
 
@@ -38,6 +41,8 @@ function App() {
         <Route path="/verify" element={<Verify />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/otp-verification" element={<Otpgen />} />
+
         
 
 
@@ -67,6 +72,7 @@ function App() {
         
       </Routes>
       <Footer />
+      <Toaster />
     </BrowserRouter>
   );
 }

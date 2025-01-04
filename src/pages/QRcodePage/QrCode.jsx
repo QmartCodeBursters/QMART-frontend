@@ -5,34 +5,57 @@ import QR from "../../assets/png/QR code .png"
 const QrCode = () => {
   const [buttonClicked, setButtonClicked] = useState("");
 
-  const handleShareClick = () => {
-    setButtonClicked("Share");
+  // Handle Share button
+  const handleShareClick = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "QR Code",
+          text: "Check out this QR code for payment!",
+          url: window.location.href, // Current page URL
+        });
+        setButtonClicked("Share");
+      } catch (error) {
+        console.error("Error sharing:", error);
+      }
+    } else {
+      alert("Your browser does not support the share feature.");
+    }
   };
 
-  const handleContinueShoppingClick = () => {
-    setButtonClicked("Continue Shopping");
+  // Handle Download button
+  const handleDownloadClick = () => {
+    const link = document.createElement("a");
+    link.href = QR; // Path to the QR code image
+    link.download = "QR_code.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setButtonClicked("Download");
   };
+
   return (
     <Container>
       <Header>SCAN HERE</Header>
 
       <Image src={QR} alt="Barcode" />
-
+      
       <Title>SAIL04 SUPERMARKET</Title>
-
+      
       <Buttons>
-        <button onClick={handleShareClick} type="submit">
+        <button onClick={handleShareClick} type="button">
           Share
         </button>
 
-        <button onClick={handleContinueShoppingClick} type="link">
+        <button onClick={handleDownloadClick} type="button">
           Download
         </button>
       </Buttons>
-      {buttonClicked && <Feedback>You clicked: {buttonClicked}</Feedback>}
+    
     </Container>
   );
 };
+
 
 export default QrCode;
 

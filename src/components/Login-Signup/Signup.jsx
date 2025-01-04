@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { useState } from "react";
 import Axios from "../../utilis/Axios";
 import summaryAPI from "../../common/summaryAPI";
-import toast from "react-hot-toast";
+import toast, { Toaster } from 'react-hot-toast';
+
 import AxiosToastError from "../../utilis/AxiosToastError";
 
 

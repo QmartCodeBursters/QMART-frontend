@@ -56,13 +56,14 @@ const Otpgen = () => {
     }
   };
   
-  const handleRequestOTP = async (email) => {
+  const handleRequestOTP = async () => {
+    const email = localStorage.getItem('userEmail'); 
     try {
       const response = await axios.post('/api/v1/user/send-otp', { email });
   
       if (response.data.success) {
-        localStorage.setItem('userEmail', email); 
         toast.success('OTP sent successfully!');
+        setSeconds(60); 
       } else {
         toast.error(response.data.message);
       }
@@ -70,8 +71,6 @@ const Otpgen = () => {
       toast.error('Error sending OTP.');
     }
   };
-  
-  
 
   const isOtpValid = otp.every((digit) => digit !== "");
 
@@ -106,8 +105,8 @@ const Otpgen = () => {
             </SubmitButton>
 
             <span>
-              Didn't get code? Resend in {seconds}s{" "}
-              {seconds === 0 && <Link to="">Resend</Link>}
+              Didn't get the code? Resend in {seconds}s{" "}
+              {seconds === 0 && <Link onClick={handleRequestOTP}>Resend</Link>}
             </span>
           </form>
         </FormCont>
@@ -116,9 +115,10 @@ const Otpgen = () => {
   );
 };
 
- export default Otpgen
+export default Otpgen;
 
-// Styled Components
+
+
 
 const Wrapper = styled.div`
   display: flex;
@@ -183,8 +183,8 @@ const StyledInput = styled.input`
 
   &:focus {
     outline: none;
-    border-color: green;
-    background-color: #e8ffe8;
+    border-color: #ffaf02;
+    background-color: #f8f7f2;
   }
 
   @media (max-width: 480px) {

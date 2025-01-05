@@ -21,7 +21,7 @@ import WalletSettings from "./components/Wallet/WalletSettings";
 import WithdrawalHistory from "./components/Withdrawalhistory/WithdrawalHistory";
 import TransactionDetails from "./components/Withdrawalhistory/TransactionDetails";
 import QrCode from "./pages/QRcodePage/QrCode";
-// import Settings from "./pages/SettingsPage/SettingsPage"
+// import Settings from "./pages/SettingsPage/SettingsPage";
 import Settingspage from "./pages/SettingsPage/SettingsPage";
 import UserSettingspage from "./pages/SettingsPage/UserSettings";
 import UserQRbutton from "./pages/QRcodePage/UserScan";
@@ -42,9 +42,6 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/otp-verification" element={<Otpgen />} />
-
-        
-
 
         <Route path="/contact" element={<Contactpage />} />
         

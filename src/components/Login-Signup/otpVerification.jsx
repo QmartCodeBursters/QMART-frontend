@@ -5,29 +5,27 @@ import AxiosToastError from "../../utilis/AxiosToastError";
 import Axios from "../../utilis/Axios";
 import summaryAPI from "../../common/summaryAPI";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 const Otpgen = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]); // 6 OTP input fields
-  const [seconds, setSeconds] = useState(60); // State for the countdown
-  const navigate = useNavigate() ;
+  const [seconds, setSeconds] = useState(60); // Countdown state
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (seconds > 0) {
-      const timer = setInterval(() => {
-        setSeconds((prev) => prev - 1); // Decrease by 1 every second
-      }, 1000);
-      return () => clearInterval(timer); // Cleanup the interval on component unmount
+      const timer = setInterval(() => setSeconds((prev) => prev - 1), 1000);
+      return () => clearInterval(timer); // Cleanup interval
     }
   }, [seconds]);
 
   const handleChange = (value, index) => {
     if (isNaN(value)) return; // Prevent non-numeric input
-
     const newOtp = [...otp];
     newOtp[index] = value.slice(0, 1); // Only allow one digit
     setOtp(newOtp);
 
-    // Automatically move to the next input if not the last box
+    // Move to next input if not the last box
     if (value && index < otp.length - 1) {
       document.getElementById(`otp-${index + 1}`).focus();
     }
@@ -39,35 +37,49 @@ const Otpgen = () => {
     }
   };
 
-  const isOtpValid = otp.every((digit) => digit !== ""); // Checks if all OTP fields are filled
-
-  const handleSubmit = async (e) =>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const otpCode = otp.join('');
+    const email = localStorage.getItem('userEmail'); // Retrieve email
+  
     try {
-      const otpCode = otp.join("");
-      const response = await Axios({
-        ...summaryAPI.verifyOTP,
-        data: { otpCode }
-      });
-
-      if (response.data.error) {
-        toast.error(response.data.message);
+      const response = await axios.post('/api/v1/user/verify-otp', { otp: otpCode, email });
+  
+      if (response.data.success) {
+        toast.success('OTP verified successfully!');
+        navigate('/login'); // Redirect user after verification
       } else {
-        toast.success(response.data.message);
-        navigate("/login");
+        toast.error(response.data.message);
       }
-
     } catch (error) {
-      AxiosToastError(error);
+      toast.error('Error verifying OTP.');
     }
-  }
+  };
+  
+  const handleRequestOTP = async (email) => {
+    try {
+      const response = await axios.post('/api/v1/user/send-otp', { email });
+  
+      if (response.data.success) {
+        localStorage.setItem('userEmail', email); 
+        toast.success('OTP sent successfully!');
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error('Error sending OTP.');
+    }
+  };
+  
+  
+
+  const isOtpValid = otp.every((digit) => digit !== "");
 
   return (
     <Wrapper>
       <InnerWrapper>
         <FormCont>
-          <form>
+          <form onSubmit={handleSubmit}>
             <p>OTP Verification</p>
             <p>Enter the 6-digit code sent to your registered Email</p>
 
@@ -88,7 +100,7 @@ const Otpgen = () => {
             <SubmitButton
               type="submit"
               className={isOtpValid ? "active" : ""}
-              disabled={!isOtpValid} // Button is disabled if OTP is not valid
+              disabled={!isOtpValid}
             >
               Verify
             </SubmitButton>
@@ -104,7 +116,7 @@ const Otpgen = () => {
   );
 };
 
-export default Otpgen;
+ export default Otpgen
 
 // Styled Components
 

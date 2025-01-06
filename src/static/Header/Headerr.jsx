@@ -61,7 +61,7 @@ const Header = () => {
 
             <p><Link to="/wallet">Wallet </Link></p>
             <p><Link to="/contact">Contact Us </Link></p>
-            <p><Link to="/about">About us </Link></p>
+            <p><Link to="/aboutUs">About us </Link></p>
             
           </Navlist>
 

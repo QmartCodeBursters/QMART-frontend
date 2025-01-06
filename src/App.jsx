@@ -12,6 +12,9 @@ import Wallet from "./components/Wallet/Wallet";
 import WalletSettings from "./components/Wallet/WalletSettings";
 import About from "./components/About/About";
 import PrintQRcode from "./components/About/PrintQRcode";
+import UserPaymentLoading from "./components/UserOptions/UserPaymentLoading";
+import UserOTPpage from "./components/UserOptions/UserOTPpage";
+import UserPaymentConfir from "./components/UserOptions/userPaymentConfir";
 
 function App() {
   return (
@@ -28,6 +31,11 @@ function App() {
         <Route path="/dashboard" element={<MainDashboard />} />
         <Route path="/aboutUs" element={ <About/>}/>
         <Route path="/QRcode" element={<PrintQRcode/>}/>
+        
+        <Route path="/loading" element={<UserPaymentLoading/>}/>
+        <Route path="/OTPpage" element={<UserOTPpage/>}/>
+        <Route path="/Confam" element={<UserPaymentConfir/>}/>
+        
       </Routes>
       <Footer />
     </BrowserRouter>

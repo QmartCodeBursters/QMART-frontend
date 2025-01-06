@@ -30,7 +30,7 @@ const Header = () => {
           </Logocont>
 
           <Navlist>
-            <p><Link to="./">Home</Link></p>
+             <p><Link to="./">Home</Link></p>
 
             <DropdownWrapper>
               <Dropdown>

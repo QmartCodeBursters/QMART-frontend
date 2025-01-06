@@ -27,6 +27,10 @@ import UserSettingspage from "./pages/SettingsPage/UserSettings";
 import UserQRbutton from "./pages/QRcodePage/UserScan";
 import UserWallet from "./components/Wallet/UserWallet"
 import Otpgen from "./components/Login-Signup/otpVerification";
+import About from "./pages/About/About";
+import PrintQRcode from "./components/UserOptions/PrintQRcode";
+import UserPaymentLoading from "./components/UserOptions/UserPaymentLoading";
+import UserPaymentConfir from "./components/UserOptions/UserPaymentConfir";
 
 
 
@@ -60,6 +64,10 @@ function App() {
 
 
         
+        <Route path="/aboutUs" element={ <About/>}/>
+        <Route path="/QRcode" element={<PrintQRcode/>}/>
+        <Route path="/loading" element={<UserPaymentLoading/>}/>
+        <Route path="/Confam" element={<UserPaymentConfir/>}/>
         
         
         

@@ -34,8 +34,9 @@ import UserPaymentConfir from "./components/UserOptions/UserPaymentConfir";
 
 
 
+import Order from "./components/Payment/Order";
 
-
+import Extend from "./components/Payment/Extend"
 function App() {
   return (
     <BrowserRouter>
@@ -55,6 +56,7 @@ function App() {
         <Route path="WalletSettings" element={<WalletSettings />} />
         <Route path="WithdrawalHistory" element={<WithdrawalHistory/>} />
         <Route path="/withdrawaldetails" element={<TransactionDetails />} />
+        <Route path="/paymenthistory" element={<Order/>} />
 
         <Route path="/qrcode"  element={<QrCode/>}/>
         <Route path ="/Settings" element= {<Settingspage/>}/>
@@ -68,7 +70,7 @@ function App() {
         <Route path="/QRcode" element={<PrintQRcode/>}/>
         <Route path="/loading" element={<UserPaymentLoading/>}/>
         <Route path="/Confam" element={<UserPaymentConfir/>}/>
-        
+        <Route path="/order/:orderId" element={<Extend />} />
         
         
         

@@ -1,4 +1,3 @@
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./static/Header/Headerr";
 import Footer from "./static/Footer/Footer";
@@ -11,6 +10,8 @@ import ForgotPassword from "./components/forgotpassword/ForgotPassword";
 import OTPPage from "./components/forgotpassword/OTPPage";
 import ResetPassword from "./components/forgotpassword/ResetPassword";
 import Dashboard from "./components/dashboard/Dashboard";
+import PaymentPage from "./components/paymentpage/PaymentPage"
+import PaymentSuccess from "./components/paymentpage/PaymentSuccess"
 
 function App() {
   return (
@@ -26,7 +27,8 @@ function App() {
         <Route path="/forgetpassword" element={<ForgotPassword />} />
         <Route path="/otppage" element={<OTPPage />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
-        
+        <Route path="/makepayment" element={<PaymentPage />} />
+        <Route path="/paymentsuccess" element={<PaymentSuccess />} />
       </Routes>
       <Footer />
     </BrowserRouter>

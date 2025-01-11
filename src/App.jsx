@@ -21,17 +21,22 @@ import WalletSettings from "./components/Wallet/WalletSettings";
 import WithdrawalHistory from "./components/Withdrawalhistory/WithdrawalHistory";
 import TransactionDetails from "./components/Withdrawalhistory/TransactionDetails";
 import QrCode from "./pages/QRcodePage/QrCode";
-// import Settings from "./pages/SettingsPage/SettingsPage"
+// import Settings from "./pages/SettingsPage/SettingsPage";
 import Settingspage from "./pages/SettingsPage/SettingsPage";
 import UserSettingspage from "./pages/SettingsPage/UserSettings";
 import ScanHere from "./pages/QRcodePage/UserScan";
 import UserWallet from "./components/Wallet/UserWallet"
 import Otpgen from "./components/Login-Signup/otpVerification";
+import About from "./pages/About/About";
+import PrintQRcode from "./components/UserOptions/PrintQRcode";
+import UserPaymentLoading from "./components/UserOptions/UserPaymentLoading";
+import UserPaymentConfir from "./components/UserOptions/UserPaymentConfir";
 import ReceivePayment from "./pages/QRcodePage/RecvPay"
 
 
+import Order from "./components/Payment/Order";
 
-
+import Extend from "./components/Payment/Extend"
 function App() {
   return (
     <BrowserRouter>
@@ -43,9 +48,6 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/otp-verification" element={<Otpgen />} />
 
-        
-
-
         <Route path="/contact" element={<Contactpage />} />
         
         
@@ -54,6 +56,7 @@ function App() {
         <Route path="WalletSettings" element={<WalletSettings />} />
         <Route path="WithdrawalHistory" element={<WithdrawalHistory/>} />
         <Route path="/withdrawaldetails" element={<TransactionDetails />} />
+        <Route path="/paymenthistory" element={<Order/>} />
         <Route path ="/Settings" element= {<Settingspage/>}/>
         <Route path ="UserSettings" element={<UserSettingspage/>}/>
         <Route path="UserScan" element={<ScanHere/>}/>
@@ -63,7 +66,11 @@ function App() {
 
 
         
-        
+        <Route path="/aboutUs" element={ <About/>}/>
+        <Route path="/QRcode" element={<PrintQRcode/>}/>
+        <Route path="/loading" element={<UserPaymentLoading/>}/>
+        <Route path="/Confam" element={<UserPaymentConfir/>}/>
+        <Route path="/order/:orderId" element={<Extend />} />
         
         
         

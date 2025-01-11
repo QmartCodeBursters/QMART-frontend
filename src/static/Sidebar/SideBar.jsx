@@ -63,7 +63,7 @@ const Sidebar = ({ setDisplay }) => {
         <Styledlink to="/wallet" onClick={handleClick}>
           <nav>Wallet</nav>
         </Styledlink>
-        <Styledlink to="/about" onClick={handleClick}>
+        <Styledlink to="/aboutUs" onClick={handleClick}>
           <nav>About Us</nav>
         </Styledlink>
         <Styledlink to="/contact" onClick={handleClick}>

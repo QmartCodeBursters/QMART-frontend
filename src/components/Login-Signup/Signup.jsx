@@ -6,12 +6,16 @@ import summaryAPI from "../../common/summaryAPI";
 import toast, { Toaster } from 'react-hot-toast';
 
 import AxiosToastError from "../../utilis/AxiosToastError";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import { isValidPhoneNumber, parsePhoneNumberFromString } from 'libphonenumber-js';
 
 
 const Signup = () => {
   const [isCheckedBoxChecked, setIsCheckedBoxChecked] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [role, setRole] = useState(""); 
+  const [errors, setErrors] = useState({});
 
   const [data, setData] = useState({
     firstName: "",
@@ -23,10 +27,14 @@ const Signup = () => {
     confirmPassword: "",
   });
 
-  const validValues = 
-    Object.values(data).every((el) => el.trim() !== "") && 
-    isCheckedBoxChecked &&
-    role; // Ensure role is selected
+  const validValues =
+  Object.values(data).every((el) => el.trim() !== "") &&
+  Object.values(errors).length === 0 &&
+  isCheckedBoxChecked &&
+  role;
+
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,14 +42,84 @@ const Signup = () => {
       ...data,
       [name]: value,
     });
+  
+    const newErrors = { ...errors };
+  
+    // First Name validation
+    if (name === "firstName" && (value.length < 3 || value.length > 8)) {
+      newErrors.firstName = "First name should include 3-8 characters";
+    } else {
+      delete newErrors.firstName;
+    }
+  
+    // Last Name validation
+    if (name === "lastName" && (value.length < 3 || value.length > 8)) {
+      newErrors.lastName = "Last name should include 3-8 characters";
+    } else {
+      delete newErrors.lastName;
+    }
+  
+    // Email validation
+    if (name === "email" && !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)) {
+      newErrors.email = "Enter a valid email";
+    } else {
+      delete newErrors.email;
+    }
+  
+    
+   // Phone Number Validation
+   if (name === "phoneNumber") {
+    const newErrors = { ...errors }; 
+  
+    try {
+      const phoneNumberParsed = parsePhoneNumberFromString(value, "NG"); 
+  
+      // Validate the phone number
+      if (!phoneNumberParsed || !phoneNumberParsed.isValid()) {
+        newErrors.phoneNumber = "Please enter a valid phone number";
+      } else if (value.length < 10) {
+        newErrors.phoneNumber = "Phone number must be at least 10 digits long";
+      } else if (value.length > 15) {
+        newErrors.phoneNumber = "Phone number must not exceed 15 digits";
+      } else {
+        delete newErrors.phoneNumber; // Clear the error if valid
+      }
+    } catch (error) {
+      newErrors.phoneNumber = "Please enter a valid phone number";
+    }
+  
+    setErrors(newErrors); 
+  }
+  
+    // Password validation
+    if (name === "password") {
+      const passwordPattern = /^(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{6,16}$/;
+      if (!passwordPattern.test(value)) {
+        newErrors.password =
+          "Password must be 6-16 characters, including at least one digit and one special character (!@#$%^&*)";
+      } else {
+        delete newErrors.password;
+      }
+    }
+  
+    // Confirm Password validation
+    if (name === "confirmPassword" && value !== data.password) {
+      newErrors.confirmPassword = "Passwords do not match";
+    } else {
+      delete newErrors.confirmPassword;
+    }
+  
+    setErrors(newErrors);
   };
-
-  const navigate = useNavigate();
-
-
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    if (!role) {
+      toast.error("Please select a role");
+      return;
+    }
   
     if (data.password !== data.confirmPassword) {
       toast.error("Passwords do not match!");
@@ -75,9 +153,7 @@ const Signup = () => {
     }
   };
   
-  
-  
-
+ 
   return (
     <Wrapper>
       <FormContainer>
@@ -91,7 +167,9 @@ const Signup = () => {
             name="firstName"
             value={data.firstName}
             onChange={handleChange}
-          />
+            />
+          <span className="error">{errors.firstName}</span>
+
           <input
             type="text"
             placeholder="Last Name"
@@ -100,6 +178,8 @@ const Signup = () => {
             value={data.lastName}
             onChange={handleChange}
           />
+          <span className="error">{errors.lastName}</span>
+
           <input
             type="email"
             placeholder="Email"
@@ -108,14 +188,56 @@ const Signup = () => {
             value={data.email}
             onChange={handleChange}
           />
-          <input
-            type="text"
-            placeholder="Phone Number"
-            required
-            name="phoneNumber"
-            value={data.phoneNumber}
-            onChange={handleChange}
-          />
+          <span className="error">{errors.email}</span>
+
+          <PhoneInput
+              country={"ng"}
+              inputStyle={{
+                width: "100%",
+                padding: "12px",
+                fontSize: "12px",
+                border: "1px solid grey",
+                borderRadius: "4px",
+                paddingLeft: "45px",
+              }}
+              name="phoneNumber"
+              value={data.phoneNumber}
+              onChange={(value) =>
+                setData((prevState) => ({
+                  ...prevState,
+                  phoneNumber: value,
+                }))
+              }
+              onBlur={() => {
+                const newErrors = { ...errors };
+                const phoneNumber = data.phoneNumber;
+
+                try {
+                  // Use the full international number, ensuring the country code is included
+                  const phoneNumberParsed = parsePhoneNumberFromString(phoneNumber, "NG"); // Provide the country code explicitly
+
+                  // Check if the phone number is valid
+                  if (!phoneNumberParsed || !phoneNumberParsed.isValid()) {
+                    newErrors.phoneNumber = "Please enter a valid phone number";
+                  } 
+                  // Ensure the length constraint is also respected (10–15 digits excluding country code)
+                  else if (phoneNumberParsed.number.length < 10) {
+                    newErrors.phoneNumber = "Phone number must be at least 10 digits long";
+                  } else if (phoneNumberParsed.number.length > 15) {
+                    newErrors.phoneNumber = "Phone number must not exceed 15 digits";
+                  } else {
+                    delete newErrors.phoneNumber;
+                  }
+                } catch (error) {
+                  newErrors.phoneNumber = "Please enter a valid phone number";
+                }
+
+                setErrors(newErrors);
+              }}
+            />
+            <span className="error">{errors.phoneNumber}</span>
+
+
           <input
             type="text"
             placeholder="Current Address"
@@ -124,6 +246,7 @@ const Signup = () => {
             value={data.address}
             onChange={handleChange}
           />
+          <span className="error">{errors.address}</span>
           
            {/* Role Selection */}
            <RoleWrapper>
@@ -149,10 +272,13 @@ const Signup = () => {
               value={data.password}
               onChange={handleChange}
             />
+          
+
             <span onClick={() => setPasswordVisible(!passwordVisible)}>
               {passwordVisible ? "🙈" : "👁️"} {/* Toggle icon */}
             </span>
           </PasswordWrapper>
+          <span className="error">{errors.password}</span>
 
           <PasswordWrapper>
             <input
@@ -163,12 +289,13 @@ const Signup = () => {
               value={data.confirmPassword}
               onChange={handleChange}
             />
+          
+
             <span onClick={() => setPasswordVisible(!passwordVisible)}>
               {passwordVisible ? "🙈" : "👁️"} {/* Toggle icon */}
             </span>
           </PasswordWrapper>
-
-         
+          <span className="error">{errors.confirmPassword}</span>
 
           <p>
             <CheckboxWrapper>
@@ -289,6 +416,11 @@ const FormContainer = styled.div`
         color: black;
         font-weight: bold;
     }
+
+    span {
+      color: red;
+      font-size: 12px;
+    }
   }
 `;
 
@@ -300,7 +432,7 @@ const CheckboxWrapper = styled.div`
     /* appearance: none; */
     width: 22px;
     height: 22px;
-    border: 2px solid grey;
+    border: 2px solid #ccc;
     border-radius: 3px;
     margin-right: 8px;
     cursor: pointer;
@@ -353,6 +485,7 @@ const RoleWrapper = styled.div`
     padding: 12px;
     border-radius: 5px;
     border: 1px solid grey;
+    color: black;
     outline: none;
     font-size: 12px;
   }

@@ -1,20 +1,79 @@
-import React from "react";
+import React, { useRef, useState }from "react";
 import styled from "styled-components";
+import jsQR from "jsqr";
 
 const ScanHere = () => {
-    const HandleOnClick = () => {
-        alert("Where am i to go to?")
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const [qrResult, setQrResult] = useState("Click the button to start scanning");
 
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "environment" },
+      });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        videoRef.current.setAttribute("playsinline", true); // Required for iOS
+        videoRef.current.play();
+        scanQRCode();
+      }
+    } catch (error) {
+      console.error("Error accessing the camera:", error);
+      setQrResult("Unable to access the camera.");
+    }
+  };
+
+  const scanQRCode = () => {
+    const canvas = canvasRef.current;
+    const video = videoRef.current;
+    const canvasContext = canvas.getContext("2d");
+
+    const scan = () => {
+      if (video.readyState === video.HAVE_ENOUGH_DATA) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvasContext.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        const imageData = canvasContext.getImageData(0, 0, canvas.width, canvas.height);
+        const qrCode = jsQR(imageData.data, imageData.width, imageData.height);
+
+        if (qrCode) {
+          setQrResult(`QR Code Found: ${qrCode.data}`);
+          stopCamera();
+          return;
+        }
+      }
+      requestAnimationFrame(scan);
     };
-    return(
-        <ScanContainer>
 
-            
-           <button onClick={HandleOnClick}>CLICK HERE TO SCAN</button>
-        </ScanContainer>
+    scan();
+  };
 
-    )
-}
+  const stopCamera = () => {
+    const video = videoRef.current;
+    if (video && video.srcObject) {
+      const stream = video.srcObject;
+      const tracks = stream.getTracks();
+      tracks.forEach((track) => track.stop());
+      video.srcObject = null;
+    }
+  };
+
+  const handleOnClick = () => {
+    startCamera();
+  };
+
+  return (
+    <ScanContainer>
+      <Video ref={videoRef}/>
+      <Canvas ref={canvasRef} hidden />
+      <p>{qrResult} </p>
+      <button onClick={handleOnClick}>CLICK HERE TO MAKE PAYMENT</button>
+    </ScanContainer>
+  );
+};
+
 
 export default ScanHere ;
 
@@ -46,5 +105,15 @@ const ScanContainer = styled.div `
     &:hover {
         background-color: #f85e0a;
     }
- }
+ }`
+
+ const Video = styled.video`
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+`;
+
+const Canvas = styled.canvas`
+  display: none;
  `

@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import toast, { Toaster } from 'react-hot-toast';
+import  { Toaster } from 'react-hot-toast';
 
 import Header from "./static/Header/Headerr";
 import Footer from "./static/Footer/Footer";
@@ -24,14 +24,14 @@ import QrCode from "./pages/QRcodePage/QrCode";
 // import Settings from "./pages/SettingsPage/SettingsPage";
 import Settingspage from "./pages/SettingsPage/SettingsPage";
 import UserSettingspage from "./pages/SettingsPage/UserSettings";
-import UserQRbutton from "./pages/QRcodePage/UserScan";
+import ScanHere from "./pages/QRcodePage/UserScan";
 import UserWallet from "./components/Wallet/UserWallet"
 import Otpgen from "./components/Login-Signup/otpVerification";
 import About from "./pages/About/About";
 import PrintQRcode from "./components/UserOptions/PrintQRcode";
 import UserPaymentLoading from "./components/UserOptions/UserPaymentLoading";
 import UserPaymentConfir from "./components/UserOptions/UserPaymentConfir";
-
+import ReceivePayment from "./pages/QRcodePage/RecvPay"
 
 
 import Order from "./components/Payment/Order";
@@ -57,12 +57,12 @@ function App() {
         <Route path="WithdrawalHistory" element={<WithdrawalHistory/>} />
         <Route path="/withdrawaldetails" element={<TransactionDetails />} />
         <Route path="/paymenthistory" element={<Order/>} />
-
-        <Route path="/qrcode"  element={<QrCode/>}/>
         <Route path ="/Settings" element= {<Settingspage/>}/>
         <Route path ="UserSettings" element={<UserSettingspage/>}/>
-        <Route path="UserQRButton" element={<UserQRbutton/>}/>
+        <Route path="UserScan" element={<ScanHere/>}/>
+        <Route path="/qr-code"  element={<QrCode/>}/>
         <Route path= "UserWallet" element={<UserWallet/>}/>
+        <Route path= "/ReceivePay" element={<ReceivePayment/>}/>
 
 
         
@@ -79,7 +79,7 @@ function App() {
         
       </Routes>
       <Footer />
-      <Toaster />
+      <Toaster/>
     </BrowserRouter>
   );
 }

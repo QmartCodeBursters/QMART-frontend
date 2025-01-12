@@ -122,8 +122,8 @@ const DropdownMenu = styled.div`
   position: fixed;
   top: 4.4rem;
   left: 0;
-  height: auto;
-  border-radius: 20px;
+  height: 100vh;
+  /* border-radius: 0px 20px; */
   width: 250px;
   background-color: rgba(27, 99, 146, 1);
   color: white;
@@ -139,6 +139,7 @@ const DropdownMenu = styled.div`
   @media (max-width: 1024px) {
     width: 200px;
     height: auto;
+    border-radius: 0px 0px 20px 0px;
   }
 `;
 
@@ -170,8 +171,6 @@ const Overlay = styled.div`
   transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
   z-index: 5;
 `;
-
-
 
 const Balance = ({ storeName, balance }) => {
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
@@ -249,4 +248,3 @@ const Balance = ({ storeName, balance }) => {
 };
 
 export default Balance;
-

@@ -7,7 +7,7 @@ import styled from "styled-components";
 const Container = styled.div`
   font-family: "Poppins", sans-serif;
   padding: 20px;
-  max-width: 800px;
+  max-width: 975px;
   margin: 0 auto;
 `;
 
@@ -15,25 +15,100 @@ const Dashboard = () => {
   // Mock data to simulate API responses
   const storeData = {
     storeName: "QMart Stores",
-    balance: 1156734534.45, 
+    balance: 1156734534.45,
   };
 
   const recentPaymentsData = [
-    { name: "Aserikan Adetola", date: "9 January 2023", amount: 10000, status: "completed"},
-    { name: "Fatimah Fatimah", date: "January 25th", amount: 16750, status: "on the way" },
-    { name: "Foluso Ojo", date: "January 25th", amount: 136870, status: "completed" },
-    { name: "Aserikan Adetola", date: "9 January 2023", amount: 10000, status: "completed"},
-    { name: "Fatimah Fatimah", date: "January 25th", amount: 16750, status: "on the way" },
-    { name: "Foluso Ojo", date: "January 25th", amount: 136870, status: "completed" },
-    { name: "Aserikan Adetola", date: "9 January 2023", amount: 10000, status: "completed"},
-    { name: "Fatimah Fatimah", date: "January 25th", amount: 16750, status: "on the way" },
-    { name: "Foluso Ojo", date: "January 25th", amount: 136870, status: "completed" },
-    { name: "Aserikan Adetola", date: "9 January 2023", amount: 10000, status: "completed"},
-    { name: "Fatimah Fatimah", date: "January 25th", amount: 16750, status: "on the way" },
-    { name: "Foluso Ojo", date: "January 25th", amount: 136870, status: "completed" },
-    { name: "Aserikan Adetola", date: "9 January 2023", amount: 10000, status: "completed"},
-    { name: "Fatimah Fatimah", date: "January 25th", amount: 16750, status: "on the way" },
-    { name: "Foluso Ojo", date: "January 25th", amount: 136870, status: "completed" },
+    {
+      name: "Aserikan Adetola",
+      date: "9 January 2023",
+      amount: 10000,
+      status: "completed",
+    },
+    {
+      name: "Fatimah Fatimah",
+      date: "January 25th",
+      amount: 16750,
+      status: "on the way",
+    },
+    {
+      name: "Foluso Ojo",
+      date: "January 25th",
+      amount: 136870,
+      status: "completed",
+    },
+    {
+      name: "Aserikan Adetola",
+      date: "9 January 2023",
+      amount: 10000,
+      status: "completed",
+    },
+    {
+      name: "Fatimah Fatimah",
+      date: "January 25th",
+      amount: 16750,
+      status: "on the way",
+    },
+    {
+      name: "Foluso Ojo",
+      date: "January 25th",
+      amount: 136870,
+      status: "completed",
+    },
+    {
+      name: "Aserikan Adetola",
+      date: "9 January 2023",
+      amount: 10000,
+      status: "completed",
+    },
+    {
+      name: "Fatimah Fatimah",
+      date: "January 25th",
+      amount: 16750,
+      status: "on the way",
+    },
+    {
+      name: "Foluso Ojo",
+      date: "January 25th",
+      amount: 136870,
+      status: "completed",
+    },
+    {
+      name: "Aserikan Adetola",
+      date: "9 January 2023",
+      amount: 10000,
+      status: "completed",
+    },
+    {
+      name: "Fatimah Fatimah",
+      date: "January 25th",
+      amount: 16750,
+      status: "on the way",
+    },
+    {
+      name: "Foluso Ojo",
+      date: "January 25th",
+      amount: 136870,
+      status: "completed",
+    },
+    {
+      name: "Aserikan Adetola",
+      date: "9 January 2023",
+      amount: 10000,
+      status: "completed",
+    },
+    {
+      name: "Fatimah Fatimah",
+      date: "January 25th",
+      amount: 16750,
+      status: "on the way",
+    },
+    {
+      name: "Foluso Ojo",
+      date: "January 25th",
+      amount: 136870,
+      status: "completed",
+    },
   ];
 
   // Mock data for different months (for dynamic month selection)

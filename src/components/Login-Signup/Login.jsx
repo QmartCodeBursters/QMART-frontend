@@ -18,7 +18,9 @@ const Login = () => {
             name="password"
           />
 
-          <p>Forgot Password?</p>
+<p>
+  <Link to="/forgetpassword">Forgot Password?</Link>
+</p>
 
           <Link to="/">
             <button type="submit">Login</button>
@@ -59,7 +61,7 @@ const FormContainer = styled.div`
   align-items: center;
   justify-content: center;
   /* height: 100vh; */
-  margin: 0 auto;
+  margin: 70px auto;
 
   form {
     display: flex;

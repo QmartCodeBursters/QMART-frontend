@@ -1,21 +1,24 @@
+BrowserRouter, Routes, Route } from "react-router-dom";
+
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import  { Toaster } from 'react-hot-toast';
+
 
 import Header from "./static/Header/Headerr";
 import Footer from "./static/Footer/Footer";
 import Homepage from "./pages/Homepage/Homepage";
-import Signup from "./components/Login-Signup/Signup";
-
 import Verify from "./components/Login-Signup/Verify";
+import Signup from "./components/Login-Signup/Signup";
 import Login from "./components/Login-Signup/Login";
-
-
-
-import Dashboard from "./components/dashboard/Dashboard";
-
-
-
 import Contactpage from "./pages/Contactpage/Contactpage";
+
+import ForgotPassword from "./components/forgotpassword/ForgotPassword";
+import OTPPage from "./components/forgotpassword/OTPPage";
+import ResetPassword from "./components/forgotpassword/ResetPassword";
+
+import PaymentPage from "./components/paymentpage/PaymentPage"
+import PaymentSuccess from "./components/paymentpage/PaymentSuccess"
+
 import Wallet from "./components/Wallet/Wallet"
 import WalletSettings from "./components/Wallet/WalletSettings";
 import WithdrawalHistory from "./components/Withdrawalhistory/WithdrawalHistory";
@@ -36,6 +39,7 @@ import ReceivePayment from "./pages/QRcodePage/RecvPay"
 
 import Order from "./components/Payment/Order";
 
+
 import Extend from "./components/Payment/Extend"
 function App() {
   return (
@@ -46,12 +50,19 @@ function App() {
         <Route path="/verify" element={<Verify />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+
         <Route path="/otp-verification" element={<Otpgen />} />
 
+
         <Route path="/contact" element={<Contactpage />} />
-        
-        
         <Route path="/dashboard" element={<Dashboard />} />
+
+        <Route path="/forgetpassword" element={<ForgotPassword />} />
+        <Route path="/otppage" element={<OTPPage />} />
+        <Route path="/resetpassword" element={<ResetPassword />} />
+        <Route path="/makepayment" element={<PaymentPage />} />
+        <Route path="/paymentsuccess" element={<PaymentSuccess />} />
+
         <Route path="Wallet" element={<Wallet/>} />
         <Route path="WalletSettings" element={<WalletSettings />} />
         <Route path="WithdrawalHistory" element={<WithdrawalHistory/>} />
@@ -77,6 +88,7 @@ function App() {
         
         
         
+
       </Routes>
       <Footer />
       <Toaster/>

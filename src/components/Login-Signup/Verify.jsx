@@ -9,22 +9,25 @@ const Verify = () => {
         <form>
           <h2>Verify Your Email Address</h2>
           <p>Input the verification code sent to your registered email</p>
-          
-          <label> <br/>
+
+          <label>
+            {" "}
+            <br />
             <article>
               <p>Verification code</p>
-              <Link to= "/verify"><span>Resend code</span> <br/></Link>
-              
+              <Link to="/verify">
+                <span>Resend code</span> <br />
+              </Link>
             </article>
-            
-          <input type="text"  placeholder="Enter verification code"/>
+            <input type="text" placeholder="Enter verification code" />
           </label>
 
-          <Link to= "/login"><button type="submit">Verify Me <MdArrowRightAlt/></button></Link>
-          
-          
+          <Link to="/login">
+            <button type="submit">
+              Verify Me <MdArrowRightAlt />
+            </button>
+          </Link>
         </form>
-
       </LoginContainer>
     </Wrapper>
   );
@@ -32,9 +35,7 @@ const Verify = () => {
 
 export default Verify;
 
-const Wrapper = styled.div`
- 
-`;
+const Wrapper = styled.div``;
 
 const LoginContainer = styled.div`
   display: flex;
@@ -42,7 +43,7 @@ const LoginContainer = styled.div`
   align-items: center;
   justify-content: center;
   /* height: 100vh; */
-  margin: 0 auto;
+  margin: 50px auto;
 
   form {
     display: flex;
@@ -54,11 +55,11 @@ const LoginContainer = styled.div`
     background-color: white;
     padding: 20px 40px;
     border-radius: 10px;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+      rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
     margin: 60px 0;
     text-align: center;
     animation: slideInFromTop 1s ease-out;
-
 
     @keyframes slideInFromTop {
       from {
@@ -70,7 +71,7 @@ const LoginContainer = styled.div`
         opacity: 1;
       }
     }
-    
+
     article {
       display: flex;
       align-items: center;
@@ -78,14 +79,13 @@ const LoginContainer = styled.div`
 
       span {
         margin-left: 120px;
-        color: #1B6392;
+        color: #1b6392;
         font-size: 14px;
       }
       a {
         color: black;
         text-decoration: none;
       }
-
     }
     h2 {
       text-align: center;
@@ -122,10 +122,10 @@ const LoginContainer = styled.div`
       }
 
       a {
-        text-decoration: none; 
+        text-decoration: none;
         color: white;
         font-weight: bold;
-    }
+      }
     }
   }
-`
+`;

@@ -103,7 +103,7 @@ const CreateBiz = () => {
                             />
                             <span className="error">{errors.businessDescription}</span>
 
-                            {/* Button inside the form */}
+                            
                             <button type="submit" disabled={!validValues}>
                                 Create Business
                             </button>

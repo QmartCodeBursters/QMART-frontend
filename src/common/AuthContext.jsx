@@ -4,7 +4,7 @@ const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState('');  // Store user role in context
+  const [role, setRole] = useState(''); 
 
   return (
     <AppContext.Provider value={{ email, setEmail, role, setRole }}>
@@ -14,3 +14,4 @@ export const AppProvider = ({ children }) => {
 };
 
 export const useAppContext = () => useContext(AppContext);
+ 

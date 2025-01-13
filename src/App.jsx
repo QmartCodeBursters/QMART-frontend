@@ -55,7 +55,7 @@ function App() {
           <Route path="/makepayment" element={<PaymentPage />} />
           <Route path="/paymentsuccess" element={<PaymentSuccess />} />
           <Route path="Wallet" element={<Wallet/>} />
-          <Route path="WalletSettings" element={<WalletSettings />} />
+          <Route path="/WalletSettings" element={<WalletSettings />} />
           <Route path="WithdrawalHistory" element={<WithdrawalHistory/>} />
           <Route path="/withdrawaldetails" element={<TransactionDetails />} />
           <Route path="/paymenthistory" element={<Order/>} />
@@ -63,7 +63,7 @@ function App() {
           <Route path ="UserSettings" element={<UserSettingspage/>}/>
           <Route path="/UserScan" element={<ScanHere/>}/>
           <Route path="/qr-code"  element={<QrCode/>}/>
-          <Route path= "UserWallet" element={<UserWallet/>}/>
+          <Route path= "/UserWallet" element={<UserWallet/>}/>
           <Route path= "/ReceivePay" element={<ReceivePayment/>}/>
 
 

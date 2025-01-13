@@ -52,6 +52,7 @@ export default Contactcta
 
 const Wrapper = styled.div`
     margin: 70px;
+
 `;
 
 const Wrappercont = styled.div`
@@ -62,10 +63,27 @@ width: 85%;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+
+
+
 `;
 
 
 const Herodetails = styled.div`
+
+animation: slideInFromTop 1s ease-out;
+
+
+@keyframes slideInFromTop {
+        from {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
 
 text-align: center;
     p {

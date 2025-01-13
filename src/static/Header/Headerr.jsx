@@ -1,24 +1,38 @@
+import React, { useEffect, useState } from "react";
 import qlogo from "../../assets/png/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IoReorderTwoOutline } from "react-icons/io5";
-import {
-  IoPersonOutline,
-  IoListOutline,
-  IoQrCodeOutline,
-  IoSettingsOutline,
-  IoNotificationsOutline,
-} from "react-icons/io5";
 import Sidebar from "../Sidebar/SideBar";
-import { useState } from "react";
+import { useAppContext } from "../../common/AuthContext";
+import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 
 const Header = () => {
+  const navigate = useNavigate();
   const [toggle, setToggle] = useState(false);
+  const { email, setEmail, role, setRole } = useAppContext();
+
+  useEffect(() => {
+    const token = Cookies.get("jwt");
+    if (token) {
+      setEmail(""); // Replace with actual email if needed
+      setRole("User"); // Replace with actual role if needed
+    }
+  }, [setEmail, setRole]);
 
   const handleToggle = () => {
     setToggle(!toggle);
   };
 
+  const handleLogout = () => {
+    Cookies.remove("jwt");
+    setEmail(""); // Clear email
+    setRole(""); // Clear role
+    toast.success("Logged out successfully!");
+    navigate("/");
+  };
+ 
   return (
     <>
       <Wrapper>
@@ -29,49 +43,45 @@ const Header = () => {
           </Logocont>
 
           <Navlist>
-            <p><Link to="./">Home</Link></p>
             <p>
-  <Link to="/dashboard">
-    Dashboard 
-  </Link>
-</p>
+              <Link to="./">Home</Link>
+            </p>
 
-            {/* <DropdownWrapper>
-              <Dropdown>
-                
-                <DropdownMenu>
-                  <DropdownItem>
-                    <IoPersonOutline /> <Link to="/profile">Profile</Link>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <IoListOutline /> <Link to="/payment-history">Payment History</Link>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <IoQrCodeOutline /> <Link to="/qr-management">QR Code Management</Link>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <IoNotificationsOutline /> <Link to="/notifications">Notification Settings</Link>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <IoSettingsOutline /> <Link to="/account-settings">Account Settings</Link>
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </DropdownWrapper> */}
+            {/* Conditionally render Dashboard and Wallet links */}
+            {email && (
+              <>
+                <p>
+                  <Link to="/dashboard">Dashboard</Link>
+                </p>
+                <p>
+                  <Link to="/wallet">Wallet</Link>
+                </p>
+              </>
+            )}
 
-            <p><Link to="/wallet">Wallet </Link></p>
-            <p><Link to="/contact">Contact Us </Link></p>
-            <p><Link to="/aboutUs">About us </Link></p>
-            
+            <p>
+              <Link to="/contact">Contact Us</Link>
+            </p>
+            <p>
+              <Link to="/aboutUs">About us</Link>
+            </p>
           </Navlist>
 
           <Signcont>
-            <Link to="/login">
-              <LoginButton>Login</LoginButton>
-            </Link>
-            <Link to="/signup">
-              <SigninButton>Sign up</SigninButton>
-            </Link>
+            {email ? (
+              // Show Logout button if the user is logged in
+              <LogoutButton onClick={handleLogout}>Log Out</LogoutButton>
+            ) : (
+              // Otherwise, show Login/Signup buttons
+              <>
+                <Link to="/login">
+                  <LoginButton>Login</LoginButton>
+                </Link>
+                <Link to="/signup">
+                  <SigninButton>Sign up</SigninButton>
+                </Link>
+              </>
+            )}
           </Signcont>
 
           <Sidenav onClick={handleToggle}>
@@ -86,6 +96,7 @@ const Header = () => {
 };
 
 export default Header;
+
 
 const Wrapper = styled.div`
   width: 100%;
@@ -127,50 +138,6 @@ const Navlist = styled.div`
 
   @media (max-width: 768px) {
     display: none;
-  }
-`;
-
-const DropdownWrapper = styled.div`
-  position: relative;
-`;
-
-const Dropdown = styled.div`
-  position: relative;
-  display: inline-block;
-
-  &:hover > div {
-    display: block;
-  }
-`;
-
-const DropdownMenu = styled.div`
-  display: none;
-  position: absolute;
-  top: 15px;
-  left: 0;
-  background-color: #1b6392;
-  color: white;
-  border-radius: 5px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  z-index: 100;
-  width: 200px;
-`;
-
-const DropdownItem = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 10px 15px;
-  gap: 10px;
-  font-size: 12px;
-  cursor: pointer;
-
-  a {
-    text-decoration: none;
-    color: white;
-  }
-
-  &:hover {
-    background-color: #30506b;
   }
 `;
 
@@ -222,6 +189,19 @@ const SigninButton = styled.button`
 
   @media (max-width: 768px) {
     display: none;
+  }
+`;
+
+const LogoutButton = styled.button`
+  padding: 8px 24px;
+  border-radius: 4px;
+  background-color: #f54242;
+  color: white;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #c70000;
   }
 `;
 

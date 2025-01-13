@@ -1,0 +1,26 @@
+.otp-form input {
+  height: 4rem;
+  width: 100% !important;
+  border-radius: 4px !important;
+}
+
+.otp-form {
+    width: 100%;
+}
+/* .otp-form div {
+  width: 10%;
+} */
+
+
+.otp-div {
+    width: 60%;
+    margin: 0px auto;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.otp-form h4 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}

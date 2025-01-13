@@ -7,13 +7,11 @@ import summaryAPI, { baseURL } from "../../common/summaryAPI";
 import { useAppContext } from "../../common/AuthContext";
 import AxiosToastError from "../../utilis/AxiosToastError";
 
-
 const Login = () => {
-  const { setEmail, setRole } = useAppContext(); 
+  const { setEmail, setRole } = useAppContext();
   const navigate = useNavigate();
   const [email, setEmailInput] = useState("");
   const [password, setPassword] = useState("");
-
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
@@ -46,45 +44,49 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    
+
     try {
       console.log("Sending request to:", `${baseURL}${summaryAPI.login.url}`);
       console.log("Request payload:", { email, password });
-  
+
       const response = await axios({
         method: summaryAPI.login.method,
         url: `${baseURL}${summaryAPI.login.url}`,
         data: { email, password },
         withCredentials: true,
       });
-  
+
       console.log("Response from server:", response.data);
-  
+
       if (response.data.success) {
         toast.success("Login successful!");
 
-        
         const { user } = response.data.data;
         setEmail(user.email);
-        setRole(user.role);  
+        setRole(user.role);
 
-        
         if (user.role === "merchant") {
-          navigate("/merchant-create-business");
+          if (user.business) {
+            navigate("/dashboard");
+          } else {
+            navigate("/merchant-create-business");
+          }
+          console.log(user);
         } else {
           navigate("/dashboard");
         }
       } else {
         toast.error(response.data.message);
       }
-       
     } catch (error) {
-      console.error("Error during login:", error.response ? error.response.data : error.message);
-      AxiosToastError(error)
+      console.error(
+        "Error during login:",
+        error.response ? error.response.data : error.message
+      );
+      AxiosToastError(error);
     }
   };
-  
+
   return (
     <Wrapper>
       <FormContainer>
@@ -129,7 +131,6 @@ const Login = () => {
               Don't have an account? <Link to="/signup">Register</Link>
             </p>
           </ButtonWrapper> */}
-          
         </form>
       </FormContainer>
     </Wrapper>
@@ -138,9 +139,7 @@ const Login = () => {
 
 export default Login;
 
-const Wrapper = styled.div`
-  
-`;
+const Wrapper = styled.div``;
 
 const FormContainer = styled.div`
   display: flex;

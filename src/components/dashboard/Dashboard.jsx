@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Balance from "./Balance";
 import CashFlow from "./CashFlow";
 import RecentPayments from "./RecentPayments";
 import styled from "styled-components";
+import AxiosToastError from "../../utilis/AxiosToastError";
+import Axios from "../../utilis/Axios";
+import summaryAPI from "../../common/summaryAPI";
+import toast from "react-hot-toast";
 
+const Button = styled.div``;
 const Container = styled.div`
   font-family: "Poppins", sans-serif;
   padding: 20px;
@@ -12,101 +17,101 @@ const Container = styled.div`
 `;
 
 const Dashboard = () => {
-  // Mock data to simulate API responses
-  const storeData = {
-    storeName: "QMart Stores",
-    balance: 1156734534.45,
-  };
+  const [storeData, setStoreData] = useState({
+    role: "",
+    storeName: "",
+    balance: 0,
+  });
 
   const recentPaymentsData = [
     {
       name: "Aserikan Adetola",
       date: "9 January 2023",
-      amount: 10000,
+      amount: 0,
       status: "completed",
     },
     {
       name: "Fatimah Fatimah",
       date: "January 25th",
-      amount: 16750,
+      amount: 0,
       status: "on the way",
     },
     {
       name: "Foluso Ojo",
       date: "January 25th",
-      amount: 136870,
+      amount: 0,
       status: "completed",
     },
     {
       name: "Aserikan Adetola",
       date: "9 January 2023",
-      amount: 10000,
+      amount: 0,
       status: "completed",
     },
     {
       name: "Fatimah Fatimah",
       date: "January 25th",
-      amount: 16750,
+      amount: 0,
       status: "on the way",
     },
     {
       name: "Foluso Ojo",
       date: "January 25th",
-      amount: 136870,
+      amount: 0,
       status: "completed",
     },
     {
       name: "Aserikan Adetola",
       date: "9 January 2023",
-      amount: 10000,
+      amount: 0,
       status: "completed",
     },
     {
       name: "Fatimah Fatimah",
       date: "January 25th",
-      amount: 16750,
+      amount: 0,
       status: "on the way",
     },
     {
       name: "Foluso Ojo",
       date: "January 25th",
-      amount: 136870,
+      amount: 0,
       status: "completed",
     },
     {
       name: "Aserikan Adetola",
       date: "9 January 2023",
-      amount: 10000,
+      amount: 0,
       status: "completed",
     },
     {
       name: "Fatimah Fatimah",
       date: "January 25th",
-      amount: 16750,
+      amount: 0,
       status: "on the way",
     },
     {
       name: "Foluso Ojo",
       date: "January 25th",
-      amount: 136870,
+      amount: 0,
       status: "completed",
     },
     {
       name: "Aserikan Adetola",
       date: "9 January 2023",
-      amount: 10000,
+      amount: 0,
       status: "completed",
     },
     {
       name: "Fatimah Fatimah",
       date: "January 25th",
-      amount: 16750,
+      amount: 0,
       status: "on the way",
     },
     {
       name: "Foluso Ojo",
       date: "January 25th",
-      amount: 136870,
+      amount: 0,
       status: "completed",
     },
   ];
@@ -153,9 +158,45 @@ const Dashboard = () => {
     (month) => month.name === selectedMonthWithdrawn
   );
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await Axios({
+          method: "GET",
+          url: summaryAPI.fetchUser.url,
+        });
+        const user = response.data;
+        console.log(user);
+
+        if (user.role === "merchant") {
+          setStoreData({
+            role: user.role,
+            storeName: user.businessName || "No business name",
+            balance: user.accountBalance || 0,
+          });
+        } else if (user.role === "customer") {
+          setStoreData({
+            role: user.role,
+            storeName: user.firstName || "Customer",
+            balance: user.accountBalance || 0,
+          });
+        }
+
+        // if (response.data.success) {
+        //   toast.success(response.data.message);
+        // } else {
+        //   toast.error(response.data.message);
+        // }
+      } catch (error) {
+        AxiosToastError(error);
+      }
+    };
+    fetchUserData();
+  }, []);
+
   return (
     <Container>
-      <Balance storeName={storeData.storeName} balance={storeData.balance} />
+      <Balance storeName={storeData.storeName} balance={storeData.balance} role={storeData.role} />
       <CashFlow
         selectedMonthReceived={selectedMonthReceived}
         setSelectedMonthReceived={setSelectedMonthReceived}
@@ -165,6 +206,7 @@ const Dashboard = () => {
         amountWithdrawn={selectedMonthWithdrawnData.amountWithdrawn}
       />
       <RecentPayments transactions={recentPaymentsData} />
+      {/* Render buttons based on role */}
     </Container>
   );
 };

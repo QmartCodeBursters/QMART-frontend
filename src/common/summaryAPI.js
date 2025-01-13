@@ -1,4 +1,4 @@
-export const baseURL = "http://172.20.10.3:2230";
+export const baseURL = "http://localhost:2230";
 
 const summaryAPI = {
     signUp: {

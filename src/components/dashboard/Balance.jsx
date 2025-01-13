@@ -172,7 +172,7 @@ const Overlay = styled.div`
   z-index: 5;
 `;
 
-const Balance = ({ storeName, balance }) => {
+const Balance = ({ storeName, balance, role }) => {
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate(); // Initialize navigate
@@ -237,9 +237,19 @@ const Balance = ({ storeName, balance }) => {
         </p>
         <h2>{isBalanceVisible ? `₦${balance.toLocaleString()}` : "₦****"}</h2>
         <ButtonGroup>
-          <Button primary onClick={() => navigate("/paymenthistory")}>
-            Payment History
-          </Button>
+          {role === "customer" ? (
+            <Button primary onClick={() => navigate("/UserScan")}>
+              MAKE PAYMENT
+            </Button>
+          ) : role === "merchant" ? (
+            // <Button primary onClick={() => navigate("/qr-code")}>
+            <Button primary onClick={() => navigate("/ReceivePayment")}>
+              RECEIVE PAYMENT
+            </Button>
+          ) : null}
+          {/* <Button primary onClick={() => navigate("/UserScan")}>
+            MAKE PAYMENT
+          </Button> */}
           <Button onClick={() => navigate("/wallet")}>Withdraw Funds</Button>
         </ButtonGroup>
       </BalanceCard>

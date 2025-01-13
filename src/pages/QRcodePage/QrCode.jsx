@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import QR from "../../assets/png/QR code .png"
+import QR from "../../assets/png/adobe.png"
 
 const QrCode = () => {
   const [buttonClicked, setButtonClicked] = useState("");

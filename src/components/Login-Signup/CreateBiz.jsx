@@ -69,9 +69,9 @@ const CreateBiz = () => {
     return (
         <Wrapper>
             <Innerwrapper>
-                <span> <strong></strong> <br/>Create Your First Business</span>
+                <span> <strong>Welcome to QMART😊</strong> <br/>Create Your First Business!</span>
                 <Bizcont>
-                    <img src={createbiz} alt="business image" />
+                    {/* <img src={createbiz} alt="business image" /> */}
 
                     <Bizdetails>
                         <form onSubmit={handleSubmit}>
@@ -131,8 +131,8 @@ const Innerwrapper = styled.div`
     text-align: center;
     margin-top: 100px;
 
-    p {
-        font-size: 30px;
+    span {
+        font-size: 26px;
     }
 `;
 

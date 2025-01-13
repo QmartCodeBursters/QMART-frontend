@@ -51,26 +51,42 @@ const About=()=>{
     padding: 0%;
     /* margin-bottom: 170px; */
     /* border: 3px solid yellow; */ 
+    animation: slideInFromTop 1s ease-out;
+
+    
+    @keyframes slideInFromTop {
+        from {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
   `
   const Main=styled.div`
     align-self:center;
     justify-items: center;
     /* border: 3px solid green; */
-    width: 85%;
-     margin-top: 200px;
+    width: 80%;
+     margin-top: 150px;
      margin-bottom: 50px;
+     
+
+
   `
   const Header = styled.h1`
     color: rgba(26,26,26,1);
     font-weight:570px ;
     line-height: 57.6px;
-    font-size: 45px;
+    font-size: 30px;
     /* text-align: center; */
-    margin-bottom: 60px;
+    margin-bottom: 30px;
   `
   const Text =styled.p`
     color: rgba(0,0,0,1);
-    font-size:18px ;
+    font-size:14px ;
     font-weight: 400px;
     line-height: 24px;
     justify-items: center;

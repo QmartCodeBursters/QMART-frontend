@@ -5,6 +5,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import summaryAPI, { baseURL } from "../../common/summaryAPI";
 import { useAppContext } from "../../common/AuthContext";
+import AxiosToastError from "../../utilis/AxiosToastError";
 
 
 const Login = () => {
@@ -63,12 +64,12 @@ const Login = () => {
       if (response.data.success) {
         toast.success("Login successful!");
 
-        // Set the user email and role in the context
+        
         const { user } = response.data.data;
         setEmail(user.email);
-        setRole(user.role);  // Store the role in context
+        setRole(user.role);  
 
-        // Navigate based on the role
+        
         if (user.role === "merchant") {
           navigate("/merchant-create-business");
         } else {
@@ -80,7 +81,7 @@ const Login = () => {
        
     } catch (error) {
       console.error("Error during login:", error.response ? error.response.data : error.message);
-      toast.error("Login failed. Please try again.");
+      AxiosToastError(error)
     }
   };
   

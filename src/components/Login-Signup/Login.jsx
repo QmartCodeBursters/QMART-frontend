@@ -1,32 +1,117 @@
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import googleicon from "../../assets/png/googleicon.png";
-import appleicon from "../../assets/png/appleicon.png";
+import axios from "axios";
+import toast from "react-hot-toast";
+import summaryAPI, { baseURL } from "../../common/summaryAPI";
+import { useAppContext } from "../../common/AuthContext";
+
 
 const Login = () => {
+  const { setEmail, setRole } = useAppContext(); 
+  const navigate = useNavigate();
+  const [email, setEmailInput] = useState("");
+  const [password, setPassword] = useState("");
+
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     console.log("Sending request to:", `${baseURL}${summaryAPI.login.url}`);
+  //     console.log("Request payload:", { email, password });
+
+  //     const response = await axios({
+  //       method: summaryAPI.login.method,
+  //       url: `${baseURL}${summaryAPI.login.url}`,
+  //       data: { email, password },
+  //     });
+
+  //     console.log("Response from server:", response.data);
+
+  //     if (response.data.success) {
+  //       toast.success("Login successful!");
+  //       console.log("Navigating to /dashboard...");
+  //       navigate("/dashboard");
+  //       console.log("Navigation executed.");
+  //     } else {
+  //       toast.error(response.data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error during login:", error.response ? error.response.data : error.message);
+  //     toast.error("Login failed. Please try again.");
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    
+    try {
+      console.log("Sending request to:", `${baseURL}${summaryAPI.login.url}`);
+      console.log("Request payload:", { email, password });
+  
+      const response = await axios({
+        method: summaryAPI.login.method,
+        url: `${baseURL}${summaryAPI.login.url}`,
+        data: { email, password },
+        withCredentials: true,
+      });
+  
+      console.log("Response from server:", response.data);
+  
+      if (response.data.success) {
+        toast.success("Login successful!");
+
+        // Set the user email and role in the context
+        const { user } = response.data.data;
+        setEmail(user.email);
+        setRole(user.role);  // Store the role in context
+
+        // Navigate based on the role
+        if (user.role === "merchant") {
+          navigate("/merchant-create-business");
+        } else {
+          navigate("/dashboard");
+        }
+      } else {
+        toast.error(response.data.message);
+      }
+       
+    } catch (error) {
+      console.error("Error during login:", error.response ? error.response.data : error.message);
+      toast.error("Login failed. Please try again.");
+    }
+  };
+  
   return (
     <Wrapper>
       <FormContainer>
-        <form>
+        <form onSubmit={handleSubmit}>
           <h2>Login</h2>
 
-          <input type="email" placeholder="Email" required name="email" />
+          <input
+            type="email"
+            placeholder="Email"
+            required
+            name="email"
+            value={email}
+            onChange={(e) => setEmailInput(e.target.value)}
+          />
           <input
             type="password"
             placeholder="Enter your password"
             required
             name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
-<p>
-  <Link to="/forgetpassword">Forgot Password?</Link>
-</p>
+          <p>Forgot Password?</p>
 
-          <Link to="/">
-            <button type="submit">Login</button>
-          </Link>
+          <button type="submit">Login</button>
 
-          <ButtonWrapper>
+          {/* <ButtonWrapper>
             <span>or</span>
 
             <GoogleButton>
@@ -40,9 +125,10 @@ const Login = () => {
             </AppleButton>
 
             <p>
-              Dont have an account<Link to="/signup"> Register</Link>{" "}
+              Don't have an account? <Link to="/signup">Register</Link>
             </p>
-          </ButtonWrapper>
+          </ButtonWrapper> */}
+          
         </form>
       </FormContainer>
     </Wrapper>
@@ -61,7 +147,7 @@ const FormContainer = styled.div`
   align-items: center;
   justify-content: center;
   /* height: 100vh; */
-  margin: 70px auto;
+  margin: 0 auto;
 
   form {
     display: flex;
@@ -74,7 +160,7 @@ const FormContainer = styled.div`
     border-radius: 10px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
       rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-    margin: 40px 0;
+    margin: 100px 0;
     animation: slideInFromTop 1s ease-out;
 
     @keyframes slideInFromTop {

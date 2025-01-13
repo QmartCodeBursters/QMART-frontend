@@ -3,15 +3,16 @@ import styled from "styled-components";
 import { useState } from "react";
 import Axios from "../../utilis/Axios";
 import summaryAPI from "../../common/summaryAPI";
-import toast, { Toaster } from 'react-hot-toast';
-
+import toast from "react-hot-toast";
 import AxiosToastError from "../../utilis/AxiosToastError";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { isValidPhoneNumber, parsePhoneNumberFromString } from 'libphonenumber-js';
-
+import { useAppContext } from "../../common/AuthContext";
+import { useEffect } from "react";
 
 const Signup = () => {
+  const { setUserEmail } = useAppContext();
   const [isCheckedBoxChecked, setIsCheckedBoxChecked] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [role, setRole] = useState(""); 
@@ -45,36 +46,33 @@ const Signup = () => {
   
     const newErrors = { ...errors };
   
-    // First Name validation
     if (name === "firstName" && (value.length < 3 || value.length > 8)) {
       newErrors.firstName = "First name should include 3-8 characters";
     } else {
       delete newErrors.firstName;
     }
   
-    // Last Name validation
+
     if (name === "lastName" && (value.length < 3 || value.length > 8)) {
       newErrors.lastName = "Last name should include 3-8 characters";
     } else {
       delete newErrors.lastName;
     }
   
-    // Email validation
+  
     if (name === "email" && !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)) {
       newErrors.email = "Enter a valid email";
     } else {
       delete newErrors.email;
     }
   
-    
-   // Phone Number Validation
    if (name === "phoneNumber") {
     const newErrors = { ...errors }; 
   
     try {
       const phoneNumberParsed = parsePhoneNumberFromString(value, "NG"); 
   
-      // Validate the phone number
+
       if (!phoneNumberParsed || !phoneNumberParsed.isValid()) {
         newErrors.phoneNumber = "Please enter a valid phone number";
       } else if (value.length < 10) {
@@ -82,7 +80,7 @@ const Signup = () => {
       } else if (value.length > 15) {
         newErrors.phoneNumber = "Phone number must not exceed 15 digits";
       } else {
-        delete newErrors.phoneNumber; // Clear the error if valid
+        delete newErrors.phoneNumber;
       }
     } catch (error) {
       newErrors.phoneNumber = "Please enter a valid phone number";
@@ -91,7 +89,6 @@ const Signup = () => {
     setErrors(newErrors); 
   }
   
-    // Password validation
     if (name === "password") {
       const passwordPattern = /^(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{6,16}$/;
       if (!passwordPattern.test(value)) {
@@ -102,7 +99,6 @@ const Signup = () => {
       }
     }
   
-    // Confirm Password validation
     if (name === "confirmPassword" && value !== data.password) {
       newErrors.confirmPassword = "Passwords do not match";
     } else {
@@ -146,12 +142,15 @@ const Signup = () => {
           confirmPassword: "",
         });
         setRole("");
-        navigate("/otp-verification");
+        console.log("User signed up with email:", data.email);
+        navigate("/otp-verification", { state: { email: data.email } });
       }
     } catch (error) {
       AxiosToastError(error);
     }
   };
+
+ 
   
  
   return (
@@ -213,14 +212,12 @@ const Signup = () => {
                 const phoneNumber = data.phoneNumber;
 
                 try {
-                  // Use the full international number, ensuring the country code is included
-                  const phoneNumberParsed = parsePhoneNumberFromString(phoneNumber, "NG"); // Provide the country code explicitly
+                  
+                  const phoneNumberParsed = parsePhoneNumberFromString(phoneNumber, "NG"); 
 
-                  // Check if the phone number is valid
                   if (!phoneNumberParsed || !phoneNumberParsed.isValid()) {
                     newErrors.phoneNumber = "Please enter a valid phone number";
                   } 
-                  // Ensure the length constraint is also respected (10–15 digits excluding country code)
                   else if (phoneNumberParsed.number.length < 10) {
                     newErrors.phoneNumber = "Phone number must be at least 10 digits long";
                   } else if (phoneNumberParsed.number.length > 15) {

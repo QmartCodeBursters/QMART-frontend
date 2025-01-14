@@ -6,116 +6,98 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  max-width: 960px;
-  margin: 0 auto;
-  margin-top: 100px;
-  margin-bottom: 100px;
-  height: auto;
-  background-color: #ffff;
-  position: relative;
+  padding: 40px;
+  /* font-family: Arial, sans-serif; */
+  max-width: 500px;
+  margin: 100px auto;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
   box-sizing: border-box;
-  box-shadow: 3px 4px 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  padding-top: 20px;
-  padding-bottom: 40px;
-  position: relative;
 `;
 
 const BackButton = styled.div`
   position: absolute;
   top: 20px;
   left: 20px;
-  background-color: #fff;
-  color: rgba(27, 99, 146, 1);
-  font-size: 24px;
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  background-color: #fff;
+  color: #1b6392;
+  font-size: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
   cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #f0f8ff;
+    color: #0b4166;
+  }
 `;
 
 const Header = styled.h2`
-  margin: 10px 0;
+  /* margin: 20px 0 10px; */
   color: #333;
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
+  text-align: center;
 `;
 
 const SubHeader = styled.p`
   color: #666;
   font-size: 16px;
-  margin: 5px 0;
+  /* margin: 5px 0; */
+  text-align: center;
 `;
 
 const CircleImage = styled.div`
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background-color: rgba(27, 99, 146, 1);
+  background-color: #1b6392;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 32px;
   font-weight: bold;
-  margin: 10px 0;
-  overflow: hidden;
-`;
-
-const InfoCard = styled.div`
-  background-color: #edeff2;
-  border-radius: 8px;
-  padding: 15px;
-  width: 100%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 15px 0px;
-  box-sizing: border-box;
+  margin: 15px 0;
 `;
 
 const AmountDisplay = styled.div`
   width: 100%;
   padding: 20px;
-  font-size: 32px;
+  font-size: 36px;
   font-weight: bold;
   text-align: center;
-  background-color: #edeff2;
-  border-radius: 10px;
-  margin: 20px 20px;
-  box-sizing: border-box;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  margin: 20px 0;
 `;
 
 const PinGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  justify-content: center;
+  gap: 10px;
   width: 100%;
-  margin-bottom: 20px;
 `;
 
 const PinButton = styled.button`
-  width: 100%;
-  padding: 15px;
+  padding: 20px;
   font-size: 20px;
   font-weight: bold;
-  text-align: center;
   border: none;
-  border-radius: 8px;
-  background-color: #edeff2;
+  border-radius: 6px;
+  background-color: #fedfad;
   color: #333;
   cursor: pointer;
+  transition: all 0.2s ease;
 
   &:hover {
-    background-color: #e0e0e0;
+    background-color: #f8c88b;
   }
 `;
 
@@ -123,121 +105,84 @@ const SendButton = styled.button`
   width: 100%;
   padding: 15px;
   font-size: 18px;
-  color: white;
-  background-color: rgba(27, 99, 146, 1);
+  font-weight: bold;
+  color: #fff;
+  background-color: #f8931d;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  margin-top: 10px;
-  font-weight: bold;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #0b4166;
+    background-color: #ac5e04;
+  }
+
+  &:disabled {
+    background-color: #b3cde3;
+    cursor: not-allowed;
   }
 `;
 
 const Overlay = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 10;
   display: ${({ show }) => (show ? "block" : "none")};
 `;
 
 const ConfirmationPage = styled.div`
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 10px 10px;
-  padding-bottom: 40px;
   width: 100%;
-  overflow: hidden;
-  margin-right: 0px;
-  margin-bottom: 0px;
-  height: auto;
   background-color: #fff;
-  border-radius: 10px 10px 0 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transform: ${({ show }) => (show ? "translateY(0)" : "translateY(100%)")};
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transform: ${({ show }) => (show ? "translateY(0)" : "translateY(100%)")}; 
   transition: transform 0.3s ease-in-out;
   z-index: 20;
 `;
 
-const ConfirmationHeader = styled.div`
-  display: flex;
-  gap: 37%;
-  align-items: center;
-`;
-
-const XIcon = styled.div`
-  cursor: pointer;
-  font-size: 24px;
-  color: #333;
-`;
-
 const ReminderPopup = styled.div`
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 300px;
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 30;
   text-align: center;
-  width: 200px;
 
   .popupButton {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     gap: 10px;
 
     button {
-      background-color: rgba(27, 99, 146, 1);
-      color: white;
+      padding: 10px 15px;
+      background-color: #f8931d;
+      color: #fff;
       border: none;
-      border-radius: 2px;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f8931d;
+      }
     }
   }
 `;
 
-const PinPopup = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 40;
-  text-align: center;
-  width: 200px;
-
-  .popupButton {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-
-    button {
-      background-color: rgba(27, 99, 146, 1);
-      color: white;
-      border: none;
-      border-radius: 2px;
-    }
-  }
-`;
-
-const PinInput = styled.div`
-  display: flex;
-`;
 
 const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
   const [amount, setAmount] = useState("");

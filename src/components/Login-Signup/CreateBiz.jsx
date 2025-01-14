@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import createbiz from "../../assets/png/createbiz.png";
+
 import Axios from "../../utilis/Axios";
 import summaryAPI from "../../common/summaryAPI";
 import AxiosToastError from "../../utilis/AxiosToastError";
@@ -91,7 +91,7 @@ const CreateBiz = () => {
           Create Your First Business!
         </span>
         <Bizcont>
-          {/* <img src={createbiz} alt="business image" /> */}
+          
 
           <Bizdetails>
             <form onSubmit={handleSubmit}>

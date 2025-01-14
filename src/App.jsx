@@ -36,6 +36,7 @@ import Dashboard from "./components/dashboard/Dashboard";
 import { AppProvider } from "./common/AuthContext";
 import CreateBiz from "./components/Login-Signup/CreateBiz";
 
+
 function App() {
   return (
     <AppProvider>
@@ -57,7 +58,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/makepayment" element={<PaymentPage />} />
           <Route path="/paymentsuccess" element={<PaymentSuccess />} />
-          <Route path="Wallet" element={<Wallet />} />
+          <Route path="/wallet" element={<Wallet />} />
           <Route path="/WalletSettings" element={<WalletSettings />} />
           <Route path="WithdrawalHistory" element={<WithdrawalHistory />} />
           <Route path="/withdrawaldetails" element={<TransactionDetails />} />

@@ -21,6 +21,22 @@ const Header = () => {
     }
   }, [setEmail, setRole]);
 
+  useEffect(() => {
+    const preventBack = () => {
+      window.history.pushState(null, null, window.location.href);
+    };
+  
+    if (email) {
+      window.history.pushState(null, null, window.location.href);
+      window.addEventListener("popstate", preventBack);
+  
+      return () => {
+        window.removeEventListener("popstate", preventBack);
+      };
+    }
+  }, [email]);
+  
+
   const handleToggle = () => {
     setToggle(!toggle);
   };
@@ -69,10 +85,8 @@ const Header = () => {
 
           <Signcont>
             {email ? (
-              // Show Logout button if the user is logged in
               <LogoutButton onClick={handleLogout}>Log Out</LogoutButton>
             ) : (
-              // Otherwise, show Login/Signup buttons
               <>
                 <Link to="/login">
                   <LoginButton>Login</LoginButton>
@@ -83,6 +97,7 @@ const Header = () => {
               </>
             )}
           </Signcont>
+
 
           <Sidenav onClick={handleToggle}>
             <IoReorderTwoOutline />

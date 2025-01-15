@@ -1,5 +1,5 @@
 import "./sec.css";
-
+import { MdOutlineVerifiedUser } from "react-icons/md";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -10,9 +10,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 30px;
   font-family: Arial, sans-serif;
-  max-width: 960px;
+  max-width: 450px;
   margin: 0 auto;
   margin-top: 100px;
   margin-bottom: 100px;
@@ -20,11 +20,16 @@ const Container = styled.div`
   background-color: #ffff;
   position: relative;
   box-sizing: border-box;
-  box-shadow: 3px 4px 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+  rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   border-radius: 10px;
   padding-top: 20px;
   padding-bottom: 40px;
   position: relative;
+
+  p {
+    font-size: 20px;
+  }
 `;
 
 const BackButton = styled.div`
@@ -44,58 +49,58 @@ const BackButton = styled.div`
   cursor: pointer;
 `;
 
-const Header = styled.h2`
-  margin: 10px 0;
-  color: #333;
-  font-size: 24px;
-  font-weight: bold;
-`;
+// const Header = styled.h2`
+//   margin: 10px 0;
+//   color: #333;
+//   font-size: 24px;
+//   font-weight: bold;
+// `;
 
-const SubHeader = styled.p`
-  color: #666;
-  font-size: 16px;
-  margin: 5px 0;
-`;
+// const SubHeader = styled.p`
+//   color: #666;
+//   font-size: 16px;
+//   margin: 5px 0;
+// `;
 
-const CircleImage = styled.div`
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background-color: rgba(27, 99, 146, 1);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px;
-  font-weight: bold;
-  margin: 10px 0;
-  overflow: hidden;
-`;
+// const CircleImage = styled.div`
+//   width: 80px;
+//   height: 80px;
+//   border-radius: 50%;
+//   background-color: rgba(27, 99, 146, 1);
+//   color: #fff;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   font-size: 32px;
+//   font-weight: bold;
+//   margin: 10px 0;
+//   overflow: hidden;
+// `;
 
-const InfoCard = styled.div`
-  background-color: #edeff2;
-  border-radius: 8px;
-  padding: 15px;
-  width: 100%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 15px 0px;
-  box-sizing: border-box;
-`;
+// const InfoCard = styled.div`
+//   background-color: #edeff2;
+//   border-radius: 8px;
+//   padding: 15px;
+//   width: 100%;
+//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   margin: 15px 0px;
+//   box-sizing: border-box;
+// `;
 
-const AmountDisplay = styled.div`
-  width: 100%;
-  padding: 20px;
-  font-size: 32px;
-  font-weight: bold;
-  text-align: center;
-  background-color: #edeff2;
-  border-radius: 10px;
-  margin: 20px 20px;
-  box-sizing: border-box;
-`;
+// const AmountDisplay = styled.div`
+//   width: 100%;
+//   padding: 20px;
+//   font-size: 32px;
+//   font-weight: bold;
+//   text-align: center;
+//   background-color: #edeff2;
+//   border-radius: 10px;
+//   margin: 20px 20px;
+//   box-sizing: border-box;
+// `;
 
 const PinGrid = styled.div`
   display: grid;
@@ -114,7 +119,7 @@ const PinButton = styled.button`
   text-align: center;
   border: none;
   border-radius: 8px;
-  background-color: #edeff2;
+  background-color: #f2f2ed;
   color: #333;
   cursor: pointer;
 
@@ -128,15 +133,15 @@ const SendButton = styled.button`
   padding: 15px;
   font-size: 18px;
   color: white;
-  background-color: rgba(27, 99, 146, 1);
+  background-color: #fa8232;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 40px;
   font-weight: bold;
 
   &:hover {
-    background-color: #0b4166;
+    background-color: #803e00;
   }
 `;
 
@@ -212,6 +217,12 @@ const ReminderPopup = styled.div`
   }
 `;
 
+const Iconstyle = styled.p`
+  font-size: 80px;
+  margin-bottom: 20px;
+  color: #e69705;
+`
+
 const PinPopup = styled.div`
   position: absolute;
   top: 50%;
@@ -271,6 +282,7 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
 
   const handlePayment = () => {
     togglePinModalDisplay();
+    navigate("/dashboard");
     // if (amount && parseFloat(amount) <= parseFloat(walletBalance)) {
     //   setShowConfirmation(true);
     // } else if (!amount) {
@@ -311,13 +323,14 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
     <Container>
       <BackButton onClick={() => navigate("/dashboard")}>&larr;</BackButton>
 
+      <Iconstyle as={MdOutlineVerifiedUser} />
       <p>Transaction Successful</p>
-      <SendButton onClick={handlePayment}>Send Money</SendButton>
+      <SendButton onClick={handlePayment}>Done</SendButton>
 
       {/* Overlay */}
       <Overlay show={showConfirmation} />
       {/* PIN Popup */}
-      <Modal open={openPinModal} onCancel={togglePinModalDisplay} footer={null}>
+      {/* <Modal open={openPinModal} onCancel={togglePinModalDisplay} footer={null}>
         <div className="otp-form">
           <div className="otp-div">
             <OtpInput
@@ -343,7 +356,7 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
             )}
           </div>
         </div>
-      </Modal>
+      </Modal> */}
     </Container>
   );
 };

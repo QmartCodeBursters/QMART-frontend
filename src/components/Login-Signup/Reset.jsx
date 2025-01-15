@@ -1,131 +1,180 @@
-import { MdArrowRightAlt } from "react-icons/md";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useAppContext } from "../../common/AuthContext";
+import summaryAPI from "../../common/summaryAPI";
+import Axios from "../../utilis/Axios";
+import AxiosToastError from "../../utilis/AxiosToastError";
 
-const ResetPassword = () => {
+const VerifyEmailOTP = () => {
+  const {setEmail } = useAppContext();
+  const [data, setData] = useState({
+    email: "",
+  });
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (!data.email.trim()) {
+        toast.error("Email is required");
+        return;
+      }
+
+      const response = await Axios({
+        ...summaryAPI.emailResetPass,
+        data: data,
+      });
+
+      if (response.data.error) {
+        toast.error(response.data.message || "Something went wrong");
+        return;
+      }
+
+      if (response.data.success) {
+        toast.success(response.data.message) || "Email sent successfully";
+        setEmail(data.email);
+        setData({
+          email: "",
+        });
+        navigate("/otp-verification");
+      }
+    } catch (error) {
+      AxiosToastError(error);
+    }
+  };
+
+  const isEmailValid = data.email.trim() !== "";
+
   return (
     <Wrapper>
-      <LoginContainer>
-        <form>
-          <h2>Reset Password</h2>
-          <p>Enter your registered email address</p>
-          
-          <label> <br/>
-            {/* <article>
-              <p>Verification code</p>
-              <Link to= "/verify"><span>Resend code</span> <br/></Link>
-              
-            </article> */}
-            
-          <input type="text"  placeholder="Enter email address"/>
-          </label>
+      <InnerWrapper>
+        <FormCont>
+          <form onSubmit={handleSubmit}>
+            <h2>FORGOT PASSWORD</h2>
+            <StyledInput
+              type="email"
+              placeholder="Enter your Registerd Email"
+              name="email"
+              value={data.email}
+              onChange={handleChange}
+            />
+            <SubmitButton
+              type="submit"
+              className={isEmailValid ? "active" : ""}
+              disabled={!isEmailValid}
+            >
+              Verify
+            </SubmitButton>
 
-          <Link to= "/login"><button type="submit">Send OTP code <MdArrowRightAlt/></button></Link>
-          
-          
-        </form>
+            <span>
+              Already have an account? <Link to="/login">Login</Link>
+            </span>
 
-      </LoginContainer>
+          </form>
+        </FormCont>
+      </InnerWrapper>
     </Wrapper>
   );
 };
 
-export default ResetPassword;
+export default VerifyEmailOTP;
+
 
 const Wrapper = styled.div`
- 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 100px);
+  /* background: #EDF2EE; */
 `;
 
-const LoginContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  /* height: 100vh; */
-  margin: 50px auto;
+const InnerWrapper = styled.div`
+  width: 85%;
+  max-width: 1200px;
+`;
+
+const FormCont = styled.div`
+  /* background-color: #fff; */
+  width: 80%;
+  max-width: 450px;
+  padding: 40px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 0 auto;
+
 
   form {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    width: 80%;
-    max-width: 450px;
-    /* height: 300px; */
-    background-color: white;
-    padding: 20px 40px;
-    border-radius: 10px;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-    margin: 60px 0;
-    text-align: center;
-    animation: slideInFromTop 1s ease-out;
-
-
-    @keyframes slideInFromTop {
-      from {
-        transform: translateY(-20px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
+    gap: 15px;
+    font-size: 20px;
+    font-weight: 500;
     
-    article {
-      display: flex;
-      align-items: center;
-      /* justify-content: space-between; */
 
-      span {
-        margin-left: 120px;
-        color: #1B6392;
-        font-size: 14px;
-      }
-      a {
-        color: black;
-        text-decoration: none;
-      }
-
-    }
     h2 {
-      text-align: center;
       font-size: 24px;
-      margin-bottom: 8px;
+      text-align: center;
     }
 
-    p {
-      margin: 10px 0;
-    }
+    span {
+        font-size: 12px;
 
-    input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 5px;
-      border: 1px solid grey;
-      margin: 5px 0;
-      outline: none;
-      margin-bottom: 20px;
-    }
-
-    button {
-      width: 100%;
-      height: 40px;
-      border-radius: 5px;
-      border: none;
-      background-color: #fa8232;
-      color: white;
-      cursor: pointer;
-      margin: 10px 0;
-
-      &:hover {
-        background-color: #803e00;
-      }
-
-      a {
-        text-decoration: none; 
-        color: white;
-        font-weight: bold;
-    }
+        a {
+            text-decoration: none;
+            color: red;
+        }
     }
   }
-`
+
+  @media (max-width: 768px) {
+    width: 80%;
+  }
+  
+  
+`;
+
+const StyledInput = styled.input`
+  width: 100%;
+  padding: 12px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+const SubmitButton = styled.button`
+  width: 100%;
+  background-color: #fa8232;
+  color: white;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &.active {
+    background-color: #f8931d;
+    cursor: pointer;
+  }
+
+  &:hover {
+    background-color: #d5700b;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+  }
+`;
+

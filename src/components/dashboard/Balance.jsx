@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { FaUser, FaHistory, FaQrcode, FaBell, FaCog } from "react-icons/fa";
+import { FaUser, FaHistory, FaQrcode, FaBell, FaCog, FaSignOutAlt } from "react-icons/fa";
+import { MdLogout } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify"; // Assuming you're using react-toastify for toast notifications.
+
+
+
 
 const Container = styled.div`
   position: relative;
@@ -172,10 +177,14 @@ const Overlay = styled.div`
   z-index: 5;
 `;
 
+
+
+
 const Balance = ({ storeName, balance, role }) => {
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const navigate = useNavigate(); // Initialize navigate
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Track login state
+  const navigate = useNavigate();
 
   const toggleBalanceVisibility = () => {
     setIsBalanceVisible((prevState) => !prevState);
@@ -190,31 +199,66 @@ const Balance = ({ storeName, balance, role }) => {
   };
 
   const handleNavigation = (route) => {
-    navigate(route); // Navigate to the specified route
-    closeDropdown(); // Close the dropdown after navigation
+    navigate(route);
+    closeDropdown();
+  };
+
+  const disableBackNavigation = () => {
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = () => {
+      window.history.pushState(null, "", window.location.href);
+    };
+  };
+
+  const handleLogout = () => {
+    // Clear storage
+    localStorage.clear();
+    sessionStorage.clear();
+    setIsLoggedIn(false); // Update login state
+
+    // Show success toast
+    toast.success("Logout successful!");
+
+    // Disable browser back navigation
+    disableBackNavigation();
+
+    // Navigate to home
+    navigate("/", { replace: true });
+    closeDropdown();
   };
 
   return (
     <Container>
+      {/* Overlay for dropdown menu */}
       <Overlay isOpen={isDropdownOpen} onClick={closeDropdown} />
+
+      {/* Dropdown menu */}
       <DropdownMenu className={isDropdownOpen ? "open" : ""}>
-        <DropdownItem onClick={() => handleNavigation("/profile")}>
-          <FaUser /> Profile
-        </DropdownItem>
-        <DropdownItem onClick={() => handleNavigation("/paymenthistory")}>
-          <FaHistory /> Payment History
-        </DropdownItem>
-        <DropdownItem onClick={() => handleNavigation("/qrcodemanagement")}>
-          <FaQrcode /> QR Code Management
-        </DropdownItem>
-        <DropdownItem onClick={() => handleNavigation("/notificationsettings")}>
-          <FaBell /> Notification Settings
-        </DropdownItem>
-        <DropdownItem onClick={() => handleNavigation("/accountsettings")}>
-          <FaCog /> Account Settings
+        {isLoggedIn && (
+          <>
+            <DropdownItem onClick={() => handleNavigation("/profile")}>
+              <FaUser /> Profile
+            </DropdownItem>
+            <DropdownItem onClick={() => handleNavigation("/paymenthistory")}>
+              <FaHistory /> Payment History
+            </DropdownItem>
+            <DropdownItem onClick={() => handleNavigation("/qr-code")}>
+              <FaQrcode /> QR Code Management
+            </DropdownItem>
+            <DropdownItem onClick={() => handleNavigation("/notificationsettings")}>
+              <FaBell /> Notification Settings
+            </DropdownItem>
+            <DropdownItem onClick={() => handleNavigation("/accountsettings")}>
+              <FaCog /> Account Settings
+            </DropdownItem>
+          </>
+        )}
+        <DropdownItem onClick={handleLogout}>
+          <FaSignOutAlt /> Logout
         </DropdownItem>
       </DropdownMenu>
 
+      {/* Header */}
       <Header>
         <LeftSection>
           <span className="hamburger" onClick={toggleDropdown}>
@@ -228,6 +272,28 @@ const Balance = ({ storeName, balance, role }) => {
         </RightSection>
       </Header>
 
+      {/* Navbar */}
+      <nav>
+        {isLoggedIn ? (
+          // Links for logged-in users
+          <>
+            {/* <a href="/dashboard">Dashboard</a>
+            <a href="/wallet">Wallet</a>
+            <a href="/profile">Profile</a> */}
+          </>
+        ) : (
+          // Links for non-logged-in users
+          <>
+            <a href="/">Home</a>
+            <a href="/contact">Contact</a>
+            <a href="/about">About</a>
+            <a href="/login">Login</a>
+            <a href="/signup">Sign Up</a>
+          </>
+        )}
+      </nav>
+
+      {/* Balance Card */}
       <BalanceCard>
         <p>
           Dear {storeName}, here is your balance:{" "}
@@ -237,20 +303,18 @@ const Balance = ({ storeName, balance, role }) => {
         </p>
         <h2>{isBalanceVisible ? `₦${balance.toLocaleString()}` : "₦****"}</h2>
         <ButtonGroup>
-          {role === "customer" ? (
+          {role === "customer" && isLoggedIn ? (
             <Button primary onClick={() => navigate("/UserScan")}>
               MAKE PAYMENT
             </Button>
-          ) : role === "merchant" ? (
-            // <Button primary onClick={() => navigate("/qr-code")}>
+          ) : role === "merchant" && isLoggedIn ? (
             <Button primary onClick={() => navigate("/ReceivePayment")}>
               RECEIVE PAYMENT
             </Button>
           ) : null}
-          {/* <Button primary onClick={() => navigate("/UserScan")}>
-            MAKE PAYMENT
-          </Button> */}
-          <Button onClick={() => navigate("/wallet")}>Withdraw Funds</Button>
+          {isLoggedIn && (
+            <Button onClick={() => navigate("/wallet")}>Withdraw Funds</Button>
+          )}
         </ButtonGroup>
       </BalanceCard>
     </Container>
@@ -258,3 +322,4 @@ const Balance = ({ storeName, balance, role }) => {
 };
 
 export default Balance;
+

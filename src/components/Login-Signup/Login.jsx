@@ -91,7 +91,7 @@ const Login = () => {
     <Wrapper>
       <FormContainer>
         <form onSubmit={handleSubmit}>
-          <h2>Login</h2>
+          <h2>LOGIN</h2>
 
           <input
             type="email"
@@ -110,7 +110,7 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <p>Forgot Password?</p>
+          <Link to="/reset-password"><p>Forgot Password?</p></Link>
 
           <button type="submit">Login</button>
 
@@ -155,7 +155,7 @@ const FormContainer = styled.div`
     justify-content: center;
     width: 80%;
     max-width: 450px;
-    background-color: white;
+    /* background-color: white; */
     padding: 20px 40px;
     border-radius: 10px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
@@ -219,59 +219,3 @@ const FormContainer = styled.div`
   }
 `;
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  margin-top: 20px;
-  text-align: center;
-  span {
-  }
-
-  p {
-    margin: 20px 0;
-  }
-`;
-
-const GoogleButton = styled.div`
-  background-color: white;
-  border: 1px solid grey;
-  display: flex;
-  align-items: center;
-  height: 40px;
-  border-radius: 5px;
-  font-size: 14px;
-  justify-content: center;
-  cursor: pointer;
-
-  img {
-    width: 20px;
-    margin-right: 20px;
-  }
-  &:hover {
-    background-color: #e8e8e8;
-  }
-`;
-
-const AppleButton = styled.div`
-  background-color: white;
-  border: 1px solid grey;
-  display: flex;
-  align-items: center;
-  height: 40px;
-  border-radius: 5px;
-  font-size: 14px;
-  justify-content: center;
-  cursor: pointer;
-
-  img {
-    width: 20px;
-    margin-right: 20px;
-  }
-
-  &:hover {
-    background-color: #e8e8e8;
-  }
-`;

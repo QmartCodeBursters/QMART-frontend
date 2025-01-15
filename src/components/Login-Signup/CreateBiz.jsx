@@ -88,7 +88,7 @@ const CreateBiz = () => {
         <span>
           {" "}
           <strong>Welcome to QMART😊</strong> <br />
-          Create Your First Business!
+          Create Your Business!
         </span>
         <Bizcont>
           
@@ -97,7 +97,7 @@ const CreateBiz = () => {
             <form onSubmit={handleSubmit}>
               <input
                 type="text"
-                placeholder="Business Name"
+                placeholder="Enter your Business Name"
                 name="businessName"
                 required
                 value={data.businessName}
@@ -107,7 +107,7 @@ const CreateBiz = () => {
 
               <input
                 type="text"
-                placeholder="Business Registration Number"
+                placeholder="Enter your Business Registration Number"
                 name="businessRegNumber"
                 value={data.businessRegNumber}
                 onChange={handleChange}
@@ -116,7 +116,7 @@ const CreateBiz = () => {
 
               <input
                 type="text"
-                placeholder="Business Description"
+                placeholder=" Business Description"
                 name="businessDescription"
                 value={data.businessDescription}
                 onChange={handleChange}

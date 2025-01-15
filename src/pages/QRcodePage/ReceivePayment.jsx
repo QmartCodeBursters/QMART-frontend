@@ -6,11 +6,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px;
+  padding: 30px;
   /* font-family: Arial, sans-serif; */
-  max-width: 500px;
+  max-width: 450px;
   margin: 100px auto;
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   box-sizing: border-box;
@@ -22,8 +22,8 @@ const BackButton = styled.div`
   left: 20px;
   width: 40px;
   height: 40px;
-  background-color: #fff;
-  color: #1b6392;
+  background-color: #333;
+  color: #fff;
   font-size: 24px;
   display: flex;
   align-items: center;
@@ -41,7 +41,7 @@ const BackButton = styled.div`
 const Header = styled.h2`
   /* margin: 20px 0 10px; */
   color: #333;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: bold;
   text-align: center;
 `;
@@ -57,7 +57,7 @@ const CircleImage = styled.div`
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background-color: #1b6392;
+  background-color: #fa8232;
   color: #fff;
   display: flex;
   align-items: center;
@@ -70,12 +70,13 @@ const CircleImage = styled.div`
 const AmountDisplay = styled.div`
   width: 100%;
   padding: 20px;
-  font-size: 36px;
+  font-size: 32px;
   font-weight: bold;
   text-align: center;
-  background-color: #f5f5f5;
-  border-radius: 6px;
-  margin: 20px 0;
+  background-color: #f0cea5;
+  border-radius: 8px;
+  margin: 20px 20px;
+  box-sizing: border-box;
 `;
 
 const PinGrid = styled.div`
@@ -91,7 +92,8 @@ const PinButton = styled.button`
   font-weight: bold;
   border: none;
   border-radius: 6px;
-  background-color: #fedfad;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   color: #333;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -119,7 +121,7 @@ const SendButton = styled.button`
   }
 
   &:disabled {
-    background-color: #b3cde3;
+    background-color: #e3cfb3;
     cursor: not-allowed;
   }
 `;

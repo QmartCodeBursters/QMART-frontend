@@ -2,9 +2,11 @@ import styled from "styled-components";
 import { IoMdArrowDropright, IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useAppContext } from "../../common/AuthContext"; // Import context for email state
 
 const Sidebar = ({ setDisplay }) => {
   const [openDropdown, setOpenDropdown] = useState(null); // Tracks which dropdown is open
+  const { email } = useAppContext(); // Retrieve email from context to check login state
 
   const handleClick = () => {
     setDisplay(false);
@@ -21,48 +23,52 @@ const Sidebar = ({ setDisplay }) => {
           <nav>Home</nav>
         </Styledlink>
 
-        {/* Dropdown for Dashboard */}
-        <Dropdown>
-          <DropdownToggle onClick={() => toggleDropdown("dashboard")}>
-            <nav>
-              Dashboard
-              {openDropdown === "dashboard" ? <IoIosArrowUp /> : <IoIosArrowDown />}
-            </nav>
-          </DropdownToggle>
-          {openDropdown === "dashboard" && (
-            <DropdownMenu>
-              <Styledlink to="/profile" onClick={handleClick}>
-                <DropdownItem>
-                  <IoMdArrowDropright /> Profile
-                </DropdownItem>
-              </Styledlink>
-              <Styledlink to="/payment-history" onClick={handleClick}>
-                <DropdownItem>
-                  <IoMdArrowDropright /> Payment History
-                </DropdownItem>
-              </Styledlink>
-              <Styledlink to="/qr-management" onClick={handleClick}>
-                <DropdownItem>
-                  <IoMdArrowDropright /> QR Code Management
-                </DropdownItem>
-              </Styledlink>
-              <Styledlink to="/notifications" onClick={handleClick}>
-                <DropdownItem>
-                  <IoMdArrowDropright /> Notifications
-                </DropdownItem>
-              </Styledlink>
-              <Styledlink to="/account-settings" onClick={handleClick}>
-                <DropdownItem>
-                  <IoMdArrowDropright /> Account Settings
-                </DropdownItem>
-              </Styledlink>
-            </DropdownMenu>
-          )}
-        </Dropdown>
+        {email && ( // Only show Dashboard dropdown and Wallet if logged in
+          <>
+            <Dropdown>
+              <DropdownToggle onClick={() => toggleDropdown("dashboard")}>
+                <nav>
+                  Dashboard
+                  {openDropdown === "dashboard" ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                </nav>
+              </DropdownToggle>
+              {openDropdown === "dashboard" && (
+                <DropdownMenu>
+                  <Styledlink to="/profile" onClick={handleClick}>
+                    <DropdownItem>
+                      <IoMdArrowDropright /> Profile
+                    </DropdownItem>
+                  </Styledlink>
+                  <Styledlink to="/payment-history" onClick={handleClick}>
+                    <DropdownItem>
+                      <IoMdArrowDropright /> Payment History
+                    </DropdownItem>
+                  </Styledlink>
+                  <Styledlink to="/qr-management" onClick={handleClick}>
+                    <DropdownItem>
+                      <IoMdArrowDropright /> QR Code Management
+                    </DropdownItem>
+                  </Styledlink>
+                  <Styledlink to="/notifications" onClick={handleClick}>
+                    <DropdownItem>
+                      <IoMdArrowDropright /> Notifications
+                    </DropdownItem>
+                  </Styledlink>
+                  <Styledlink to="/account-settings" onClick={handleClick}>
+                    <DropdownItem>
+                      <IoMdArrowDropright /> Account Settings
+                    </DropdownItem>
+                  </Styledlink>
+                </DropdownMenu>
+              )}
+            </Dropdown>
 
-        <Styledlink to="/wallet" onClick={handleClick}>
-          <nav>Wallet</nav>
-        </Styledlink>
+            <Styledlink to="/wallet" onClick={handleClick}>
+              <nav>Wallet</nav>
+            </Styledlink>
+          </>
+        )}
+
         <Styledlink to="/aboutUs" onClick={handleClick}>
           <nav>About Us</nav>
         </Styledlink>
@@ -71,28 +77,31 @@ const Sidebar = ({ setDisplay }) => {
         </Styledlink>
       </Naviga>
 
-      <Loginbutton>
-        <Button>
-          <button>
-            <Link to="/login" onClick={handleClick}>
-              Login
-            </Link>
-          </button>
-        </Button>
-        <Sighin>
-          <button>
-            <Link to="/signup" onClick={handleClick}>
-              Sign Up
-            </Link>
-          </button>
-        </Sighin>
-      </Loginbutton>
+      {!email && ( // Show login and signup buttons only when not logged in
+        <Loginbutton>
+          <Button>
+            <button>
+              <Link to="/login" onClick={handleClick}>
+                Login
+              </Link>
+            </button>
+          </Button>
+          <Sighin>
+            <button>
+              <Link to="/signup" onClick={handleClick}>
+                Sign Up
+              </Link>
+            </button>
+          </Sighin>
+        </Loginbutton>
+      )}
     </Container>
   );
 };
 
 export default Sidebar;
 
+// Styled components remain unchanged
 const Container = styled.div`
   min-height: calc(100vh - 70px);
   padding-left: 20px;

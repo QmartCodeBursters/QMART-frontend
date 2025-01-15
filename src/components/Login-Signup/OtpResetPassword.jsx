@@ -1,17 +1,13 @@
-
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Link, useNavigate, useLocation } from "react-router-dom"; 
-import AxiosToastError from "../../utilis/AxiosToastError";
+import { useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useAppContext } from "../../common/AuthContext";
 import Axios from "../../utilis/Axios";
 import summaryAPI from "../../common/summaryAPI";
-import toast from "react-hot-toast";
-import axios from "axios";
-import { useAppContext } from "../../common/AuthContext";
+import AxiosToastError from "../../utilis/AxiosToastError";
 
-
-
-const Otpgen = () => {
+const OtpResetPassword = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const email = location.state?.email || "";
@@ -19,7 +15,7 @@ const Otpgen = () => {
   useEffect(() => {
     if (!email) {
       toast.error("Email not found. Please try again.");
-      navigate("/previous-route");
+      // navigate("/previous-route");
     }
   }, [email, navigate]);
 
@@ -63,8 +59,8 @@ const Otpgen = () => {
 
     try {
       const response = await Axios({
-        method: summaryAPI.otpVerify.method,
-        url: summaryAPI.otpVerify.url,
+        method: summaryAPI.emailResetPass.method,
+        url: summaryAPI.emailResetPass.url,
         data: { otp: otpCode, email },
       });
 
@@ -148,9 +144,12 @@ const Otpgen = () => {
   );
 };
 
-export default Otpgen;
+export default OtpResetPassword;
 
 
+
+
+// Styled Components
 
 const Wrapper = styled.div`
   display: flex;
@@ -167,7 +166,7 @@ const InnerWrapper = styled.div`
 
 const FormCont = styled.div`
   background-color: #fff;
-  width: 50%;
+  width: 40%;
   padding: 40px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
@@ -193,6 +192,12 @@ const FormCont = styled.div`
         text-decoration: none;
         color: red;
       }
+
+      button {
+        background: transparent;
+        border: none;
+        color: red;
+      }
     }
   }
 
@@ -215,20 +220,14 @@ const StyledInput = styled.input`
 
   &:focus {
     outline: none;
-    border-color: #ffaf02;
-    background-color: #f8f7f2;
-  }
-
-  @media (max-width: 480px) {
-    width: 50px;
-    height: 50px;
-    font-size: 20px;
+    border-color: green;
+    background-color: #e8ffe8;
   }
 `;
 
 const SubmitButton = styled.button`
   width: 100%;
-  background-color: #f8931d;
+  background-color: gray;
   color: white;
   padding: 12px 20px;
   font-size: 16px;
@@ -239,33 +238,20 @@ const SubmitButton = styled.button`
   transition: background-color 0.3s ease;
 
   &.active {
-    background-color: #f8931d;
+    background-color: green;
     cursor: pointer;
   }
 
   &:hover {
-    background-color: #d5700b;
+    background-color: #025b08;
   }
 
   &:disabled {
     opacity: 0.6;
-    cursor: not-allowed;
   }
 `;
 
 const OtpInput = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    gap: 5px;
-  }
-
-  @media (max-width: 480px) {
-    gap: 3px;
-  }
 `;

@@ -10,20 +10,21 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  max-width: 960px;
+  /* padding: 20px; */
+  width: 80%;
+  max-width: 450px;
   margin: 0 auto;
   margin-top: 100px;
   margin-bottom: 100px;
   height: auto;
-  background-color: #ffff;
+  /* background-color: #ffff; */
   position: relative;
   box-sizing: border-box;
-  box-shadow: 3px 4px 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+      rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   border-radius: 10px;
-  padding-top: 20px;
-  padding-bottom: 40px;
+  padding: 30px;
+  
   position: relative;
 `;
 
@@ -31,8 +32,8 @@ const BackButton = styled.div`
   position: absolute;
   top: 20px;
   left: 20px;
-  background-color: #fff;
-  color: rgba(27, 99, 146, 1);
+  background-color: #333;
+  color: white;
   font-size: 24px;
   width: 40px;
   height: 40px;
@@ -53,15 +54,15 @@ const Header = styled.h2`
 
 const SubHeader = styled.p`
   color: #666;
-  font-size: 16px;
-  margin: 5px 0;
+  font-size: 14px;
+  /* margin: 5px 0; */
 `;
 
 const CircleImage = styled.div`
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background-color: rgba(27, 99, 146, 1);
+  background-color: #fa8232;
   color: #fff;
   display: flex;
   align-items: center;
@@ -73,7 +74,7 @@ const CircleImage = styled.div`
 `;
 
 const InfoCard = styled.div`
-  background-color: #edeff2;
+  background-color: #f2f1ed;
   border-radius: 8px;
   padding: 15px;
   width: 100%;
@@ -81,7 +82,7 @@ const InfoCard = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 15px 0px;
+  margin: 10px 0px;
   box-sizing: border-box;
 `;
 
@@ -91,9 +92,9 @@ const AmountDisplay = styled.div`
   font-size: 32px;
   font-weight: bold;
   text-align: center;
-  background-color: #edeff2;
-  border-radius: 10px;
-  margin: 20px 20px;
+  background-color: #f0cea5;
+  border-radius: 8px;
+  /* margin: 20px 20px; */
   box-sizing: border-box;
 `;
 
@@ -128,7 +129,7 @@ const SendButton = styled.button`
   padding: 15px;
   font-size: 18px;
   color: white;
-  background-color: rgba(27, 99, 146, 1);
+  background-color: #fa8232;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -136,7 +137,7 @@ const SendButton = styled.button`
   font-weight: bold;
 
   &:hover {
-    background-color: #0b4166;
+    background-color: #803e00;
   }
 `;
 
@@ -417,6 +418,7 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
           </div>
         </div>
       </Modal>
+
     </Container>
   );
 };

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import QR from "../../assets/png/adobe.png"
+import { useNavigate } from "react-router-dom";
 
 const QrCode = () => {
   const [buttonClicked, setButtonClicked] = useState("");
+  const navigate = useNavigate();
 
   // Handle Share button
   const handleShareClick = async () => {
@@ -34,6 +36,16 @@ const QrCode = () => {
     setButtonClicked("Download");
   };
 
+  const handleLogout = () => {
+    // Clear storage
+    localStorage.clear();
+    sessionStorage.clear();
+
+    navigate("/dashboard");
+    
+  };
+
+
   return (
     <Container>
       <Header>SCAN HERE</Header>
@@ -50,6 +62,10 @@ const QrCode = () => {
         <button onClick={handleDownloadClick} type="button">
           Download
         </button>
+
+        <button onClick={handleLogout} type="button">
+          Close
+        </button>
       </Buttons>
     
     </Container>
@@ -60,7 +76,7 @@ const QrCode = () => {
 export default QrCode;
 
 const Container = styled.div`
-  background-color: #edeff2;
+  /* background-color: #edeff2; */
   max-width: 1280px;
   /* height: 100vh; */
   padding: 30px;
@@ -87,7 +103,7 @@ const Header = styled.div`
 `;
 
  const Image = styled.img`
-    width:30%;
+    width:25%;
     max-width: 400px;
     height: auto;
 
@@ -98,8 +114,8 @@ const Header = styled.div`
 
  const Title = styled.div`
   margin: 20px 0px;
-  font-size:2.5rem;
-  font-weight:600;
+  font-size: 25px;
+  font-weight:800;
   text-align: center;
 
   @media (max-width: 768px) {

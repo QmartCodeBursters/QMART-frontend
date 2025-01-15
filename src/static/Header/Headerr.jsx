@@ -13,6 +13,7 @@ const Header = () => {
   const [toggle, setToggle] = useState(false);
   const { email, setEmail, role, setRole } = useAppContext();
 
+  // Set email and role on token detection
   useEffect(() => {
     const token = Cookies.get("jwt");
     if (token) {
@@ -21,50 +22,39 @@ const Header = () => {
     }
   }, [setEmail, setRole]);
 
+  // Prevent back navigation
   useEffect(() => {
     const preventBack = () => {
       window.history.pushState(null, null, window.location.href);
     };
-  
+
     if (email) {
       window.history.pushState(null, null, window.location.href);
       window.addEventListener("popstate", preventBack);
-  
+
       return () => {
         window.removeEventListener("popstate", preventBack);
       };
     }
   }, [email]);
-  
 
   const handleToggle = () => {
     setToggle(!toggle);
   };
 
-  const handleLogout = () => {
-    Cookies.remove("jwt");
-    setEmail(""); // Clear email
-    setRole(""); // Clear role
-    toast.success("Logged out successfully!");
-    navigate("/");
-  };
- 
   return (
     <>
       <Wrapper>
         <Navbar>
+          {/* Logo */}
           <Logocont>
             <img src={qlogo} alt="logo" />
             <p>Qmart</p>
           </Logocont>
 
+          {/* Navigation Links */}
           <Navlist>
-            <p>
-              <Link to="./">Home</Link>
-            </p>
-
-            {/* Conditionally render Dashboard and Wallet links */}
-            {email && (
+            {email ? (
               <>
                 <p>
                   <Link to="/dashboard">Dashboard</Link>
@@ -72,21 +62,31 @@ const Header = () => {
                 <p>
                   <Link to="/wallet">Wallet</Link>
                 </p>
+                <p>
+                  <Link to="/contact">Contact Us</Link>
+                </p>
+                <p>
+                  <Link to="/aboutUs">About Us</Link>
+                </p>
+              </>
+            ) : (
+              <>
+                <p>
+                  <Link to="./">Home</Link>
+                </p>
+                <p>
+                  <Link to="/contact">Contact Us</Link>
+                </p>
+                <p>
+                  <Link to="/aboutUs">About Us</Link>
+                </p>
               </>
             )}
-
-            <p>
-              <Link to="/contact">Contact Us</Link>
-            </p>
-            <p>
-              <Link to="/aboutUs">About us</Link>
-            </p>
           </Navlist>
 
+          {/* Conditional Buttons */}
           <Signcont>
-            {email ? (
-              <LogoutButton onClick={handleLogout}>Log Out</LogoutButton>
-            ) : (
+            {!email && (
               <>
                 <Link to="/login">
                   <LoginButton>Login</LoginButton>
@@ -98,19 +98,21 @@ const Header = () => {
             )}
           </Signcont>
 
-
+          {/* Mobile Sidebar Toggle */}
           <Sidenav onClick={handleToggle}>
             <IoReorderTwoOutline />
           </Sidenav>
         </Navbar>
       </Wrapper>
 
+      {/* Sidebar */}
       {toggle && <Sidebar setDisplay={setToggle} />}
     </>
   );
 };
 
 export default Header;
+
 
 
 const Wrapper = styled.div`

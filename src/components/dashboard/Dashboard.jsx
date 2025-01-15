@@ -23,102 +23,103 @@ const Dashboard = () => {
     balance: 0,
   });
 
-  const recentPaymentsData = [
-    {
-      name: "Aserikan Adetola",
-      date: "9 January 2023",
-      amount: 0,
-      status: "completed",
-    },
-    {
-      name: "Fatimah Fatimah",
-      date: "January 25th",
-      amount: 0,
-      status: "on the way",
-    },
-    {
-      name: "Foluso Ojo",
-      date: "January 25th",
-      amount: 0,
-      status: "completed",
-    },
-    {
-      name: "Aserikan Adetola",
-      date: "9 January 2023",
-      amount: 0,
-      status: "completed",
-    },
-    {
-      name: "Fatimah Fatimah",
-      date: "January 25th",
-      amount: 0,
-      status: "on the way",
-    },
-    {
-      name: "Foluso Ojo",
-      date: "January 25th",
-      amount: 0,
-      status: "completed",
-    },
-    {
-      name: "Aserikan Adetola",
-      date: "9 January 2023",
-      amount: 0,
-      status: "completed",
-    },
-    {
-      name: "Fatimah Fatimah",
-      date: "January 25th",
-      amount: 0,
-      status: "on the way",
-    },
-    {
-      name: "Foluso Ojo",
-      date: "January 25th",
-      amount: 0,
-      status: "completed",
-    },
-    {
-      name: "Aserikan Adetola",
-      date: "9 January 2023",
-      amount: 0,
-      status: "completed",
-    },
-    {
-      name: "Fatimah Fatimah",
-      date: "January 25th",
-      amount: 0,
-      status: "on the way",
-    },
-    {
-      name: "Foluso Ojo",
-      date: "January 25th",
-      amount: 0,
-      status: "completed",
-    },
-    {
-      name: "Aserikan Adetola",
-      date: "9 January 2023",
-      amount: 0,
-      status: "completed",
-    },
-    {
-      name: "Fatimah Fatimah",
-      date: "January 25th",
-      amount: 0,
-      status: "on the way",
-    },
-    {
-      name: "Foluso Ojo",
-      date: "January 25th",
-      amount: 0,
-      status: "completed",
-    },
-  ];
+  // const recentPaymentsData = [
+  //   {
+  //     name: "Aserikan Adetola",
+  //     date: "9 January 2023",
+  //     amount: 0,
+  //     status: "completed",
+  //   },
+  //   {
+  //     name: "Fatimah Fatimah",
+  //     date: "January 25th",
+  //     amount: 0,
+  //     status: "on the way",
+  //   },
+  //   {
+  //     name: "Foluso Ojo",
+  //     date: "January 25th",
+  //     amount: 0,
+  //     status: "completed",
+  //   },
+  //   {
+  //     name: "Aserikan Adetola",
+  //     date: "9 January 2023",
+  //     amount: 0,
+  //     status: "completed",
+  //   },
+  //   {
+  //     name: "Fatimah Fatimah",
+  //     date: "January 25th",
+  //     amount: 0,
+  //     status: "on the way",
+  //   },
+  //   {
+  //     name: "Foluso Ojo",
+  //     date: "January 25th",
+  //     amount: 0,
+  //     status: "completed",
+  //   },
+  //   {
+  //     name: "Aserikan Adetola",
+  //     date: "9 January 2023",
+  //     amount: 0,
+  //     status: "completed",
+  //   },
+  //   {
+  //     name: "Fatimah Fatimah",
+  //     date: "January 25th",
+  //     amount: 0,
+  //     status: "on the way",
+  //   },
+  //   {
+  //     name: "Foluso Ojo",
+  //     date: "January 25th",
+  //     amount: 0,
+  //     status: "completed",
+  //   },
+  //   {
+  //     name: "Aserikan Adetola",
+  //     date: "9 January 2023",
+  //     amount: 0,
+  //     status: "completed",
+  //   },
+  //   {
+  //     name: "Fatimah Fatimah",
+  //     date: "January 25th",
+  //     amount: 0,
+  //     status: "on the way",
+  //   },
+  //   {
+  //     name: "Foluso Ojo",
+  //     date: "January 25th",
+  //     amount: 0,
+  //     status: "completed",
+  //   },
+  //   {
+  //     name: "Aserikan Adetola",
+  //     date: "9 January 2023",
+  //     amount: 0,
+  //     status: "completed",
+  //   },
+  //   {
+  //     name: "Fatimah Fatimah",
+  //     date: "January 25th",
+  //     amount: 0,
+  //     status: "on the way",
+  //   },
+  //   {
+  //     name: "Foluso Ojo",
+  //     date: "January 25th",
+  //     amount: 0,
+  //     status: "completed",
+  //   },
+  // ];
 
+  const recentPaymentsData = [];
   // Mock data for different months (for dynamic month selection)
   const mockData = {
-    currentMonth: "December",
+    currentMonth: "January",
     months: [
       {
         name: "January",
@@ -196,7 +197,11 @@ const Dashboard = () => {
 
   return (
     <Container>
-      <Balance storeName={storeData.storeName} balance={storeData.balance} role={storeData.role} />
+      <Balance
+        storeName={storeData.storeName}
+        balance={storeData.balance}
+        role={storeData.role}
+      />
       <CashFlow
         selectedMonthReceived={selectedMonthReceived}
         setSelectedMonthReceived={setSelectedMonthReceived}

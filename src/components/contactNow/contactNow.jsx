@@ -289,21 +289,21 @@ const Contactnow = () => {
     <Wrapper>
       <Contactwrapper>
         <Assisttoday>
-          <Link to="/wallet">
+          <Link to="">
             <button>
               <RiTruckLine />
               Track Payment
             </button>
           </Link>
 
-          <Link to="/reset-password">
+          <Link to="">
             <button>
               <FaUnlockAlt />
               Reset Password
             </button>
           </Link>
 
-          <Link to="/dashboard">
+          <Link to="">
             <button>
               <FaRegUser />
               User Account

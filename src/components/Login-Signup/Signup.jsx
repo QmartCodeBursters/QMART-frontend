@@ -157,11 +157,11 @@ const Signup = () => {
     <Wrapper>
       <FormContainer>
         <form onSubmit={handleSubmit}>
-          <h2>Create Account</h2>
+          <h2>LET'S GET YOU STARTED</h2>
 
           <input
             type="text"
-            placeholder="First Name"
+            placeholder="Enter your First Name"
             required
             name="firstName"
             value={data.firstName}
@@ -171,7 +171,7 @@ const Signup = () => {
 
           <input
             type="text"
-            placeholder="Last Name"
+            placeholder="Enter your Last Name"
             required
             name="lastName"
             value={data.lastName}
@@ -181,7 +181,7 @@ const Signup = () => {
 
           <input
             type="email"
-            placeholder="Email"
+            placeholder="Enter your Email"
             required
             name="email"
             value={data.email}
@@ -237,7 +237,7 @@ const Signup = () => {
 
           <input
             type="text"
-            placeholder="Current Address"
+            placeholder="Enter your Address"
             required
             name="address"
             value={data.address}
@@ -280,7 +280,7 @@ const Signup = () => {
           <PasswordWrapper>
             <input
               type={passwordVisible ? "text" : "password"}
-              placeholder="Confirm Password"
+              placeholder="Re-enter your Password"
               required
               name="confirmPassword"
               value={data.confirmPassword}
@@ -346,7 +346,7 @@ const FormContainer = styled.div`
     justify-content: center;
     width: 80%;
     max-width: 450px;
-    background-color: white;
+    /* background-color: white; */
     padding: 20px 40px;
     border-radius: 10px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;

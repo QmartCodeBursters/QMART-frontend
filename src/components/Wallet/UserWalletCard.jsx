@@ -392,3 +392,4 @@ function UserWalletCard({ balance }) {
 
 export default UserWalletCard;
 
+``

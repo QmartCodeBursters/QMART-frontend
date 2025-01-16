@@ -35,7 +35,7 @@ function Wallet() {
   // Mock data for wallet balance
   const storeData = {
     storeName: "QMart Stores",
-    balance: 1156734534.45, // Example balance
+    balance: 0, // Example balance
   };
 
   // Mock API call for transactions

@@ -239,18 +239,18 @@ const Balance = ({ storeName, balance, role }) => {
         <ButtonGroup>
           {role === "customer" ? (
             <Button primary onClick={() => navigate("/UserScan")}>
-              MAKE PAYMENT
+              Make Payment
             </Button>
           ) : role === "merchant" ? (
             // <Button primary onClick={() => navigate("/qr-code")}>
             <Button primary onClick={() => navigate("/ReceivePayment")}>
-              RECEIVE PAYMENT
+              Receive Payment
             </Button>
           ) : null}
           {/* <Button primary onClick={() => navigate("/UserScan")}>
             MAKE PAYMENT
           </Button> */}
-          <Button onClick={() => navigate("/wallet")}>Withdraw Funds</Button>
+          <Button onClick={() => navigate("/Userwallet")}>Withdraw Funds</Button>
         </ButtonGroup>
       </BalanceCard>
     </Container>

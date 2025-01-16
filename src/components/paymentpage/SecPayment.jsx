@@ -244,7 +244,7 @@ const PinInput = styled.div`
   display: flex;
 `;
 
-const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
+const PaymentPage = ({ storeName, accountNumber, walletBalance, accountBalance }) => {
   const [amount, setAmount] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showCancelPopup, setShowCancelPopup] = useState(false);
@@ -319,10 +319,10 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
       <SubHeader>Account No: {accountNumber}</SubHeader>
 
       <InfoCard>
-        <span>Wallet Balance: ₦2000.00</span>
+        <span>Wallet Balance: ₦{accountBalance}</span>
       </InfoCard>
 
-      <AmountDisplay>₦{amount || "1500.00"}</AmountDisplay>
+      <AmountDisplay>₦{amount}</AmountDisplay>
 
       {/* <PinGrid>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0, "x"].map((num) => (
@@ -425,7 +425,7 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
 
 PaymentPage.defaultProps = {
   storeName: "QMART Stores",
-  accountNumber: "123456789",
+  accountNumber: "123456709",
   walletBalance: "1000.00",
 };
 

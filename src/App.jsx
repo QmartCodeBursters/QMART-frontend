@@ -71,7 +71,7 @@ function App() {
           <Route path="/UserScan" element={<ScanHere />} />
           <Route path="/qr-code" element={<QrCode />} />
           <Route path="/UserWallet" element={<UserWallet />} />
-          <Route path="/ReceivePay" element={<ReceivePayment />} />
+          {/* <Route path="/ReceivePay" element={<ReceivePayment />} /> */}
           <Route path="/ReceivePayment" element={<ReceivePayment />} />
 
           <Route path="/QRcode" element={<PrintQRcode />} />

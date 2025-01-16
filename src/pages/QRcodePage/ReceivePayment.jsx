@@ -204,19 +204,37 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
     }
   };
 
+  // const handlePayment = () => {
+  //   if (amount && parseFloat(amount) > 0) {
+  //     const data = {
+  //       amount,
+  //       businessName: storeName,
+  //       accountNumber,
+  //     };
+  //     sessionStorage.setItem("paymentDetails", JSON.stringify(data));
+  //     navigate("/qr-code");
+  //   } else {
+  //     alert("Please enter a valid amount.");
+  //   }
+  // };
+
   const handlePayment = () => {
-    setLoading(true);
-    setTimeout(() => {
-      window.location.href = "/qr-code";
-    }, 3000);
-    // if (amount && parseFloat(amount) <= parseFloat(walletBalance)) {
-    //   setShowConfirmation(true);
-    // } else if (!amount) {
-    //   alert("Please enter an amount.");
-    // } else {
-    //   alert("Insufficient funds.");
-    // }
+    if (amount && parseFloat(amount) > 0) {
+      const data = {
+        amount,
+        businessName: storeName,
+        accountNumber,
+      };
+      sessionStorage.setItem("paymentDetails", JSON.stringify(data));
+  
+      // Add the amount as a query parameter in the URL
+      navigate(`/qr-code?amount=${amount}`);
+    } else {
+      alert("Please enter a valid amount.");
+    }
   };
+  
+  
 
   const handleCancelConfirmation = () => {
     setShowCancelPopup(true);

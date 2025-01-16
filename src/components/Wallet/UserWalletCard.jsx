@@ -440,13 +440,6 @@ const ErrorMessage = styled.div`
   font-weight: bold;
 `;
 
-
-
-
-
-
-// Styled components
-
 const Flex = styled.div`
   padding: 20px 0;
   display: flex;

@@ -1,11 +1,445 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Card from "../../assets/svg/card.svg";
 import { IoMdArrowDropright } from "react-icons/io";
-import { IoClose } from "react-icons/io5"; // Cancel icon
+import { IoClose } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
-// Flex container for layout
+const banks = [
+  "Access Bank",
+  "Zenith Bank",
+  "First Bank",
+  "Guaranty Trust Bank (GTB)",
+  "United Bank for Africa (UBA)",
+  "Fidelity Bank",
+  "Stanbic IBTC",
+  "Ecobank",
+  "Union Bank",
+  "Skye Bank",
+];
+
+function UserWalletCard({ balance, setBalance }) {
+  const [isBalanceVisible, setIsBalanceVisible] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [addMoneyModalOpen, setAddMoneyModalOpen] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [withdrawAmount, setWithdrawAmount] = useState("");
+  const [addAmount, setAddAmount] = useState(""); // Amount to add
+  const [cardNumber, setCardNumber] = useState(""); // Card number state
+  const [expiryDate, setExpiryDate] = useState(""); // Expiry date state
+  const [cvv, setCvv] = useState(""); // CVV state
+  const [cardPin, setCardPin] = useState(["", "", "", ""]); // Card pin state
+  const [pinVisible, setPinVisible] = useState([false, false, false, false]); // Pin visibility state
+  const [amount, setAmount] = useState(""); // Transfer amount state
+  const [timer, setTimer] = useState(600); // Timer in seconds (10 minutes)
+  const [transferDetails, setTransferDetails] = useState({
+    accountNumber: "",
+    bank: "",
+  });
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");  // Error message state
+
+  useEffect(() => {
+    let interval;
+    if (timer > 0 && isModalOpen) {
+      interval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [timer, isModalOpen]);
+
+  const generateAccountNumber = () => {
+    return Math.floor(1000000000 + Math.random() * 9000000000).toString();
+  };
+
+  const getRandomBank = () => {
+    return banks[Math.floor(Math.random() * banks.length)];
+  };
+
+  const handleMakeTransfer = () => {
+    setTransferDetails({
+      accountNumber: generateAccountNumber(),
+      bank: getRandomBank(),
+    });
+    setPaymentMethod("transfer");
+    setTimer(600); // Reset the timer to 10 minutes
+  };
+
+  const toggleBalanceVisibility = () => {
+    setIsBalanceVisible(!isBalanceVisible);
+  };
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+    if (isModalOpen) {
+      setTimer(600); // Reset the timer when modal closes
+      setErrorMessage(""); // Clear any error message when modal closes
+    }
+  };
+
+  const toggleAddMoneyModal = () => {
+    setAddMoneyModalOpen(!addMoneyModalOpen);
+
+    // Reset all relevant states to their original values
+    setPaymentMethod(null);  // Reset the payment method to null
+    setAddAmount("");  // Reset the amount to add
+    setCardNumber("");  // Reset card number
+    setExpiryDate("");  // Reset expiry date
+    setCvv("");  // Reset CVV
+    setCardPin(["", "", "", ""]);  // Reset card PIN
+    setAmount("");  // Reset transfer amount
+    setTransferDetails({ accountNumber: "", bank: "" }); // Reset transfer details
+
+    // Reset the balance on the card to zero
+    setBalance(0);  // Assuming balance comes from the parent, reset it to zero
+
+    setErrorMessage(""); // Clear any error message when the Add Money modal closes
+  };
+
+  const handleWithdraw = () => {
+    if (cardPin.join("").length === 4) {
+      setErrorMessage(""); // Clear any previous errors
+      setIsModalOpen(false);
+      setShowSuccessMessage(true);
+    } else {
+      setErrorMessage("Please enter a 4-digit PIN."); // Set error message
+    }
+  };
+
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  };
+
+  const handleCardPinChange = (e, index) => {
+    const value = e.target.value;
+    if (/^\d?$/.test(value)) {
+      const newPin = [...cardPin];
+      const newPinVisible = [...pinVisible];
+
+      newPin[index] = value;
+      setCardPin(newPin);
+
+      if (value) {
+        newPinVisible[index] = true;
+        setPinVisible(newPinVisible);
+
+        setTimeout(() => {
+          newPinVisible[index] = false;
+          setPinVisible([...newPinVisible]);
+        }, 200);
+
+        if (index < 3) {
+          document.getElementById(`card-pin-${index + 1}`).focus();
+        }
+      } else if (!value && index > 0) {
+        document.getElementById(`card-pin-${index - 1}`).focus();
+      }
+    }
+  };
+
+  // Handle Card Number Input
+  const handleCardNumberChange = (e) => {
+    const value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+    if (value.length <= 16) {
+      setCardNumber(value);
+    }
+  };
+
+  // Handle Expiry Date Input
+  const handleExpiryDateChange = (e) => {
+    let value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+    if (value.length <= 4) {
+      if (value.length >= 3) {
+        value = value.slice(0, 2) + "/" + value.slice(2, 4); // Insert slash after MM
+      }
+      setExpiryDate(value);
+    }
+  };
+
+  // Handle CVV Input
+  const handleCvvChange = (e) => {
+    const value = e.target.value.replace(/[^0-9]/g, ""); // Only digits allowed
+    if (value.length <= 3) {
+      setCvv(value);
+    }
+  };
+
+  const handleAmountChange = (e) => {
+    const value = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    if (value.length <= 3) {
+      setAmount(value);
+    }
+  };
+
+  const handleProceedClick = () => {
+    if (amount && !isNaN(amount) && Number(amount) > 0) {
+      setTransferDetails({
+        ...transferDetails,
+        amount: amount,  // Store the amount in the transfer details
+      });
+      setAddMoneyModalOpen(false);  // Close the modal
+      console.log("Proceeding with transfer details:", transferDetails);
+    } else {
+      setErrorMessage("Please enter a valid amount."); // Set error message
+    }
+  };
+
+  return (
+    <div>
+      <Flex>
+        <Image>
+          <img src={Card} alt="ATM card" />
+          <Link to="/walletsettings">
+            <p>Settings</p>
+          </Link>
+          <Bal>
+            <span>
+              Wallet Balance:{" "}
+              <span
+                style={{ cursor: "pointer" }}
+                onClick={toggleBalanceVisibility}
+              >
+                {isBalanceVisible ? "👁️️" : "👁️‍🗨️"}
+              </span>
+            </span>
+            <span id="balance">
+              {isBalanceVisible ? `\u20A6${balance.toLocaleString()}` : "****"}
+            </span>
+          </Bal>
+        </Image>
+        <Button>
+          <AddMoney onClick={toggleAddMoneyModal}>
+            <span>Add Money</span>
+            <span>
+              <IoMdArrowDropright size={20} />
+            </span>
+          </AddMoney>
+          <Withdraw onClick={toggleModal}>
+            <span>Withdraw</span>
+            <span>
+              <IoMdArrowDropright size={20} />
+            </span>
+          </Withdraw>
+        </Button>
+      </Flex>
+
+      {/* Add Money Modal */}
+      <ModalOverlay isOpen={addMoneyModalOpen}>
+        <ModalContent>
+          <CloseButton onClick={toggleAddMoneyModal}>
+            <IoClose />
+          </CloseButton>
+
+          <h3>Add Money to Wallet</h3>
+
+          {/* Payment Method Selector */}
+          {!paymentMethod && (
+            <>
+              <ButtonOption onClick={() => setPaymentMethod("bank_card")}>
+                <strong>Add Bank Card</strong>
+              </ButtonOption>
+              <ButtonOption onClick={() => {setPaymentMethod("transfer"); handleMakeTransfer();}}>
+                <strong>Make Transfer</strong>
+              </ButtonOption>
+              <ButtonOption onClick={() => setPaymentMethod("ussd")}>
+                <strong>Make USSD Payment</strong>
+              </ButtonOption>
+            </>
+          )}
+
+          {/* Display error message */}
+          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+
+          {/* Bank Card Form */}
+          {paymentMethod === "bank_card" && (
+            <>
+              <h4>Enter Bank Card Details</h4>
+
+              {/* Card Number Input */}
+              <label>Card Number</label>
+              <Input
+                type="text"
+                value={cardNumber}
+                onChange={handleCardNumberChange}
+                maxLength="16"
+                placeholder="Enter 16-digit card number"
+              />
+
+              {/* Expiry Date Input */}
+              <label>Expiry Date (MM/YY)</label>
+              <Input
+                type="text"
+                value={expiryDate}
+                onChange={handleExpiryDateChange}
+                maxLength="5"
+                placeholder="MM/YY"
+              />
+
+              {/* CVV Input */}
+              <label>CVV</label>
+              <Input
+                type="text"
+                value={cvv}
+                onChange={handleCvvChange}
+                maxLength="3"
+                placeholder="Enter 3-digit CVV"
+              />
+
+              {/* Card Pin Input */}
+              <label>Card Pin</label>
+              <div style={{ display: "flex", gap: "10px", margin: "10px 80px" }}>
+                {cardPin.map((digit, idx) => (
+                  <PinInput
+                    key={idx}
+                    id={`card-pin-${idx}`}
+                    type="text"
+                    value={pinVisible[idx] ? digit : digit ? "\u2022" : ""}
+                    onChange={(e) => handleCardPinChange(e, idx)}
+                    maxLength="1"
+                  />
+                ))}
+              </div>
+
+              {/* Amount to Add */}
+              <label>Amount to Add</label>
+              <Input
+                type="number"
+                value={addAmount}
+                onChange={(e) => setAddAmount(e.target.value)}
+                placeholder="Enter amount to add"
+              />
+
+              <Withdraw onClick={() => alert("This is where you would normally proceed to payment.")}>
+                <span>Add Money </span>
+              </Withdraw>
+            </>
+          )}
+
+          {/* Transfer Modal */}
+          {paymentMethod === "transfer" && !amount && (
+            <>
+              <label>Enter Amount to Transfer</label>
+              <input
+                type="text"
+                value={amount}
+                onChange={handleAmountChange}
+                placeholder="Enter Amount in Naira"
+                style={{
+                  width: "100%", 
+                  padding: "10px", 
+                  fontSize: "16px", 
+                  borderRadius: "5px", 
+                  border: "1px solid #ccc", 
+                  outline: "none", 
+                  boxSizing: "border-box", 
+                  marginBottom: "15px",
+                }}
+              />
+
+              <Withdraw onClick={handleProceedClick} disabled={!amount || isNaN(amount) || Number(amount) <= 0}>
+                <span>Proceed</span>
+              </Withdraw>
+            </>
+          )}
+
+          {amount && (
+            <>
+              <h4>Transfer Details</h4>
+              <p>
+                <strong>Account Number:</strong> {transferDetails.accountNumber}
+              </p>
+              <p>
+                <strong>Bank:</strong> {transferDetails.bank}
+              </p>
+              <p><strong>Amount:</strong>₦{amount}</p> 
+              <p>
+                <strong>Payment Processor:</strong> Paystack
+              </p>
+
+              <Countdown>{formatTime(timer)}</Countdown>
+
+              {timer <= 0 ? (
+                <TransferButton>
+                  <span>I've Sent the Money</span>
+                </TransferButton>
+              ) : (
+                <TransferButton disabled>
+                  <span>I've Sent the Money</span>
+                </TransferButton>
+              )}
+            </>
+          )}
+
+        </ModalContent>
+      </ModalOverlay>
+
+      {/* Withdraw Modal */}
+      <ModalOverlay isOpen={isModalOpen}>
+        <ModalContent>
+          <CloseButton onClick={toggleModal}>
+            <IoClose />
+          </CloseButton>
+          <h3>Withdraw Funds</h3>
+
+          {/* Display fixed account details */}
+          <div>
+            <strong>Account Number:</strong> 1234567890
+          </div>
+          <div>
+            <strong>Bank:</strong> Sail Bank
+          </div>
+          <div>
+            <strong>Account Name:</strong> Moshood Aserikan
+          </div>
+
+          <label>Enter Amount to Withdraw</label>
+          <Input 
+            type="number"
+            value={withdrawAmount}
+            onChange={(e) => setWithdrawAmount(e.target.value)}
+            placeholder="Enter amount to withdraw"
+          />
+
+          <label>Enter Card Pin</label>
+          <div style={{ display: "flex", gap: "10px", margin: "10px 80px" }}>
+            {cardPin.map((digit, idx) => (
+              <PinInput
+                key={idx}
+                id={`card-pin-${idx}`}
+                type="text"
+                value={pinVisible[idx] ? digit : digit ? "\u2022" : ""}
+                onChange={(e) => handleCardPinChange(e, idx)}
+                maxLength="1"
+              />
+            ))}
+          </div>
+
+          <Withdraw
+            onClick={handleWithdraw}
+            disabled={!withdrawAmount || cardPin.join("").length !== 4}
+          >
+            <span>Withdraw</span>
+          </Withdraw>
+        </ModalContent>
+      </ModalOverlay>
+    </div>
+  );
+}
+
+
+
+
+// Styled components for error message display
+const ErrorMessage = styled.div`
+  color: red;
+  margin: 10px 0;
+  font-size: 14px;
+  font-weight: bold;
+`;
+
 const Flex = styled.div`
   padding: 20px 0;
   display: flex;
@@ -20,7 +454,6 @@ const Flex = styled.div`
   }
 `;
 
-// Button for withdraw action
 const Button = styled.div`
   display: flex;
   justify-content: center;
@@ -33,8 +466,14 @@ const Button = styled.div`
     justify-content: center;
   }
 `;
+const SuccessMessage = styled.div`
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 15px;
+`;
 
-// Withdraw action styling
 const Withdraw = styled.p`
   display: flex;
   align-items: center;
@@ -48,6 +487,8 @@ const Withdraw = styled.p`
   max-width: 200px;
   justify-content: center;
   text-align: center;
+  margin: 0 auto;
+ 
   span {
     display: flex;
     align-items: center;
@@ -64,9 +505,9 @@ const Withdraw = styled.p`
 `;
 
 const AddMoney = styled.p`
- display: flex;
+  display: flex;
   align-items: center;
-  background-color:#FF3B30;
+  background-color: #ff3b30;
   color: white;
   border-radius: 4px;
   padding: 12px 20px;
@@ -76,6 +517,8 @@ const AddMoney = styled.p`
   max-width: 200px;
   justify-content: center;
   text-align: center;
+  
+
   span {
     display: flex;
     align-items: center;
@@ -89,10 +532,8 @@ const AddMoney = styled.p`
     padding: 12px 25px;
     font-size: 18px;
   }
-  
-`
+`;
 
-// Image container with card and settings
 const Image = styled.div`
   position: relative;
   width: 100%;
@@ -125,7 +566,6 @@ const Image = styled.div`
   }
 `;
 
-// Balance information
 const Bal = styled.div`
   color: red;
   position: absolute;
@@ -143,253 +583,97 @@ const Bal = styled.div`
   }
   @media (max-width: 800px) {
     left: 15px;
-    bottom: 20px;
-    #balance {
-      font-size: 22px;
-    }
+    bottom: 15px;
   }
 `;
 
-// Modal Overlay for centering and background
+const Input = styled.input`
+  width: 100%;
+  padding: 8px;
+  margin: 10px 0;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+`;
+
+const PinInput = styled.input`
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-size: 18px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+`;
+
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
   display: ${(props) => (props.isOpen ? "flex" : "none")};
   justify-content: center;
   align-items: center;
   z-index: 1000;
 `;
 
-// Modal Content for short, centered design
 const ModalContent = styled.div`
-  background-color: white;
+  background: white;
   padding: 20px;
-  width: 250px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  position: relative;
-  align-items: center;
-  max-height: auto;
-  justify-content: center;
-`;
-
-// Input styling for amount and pin
-const Input = styled.input`
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
+  max-width: 400px;
   width: 100%;
-  box-sizing: border-box;
-`;
-
-// Pin Input styling for 4-digit entry
-const PinInput = styled(Input)`
-  width: 50px;
+  border-radius: 8px;
   text-align: center;
 `;
 
-const CloseButton = styled.div`
+const CloseButton = styled.button`
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 70px;
+  right: 160px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
   cursor: pointer;
-  font-size: 18px;
-  color: #333;
 `;
 
-const SuccessMessage = styled.div`
-  color: green;
-  font-size: 18px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const DoneButton = styled.div`
-  margin-top: 10px;
-  background-color: #4caf50;
-  color: white;
-  padding: 8px 15px;
-  border-radius: 4px;
+const ButtonOption = styled.div`
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 10px;
   cursor: pointer;
-  font-weight: bold;
-  text-align: center;
-  transition: background-color 0.3s ease;
   &:hover {
-    background-color: #45a049;
+    background: #f0f0f0;
   }
 `;
 
-function UserWalletCard({ balance }) {
-  const [isBalanceVisible, setIsBalanceVisible] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [withdrawAmount, setWithdrawAmount] = useState("");
-  const [pin, setPin] = useState(["", "", "", ""]);
-  const [pinVisible, setPinVisible] = useState([false, false, false, false]); // Track visibility of each digit
-  const [isWithdrawalSuccessful, setIsWithdrawalSuccessful] = useState(false);
+const Countdown = styled.div`
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: red;
+`;
 
-  const dummyAccountDetails = {
-    accountName: "Aserikan Moshood Adetola",
-    accountNumber: "1234567890",
-    bankName: "Sail Bank",
-  };
-
-  const toggleBalanceVisibility = () => {
-    setIsBalanceVisible(!isBalanceVisible);
-  };
-
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-    setIsWithdrawalSuccessful(false);
-    setWithdrawAmount("");
-    setPin(["", "", "", ""]);
-    setPinVisible([false, false, false, false]);
-  };
-
-  const handleWithdraw = () => {
-    if (pin.join("").length === 4) {
-      setIsWithdrawalSuccessful(true);
-    } else {
-      alert("Please enter a 4-digit PIN.");
-    }
-  };
-
-  const handlePinChange = (e, index) => {
-    const value = e.target.value;
-    if (/^\d?$/.test(value)) {
-      const newPin = [...pin];
-      const newPinVisible = [...pinVisible];
-
-      newPin[index] = value; // Update the PIN value
-      setPin(newPin);
-
-      if (value) {
-        newPinVisible[index] = true; // Show the digit briefly
-        setPinVisible(newPinVisible);
-
-        setTimeout(() => {
-          newPinVisible[index] = false; // Hide the digit after a brief moment
-          setPinVisible([...newPinVisible]);
-        }, 200); // Adjust delay as necessary (200ms is brief)
-
-        if (index < 3) {
-          document.getElementById(`pin-${index + 1}`).focus(); // Move to the next input
-        }
-      } else if (!value && index > 0) {
-        document.getElementById(`pin-${index - 1}`).focus(); // Move back to the previous input
-      }
-    }
-  };
-
-  return (
-    <div>
-      <Flex>
-        <Image>
-          <img src={Card} alt="ATM card" />
-          <Link to="/walletsettings">
-            <p>Settings</p>
-          </Link>
-          <Bal>
-            <span>
-              Wallet Balance:{" "}
-              <span
-                style={{ cursor: "pointer" }}
-                onClick={toggleBalanceVisibility}
-              >
-                {isBalanceVisible ? "👁️️" : "👁️‍🗨️"}
-              </span>
-            </span>
-            <span id="balance">
-              {isBalanceVisible ? `\u20A6${balance.toLocaleString()}` : "****"}
-            </span>
-          </Bal>
-        </Image>
-        <Button>
-          <AddMoney >
-          <span>Add Money</span>
-            <span>
-              <IoMdArrowDropright size={20} />
-            </span>
-          </AddMoney>
-          <Withdraw onClick={toggleModal}>
-            <span>Withdraw</span>
-            <span>
-              <IoMdArrowDropright size={20} />
-            </span>
-          </Withdraw>
-        </Button>
-      </Flex>
-
-      <ModalOverlay isOpen={isModalOpen}>
-        <ModalContent>
-          <CloseButton onClick={toggleModal}>
-            <IoClose />
-          </CloseButton>
-
-          {isWithdrawalSuccessful ? (
-            <SuccessMessage>
-              <span>✅</span>
-              <p>Withdrawal Successful!</p>
-              <DoneButton onClick={toggleModal}>Done</DoneButton>
-            </SuccessMessage>
-          ) : (
-            <>
-              <h3>Withdraw</h3>
-              <div style={{ textAlign: "left", width: "100%" }}>
-                <p>
-                  <strong>Account Name:</strong>{" "}
-                  {dummyAccountDetails.accountName}
-                </p>
-                <p>
-                  <strong>Account Number:</strong>{" "}
-                  {dummyAccountDetails.accountNumber}
-                </p>
-                <p>
-                  <strong>Bank Name:</strong> {dummyAccountDetails.bankName}
-                </p>
-              </div>
-
-              <label>Amount to Withdraw</label>
-              <Input
-                type=""
-                value={withdrawAmount}
-                onChange={(e) => setWithdrawAmount(e.target.value)}
-                placeholder="Enter amount"
-              />
-
-              <label>Enter 4-Digit PIN</label>
-              <div style={{ display: "flex", gap: "10px" }}>
-                {pin.map((digit, idx) => (
-                  <PinInput
-                    key={idx}
-                    id={`pin-${idx}`}
-                    type="text"
-                    value={pinVisible[idx] ? digit : digit ? "\u2022" : ""} // Show digit briefly, then replace with dot
-                    onChange={(e) => handlePinChange(e, idx)}
-                    maxLength="1"
-                  />
-                ))}
-              </div>
-
-              <Withdraw onClick={handleWithdraw}>
-                <span>Confirm Withdrawal</span>
-              </Withdraw>
-
-              </>
-          )}
-        </ModalContent>
-      </ModalOverlay>
-    </div>
-  );
-}
+const TransferButton = styled.div`
+  margin-top: 20px;
+  padding: 12px 20px;
+  background-color: #fa8232;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  max-width: 200px;
+  text-align: center;
+  font-weight: bold;
+  margin: 0 auto;
+  &:hover {
+    background-color: #f85e0a;
+  }
+  &:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+`;
 
 export default UserWalletCard;
 
-``

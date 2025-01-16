@@ -9,7 +9,7 @@ import Login from "./components/Login-Signup/Login";
 import Contactpage from "./pages/Contactpage/Contactpage";
 import ForgotPassword from "./components/forgotpassword/ForgotPassword";
 import OTPPage from "./components/forgotpassword/OTPPage";
-import ResetPassword from "./components/forgotpassword/ResetPassword";
+
 // import PaymentPage from "./components/paymentpage/PaymentPage";
 import PaymentPage from "./components/paymentpage/SecPayment";
 import PaymentSuccess from "./components/paymentpage/PaymentSuccess";
@@ -35,6 +35,8 @@ import Extend from "./components/Payment/Extend";
 import Dashboard from "./components/dashboard/Dashboard";
 import { AppProvider } from "./common/AuthContext";
 import CreateBiz from "./components/Login-Signup/CreateBiz";
+import VerifyEmailOTP from "./components/Login-Signup/Reset";
+import OtpResetPassword from "./components/Login-Signup/OtpResetPassword";
 
 
 function App() {
@@ -50,7 +52,8 @@ function App() {
           <Route path="/otp-verification" element={<Otpgen />} />
           <Route path="/forgetpassword" element={<ForgotPassword />} />
           <Route path="/otppage" element={<OTPPage />} />
-          <Route path="/resetpassword" element={<ResetPassword />} />
+          <Route path="/reset-password" element={<VerifyEmailOTP />} />
+          <Route path="/otp-password-verification" element={<OtpResetPassword />} />
 
           <Route path="/contact" element={<Contactpage />} />
           <Route path="/aboutUs" element={<About />} />
@@ -68,7 +71,7 @@ function App() {
           <Route path="/UserScan" element={<ScanHere />} />
           <Route path="/qr-code" element={<QrCode />} />
           <Route path="/UserWallet" element={<UserWallet />} />
-          <Route path="/ReceivePay" element={<ReceivePayment />} />
+          {/* <Route path="/ReceivePay" element={<ReceivePayment />} /> */}
           <Route path="/ReceivePayment" element={<ReceivePayment />} />
 
           <Route path="/QRcode" element={<PrintQRcode />} />

@@ -676,3 +676,4 @@ const TransferButton = styled.div`
 `;
 
 export default UserWalletCard;
+

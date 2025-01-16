@@ -7,71 +7,42 @@ import summaryAPI, { baseURL } from "../../common/summaryAPI";
 import { useAppContext } from "../../common/AuthContext";
 import AxiosToastError from "../../utilis/AxiosToastError";
 
+
+
 const Login = () => {
-  const { setEmail, setRole } = useAppContext();
+  const { setEmail, setRole, setUserDetails } = useAppContext(); // Access context
   const navigate = useNavigate();
   const [email, setEmailInput] = useState("");
   const [password, setPassword] = useState("");
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     console.log("Sending request to:", `${baseURL}${summaryAPI.login.url}`);
-  //     console.log("Request payload:", { email, password });
-
-  //     const response = await axios({
-  //       method: summaryAPI.login.method,
-  //       url: `${baseURL}${summaryAPI.login.url}`,
-  //       data: { email, password },
-  //     });
-
-  //     console.log("Response from server:", response.data);
-
-  //     if (response.data.success) {
-  //       toast.success("Login successful!");
-  //       console.log("Navigating to /dashboard...");
-  //       navigate("/dashboard");
-  //       console.log("Navigation executed.");
-  //     } else {
-  //       toast.error(response.data.message);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error during login:", error.response ? error.response.data : error.message);
-  //     toast.error("Login failed. Please try again.");
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      console.log("Sending request to:", `${baseURL}${summaryAPI.login.url}`);
-      console.log("Request payload:", { email, password });
-
       const response = await axios({
-        method: summaryAPI.login.method,
+        method: "POST", // Assuming POST, update if necessary
         url: `${baseURL}${summaryAPI.login.url}`,
         data: { email, password },
         withCredentials: true,
       });
 
-      console.log("Response from server:", response.data);
-
       if (response.data.success) {
         toast.success("Login successful!");
 
         const { user } = response.data.data;
+
+        // Update context values
         setEmail(user.email);
         setRole(user.role);
+        setUserDetails(user); // Set full user details in the context
 
+        // Navigation logic based on user role
         if (user.role === "merchant") {
           if (user.business) {
             navigate("/dashboard");
           } else {
             navigate("/merchant-create-business");
           }
-          console.log(user);
         } else {
           navigate("/dashboard");
         }
@@ -79,10 +50,7 @@ const Login = () => {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.error(
-        "Error during login:",
-        error.response ? error.response.data : error.message
-      );
+      console.error("Error during login:", error.response ? error.response.data : error.message);
       AxiosToastError(error);
     }
   };
@@ -91,7 +59,7 @@ const Login = () => {
     <Wrapper>
       <FormContainer>
         <form onSubmit={handleSubmit}>
-          <h2>Login</h2>
+          <h2>LOGIN</h2>
 
           <input
             type="email"
@@ -110,27 +78,11 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <p>Forgot Password?</p>
+          <Link to="/reset-password">
+            <p>Forgot Password?</p>
+          </Link>
 
           <button type="submit">Login</button>
-
-          {/* <ButtonWrapper>
-            <span>or</span>
-
-            <GoogleButton>
-              <img src={googleicon} alt="googleicon" />
-              <span>Sign in with Google</span>
-            </GoogleButton>
-
-            <AppleButton>
-              <img src={appleicon} alt="appleicon" />
-              <span>Sign in with Apple</span>
-            </AppleButton>
-
-            <p>
-              Don't have an account? <Link to="/signup">Register</Link>
-            </p>
-          </ButtonWrapper> */}
         </form>
       </FormContainer>
     </Wrapper>
@@ -138,6 +90,7 @@ const Login = () => {
 };
 
 export default Login;
+
 
 const Wrapper = styled.div``;
 
@@ -155,7 +108,7 @@ const FormContainer = styled.div`
     justify-content: center;
     width: 80%;
     max-width: 450px;
-    background-color: white;
+    /* background-color: white; */
     padding: 20px 40px;
     border-radius: 10px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
@@ -219,59 +172,3 @@ const FormContainer = styled.div`
   }
 `;
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  margin-top: 20px;
-  text-align: center;
-  span {
-  }
-
-  p {
-    margin: 20px 0;
-  }
-`;
-
-const GoogleButton = styled.div`
-  background-color: white;
-  border: 1px solid grey;
-  display: flex;
-  align-items: center;
-  height: 40px;
-  border-radius: 5px;
-  font-size: 14px;
-  justify-content: center;
-  cursor: pointer;
-
-  img {
-    width: 20px;
-    margin-right: 20px;
-  }
-  &:hover {
-    background-color: #e8e8e8;
-  }
-`;
-
-const AppleButton = styled.div`
-  background-color: white;
-  border: 1px solid grey;
-  display: flex;
-  align-items: center;
-  height: 40px;
-  border-radius: 5px;
-  font-size: 14px;
-  justify-content: center;
-  cursor: pointer;
-
-  img {
-    width: 20px;
-    margin-right: 20px;
-  }
-
-  &:hover {
-    background-color: #e8e8e8;
-  }
-`;

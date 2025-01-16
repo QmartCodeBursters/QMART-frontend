@@ -118,6 +118,7 @@ const Herocard = styled.div`
     gap: 20px;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    
 `;
 const Cardone = styled.div`
 
@@ -130,7 +131,8 @@ const Cardone = styled.div`
     display: flex;
     gap: 20px;
     height: auto;
-    max-width: 500px;
+    max-width: 450px;
+
     background-color: white;
     border-radius:5px;
 `;
@@ -147,7 +149,7 @@ const Cardonedetails = styled.div`
         }
 
         span {
-            font-size: 24px;
+            font-size: 20px;
             
         }
         button {

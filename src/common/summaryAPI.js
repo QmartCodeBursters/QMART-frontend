@@ -24,6 +24,14 @@ const summaryAPI = {
     createBiz: {
         url : '/api/v1/business/business-registration',
         method: 'POST'
+    },
+    emailResetPass: {
+        url : '/api/v1/user/request-password-reset',
+        method: 'POST'
+    },
+    fetchMerchant: {
+        url : '/api/v1/business/merchant-details',
+        method: 'GET'
     }
 }
 

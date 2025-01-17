@@ -1,4 +1,5 @@
 
+
 const Container = styled.div`
   position: relative;
   margin-top: 4rem;
@@ -350,4 +351,5 @@ const Balance = ({ storeName, balance, role }) => {
 };
 
 export default Balance;
+
 

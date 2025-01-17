@@ -248,7 +248,7 @@ const Balance = ({ storeName, balance, role }) => {
             <DropdownItem onClick={() => handleNavigation("/notificationsettings")}>
               <FaBell /> Notification Settings
             </DropdownItem>
-            <DropdownItem onClick={() => handleNavigation("/accountsettings")}>
+            <DropdownItem onClick={() => handleNavigation("/settings")}>
               <FaCog /> Account Settings
             </DropdownItem>
           </>

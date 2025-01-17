@@ -7,17 +7,15 @@ import toast from "react-hot-toast";
 import AxiosToastError from "../../utilis/AxiosToastError";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { isValidPhoneNumber, parsePhoneNumberFromString } from 'libphonenumber-js';
-import { useAppContext } from "../../common/AuthContext";
-import { useEffect } from "react";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
+import { useAppContext } from "../../common/AuthContext"; // Import useAppContext
 
 const Signup = () => {
-  const { setUserEmail } = useAppContext();
+  const { setUserData } = useAppContext(); // Access setUserData from context
   const [isCheckedBoxChecked, setIsCheckedBoxChecked] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [role, setRole] = useState(""); 
+  const [role, setRole] = useState("");
   const [errors, setErrors] = useState({});
-
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
@@ -29,11 +27,10 @@ const Signup = () => {
   });
 
   const validValues =
-  Object.values(data).every((el) => el.trim() !== "") &&
-  Object.values(errors).length === 0 &&
-  isCheckedBoxChecked &&
-  role;
-
+    Object.values(data).every((el) => el.trim() !== "") &&
+    Object.values(errors).length === 0 &&
+    isCheckedBoxChecked &&
+    role;
 
   const navigate = useNavigate();
 
@@ -43,52 +40,49 @@ const Signup = () => {
       ...data,
       [name]: value,
     });
-  
+
     const newErrors = { ...errors };
-  
+
     if (name === "firstName" && (value.length < 3 || value.length > 8)) {
       newErrors.firstName = "First name should include 3-8 characters";
     } else {
       delete newErrors.firstName;
     }
-  
 
     if (name === "lastName" && (value.length < 3 || value.length > 8)) {
       newErrors.lastName = "Last name should include 3-8 characters";
     } else {
       delete newErrors.lastName;
     }
-  
-  
+
     if (name === "email" && !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)) {
       newErrors.email = "Enter a valid email";
     } else {
       delete newErrors.email;
     }
-  
-   if (name === "phoneNumber") {
-    const newErrors = { ...errors }; 
-  
-    try {
-      const phoneNumberParsed = parsePhoneNumberFromString(value, "NG"); 
-  
 
-      if (!phoneNumberParsed || !phoneNumberParsed.isValid()) {
+    if (name === "phoneNumber") {
+      const newErrors = { ...errors };
+
+      try {
+        const phoneNumberParsed = parsePhoneNumberFromString(value, "NG");
+
+        if (!phoneNumberParsed || !phoneNumberParsed.isValid()) {
+          newErrors.phoneNumber = "Please enter a valid phone number";
+        } else if (value.length < 10) {
+          newErrors.phoneNumber = "Phone number must be at least 10 digits long";
+        } else if (value.length > 15) {
+          newErrors.phoneNumber = "Phone number must not exceed 15 digits";
+        } else {
+          delete newErrors.phoneNumber;
+        }
+      } catch (error) {
         newErrors.phoneNumber = "Please enter a valid phone number";
-      } else if (value.length < 10) {
-        newErrors.phoneNumber = "Phone number must be at least 10 digits long";
-      } else if (value.length > 15) {
-        newErrors.phoneNumber = "Phone number must not exceed 15 digits";
-      } else {
-        delete newErrors.phoneNumber;
       }
-    } catch (error) {
-      newErrors.phoneNumber = "Please enter a valid phone number";
+
+      setErrors(newErrors);
     }
-  
-    setErrors(newErrors); 
-  }
-  
+
     if (name === "password") {
       const passwordPattern = /^(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{6,16}$/;
       if (!passwordPattern.test(value)) {
@@ -98,39 +92,41 @@ const Signup = () => {
         delete newErrors.password;
       }
     }
-  
+
     if (name === "confirmPassword" && value !== data.password) {
       newErrors.confirmPassword = "Passwords do not match";
     } else {
       delete newErrors.confirmPassword;
     }
-  
+
     setErrors(newErrors);
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!role) {
       toast.error("Please select a role");
       return;
     }
-  
+
     if (data.password !== data.confirmPassword) {
       toast.error("Passwords do not match!");
       return;
     }
-  
+
     try {
       const response = await Axios({
         ...summaryAPI.signUp,
         data: { ...data, role },
       });
-  
+
       if (response.data.error) {
         toast.error(response.data.message);
       } else {
+        // Store user data in context
+        setUserData({ ...data, role });
+
         toast.success(response.data.message);
         setData({
           firstName: "",
@@ -142,7 +138,6 @@ const Signup = () => {
           confirmPassword: "",
         });
         setRole("");
-        console.log("User signed up with email:", data.email);
         navigate("/otp-verification", { state: { email: data.email } });
       }
     } catch (error) {
@@ -150,9 +145,6 @@ const Signup = () => {
     }
   };
 
- 
-  
- 
   return (
     <Wrapper>
       <FormContainer>
@@ -166,7 +158,7 @@ const Signup = () => {
             name="firstName"
             value={data.firstName}
             onChange={handleChange}
-            />
+          />
           <span className="error">{errors.firstName}</span>
 
           <input
@@ -190,50 +182,47 @@ const Signup = () => {
           <span className="error">{errors.email}</span>
 
           <PhoneInput
-              country={"ng"}
-              inputStyle={{
-                width: "100%",
-                padding: "12px",
-                fontSize: "12px",
-                border: "1px solid grey",
-                borderRadius: "4px",
-                paddingLeft: "45px",
-              }}
-              name="phoneNumber"
-              value={data.phoneNumber}
-              onChange={(value) =>
-                setData((prevState) => ({
-                  ...prevState,
-                  phoneNumber: value,
-                }))
-              }
-              onBlur={() => {
-                const newErrors = { ...errors };
-                const phoneNumber = data.phoneNumber;
+            country={"ng"}
+            inputStyle={{
+              width: "100%",
+              padding: "12px",
+              fontSize: "12px",
+              border: "1px solid grey",
+              borderRadius: "4px",
+              paddingLeft: "45px",
+            }}
+            name="phoneNumber"
+            value={data.phoneNumber}
+            onChange={(value) =>
+              setData((prevState) => ({
+                ...prevState,
+                phoneNumber: value,
+              }))
+            }
+            onBlur={() => {
+              const newErrors = { ...errors };
+              const phoneNumber = data.phoneNumber;
 
-                try {
-                  
-                  const phoneNumberParsed = parsePhoneNumberFromString(phoneNumber, "NG"); 
+              try {
+                const phoneNumberParsed = parsePhoneNumberFromString(phoneNumber, "NG");
 
-                  if (!phoneNumberParsed || !phoneNumberParsed.isValid()) {
-                    newErrors.phoneNumber = "Please enter a valid phone number";
-                  } 
-                  else if (phoneNumberParsed.number.length < 10) {
-                    newErrors.phoneNumber = "Phone number must be at least 10 digits long";
-                  } else if (phoneNumberParsed.number.length > 15) {
-                    newErrors.phoneNumber = "Phone number must not exceed 15 digits";
-                  } else {
-                    delete newErrors.phoneNumber;
-                  }
-                } catch (error) {
+                if (!phoneNumberParsed || !phoneNumberParsed.isValid()) {
                   newErrors.phoneNumber = "Please enter a valid phone number";
+                } else if (phoneNumberParsed.number.length < 10) {
+                  newErrors.phoneNumber = "Phone number must be at least 10 digits long";
+                } else if (phoneNumberParsed.number.length > 15) {
+                  newErrors.phoneNumber = "Phone number must not exceed 15 digits";
+                } else {
+                  delete newErrors.phoneNumber;
                 }
+              } catch (error) {
+                newErrors.phoneNumber = "Please enter a valid phone number";
+              }
 
-                setErrors(newErrors);
-              }}
-            />
-            <span className="error">{errors.phoneNumber}</span>
-
+              setErrors(newErrors);
+            }}
+          />
+          <span className="error">{errors.phoneNumber}</span>
 
           <input
             type="text"
@@ -244,10 +233,9 @@ const Signup = () => {
             onChange={handleChange}
           />
           <span className="error">{errors.address}</span>
-          
-           {/* Role Selection */}
-           <RoleWrapper>
-            {/* <label>Select Role:</label> */}
+
+          {/* Role Selection */}
+          <RoleWrapper>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
@@ -259,67 +247,46 @@ const Signup = () => {
             </select>
           </RoleWrapper>
 
-          {/* Password Input */}
+         
           <PasswordWrapper>
             <input
               type={passwordVisible ? "text" : "password"}
               placeholder="Enter your password"
-              required
               name="password"
               value={data.password}
               onChange={handleChange}
-            />
-          
-
-            <span onClick={() => setPasswordVisible(!passwordVisible)}>
-              {passwordVisible ? "🙈" : "👁️"} {/* Toggle icon */}
-            </span>
-          </PasswordWrapper>
-          <span className="error">{errors.password}</span>
-
-          <PasswordWrapper>
-            <input
-              type={passwordVisible ? "text" : "password"}
-              placeholder="Re-enter your Password"
               required
-              name="confirmPassword"
-              value={data.confirmPassword}
-              onChange={handleChange}
             />
-          
-
-            <span onClick={() => setPasswordVisible(!passwordVisible)}>
-              {passwordVisible ? "🙈" : "👁️"} {/* Toggle icon */}
+            <span
+              className="visibility-toggle"
+              onClick={() => setPasswordVisible(!passwordVisible)}
+            >
+              {passwordVisible ? "Hide" : "Show"}
             </span>
           </PasswordWrapper>
+
+        
+          <input
+            type={passwordVisible ? "text" : "password"}
+            placeholder="Confirm your password"
+            name="confirmPassword"
+            value={data.confirmPassword}
+            onChange={handleChange}
+            required
+          />
           <span className="error">{errors.confirmPassword}</span>
 
-          <p>
-            <CheckboxWrapper>
-              <input
-                type="checkbox"
-                id="terms"
-                checked={isCheckedBoxChecked}
-                onChange={() => setIsCheckedBoxChecked(!isCheckedBoxChecked)}
-              />
-              <label htmlFor="terms">
-                I agree to QMART's Terms and Conditions and Privacy Policy.
-              </label>
-            </CheckboxWrapper>
-          </p>
-
-          {/* Submit Button */}
-          <SubmitButton>
-            <button type="submit" disabled={!validValues}>
-              Create Account
-            </button>
-          </SubmitButton>
-
-          <ButtonWrapper>
-            <p>
-              Already have an account? <Link to="/login">Login</Link>
-            </p>
-          </ButtonWrapper>
+          <CheckboxWrapper>
+            <input
+              type="checkbox"
+              checked={isCheckedBoxChecked}
+              onChange={() => setIsCheckedBoxChecked(!isCheckedBoxChecked)}
+            />
+            <label>I agree to the terms & conditions</label>
+          </CheckboxWrapper>
+          <button disabled={!validValues} type="submit">
+            Create Account
+          </button>
         </form>
       </FormContainer>
     </Wrapper>

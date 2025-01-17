@@ -37,6 +37,7 @@ import { AppProvider } from "./common/AuthContext";
 import CreateBiz from "./components/Login-Signup/CreateBiz";
 import VerifyEmailOTP from "./components/Login-Signup/Reset";
 import OtpResetPassword from "./components/Login-Signup/OtpResetPassword";
+import AccountSettings from "./components/Settings/Settings";
 
 
 function App() {
@@ -68,6 +69,7 @@ function App() {
           <Route path="/paymenthistory" element={<Order />} />
           <Route path="/Settings" element={<Settingspage />} />
           <Route path="UserSettings" element={<UserSettingspage />} />
+          <Route path="/settings" element={<AccountSettings />} />
           <Route path="/UserScan" element={<ScanHere />} />
           <Route path="/qr-code" element={<QrCode />} />
           <Route path="/UserWallet" element={<UserWallet />} />

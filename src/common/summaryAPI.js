@@ -32,7 +32,7 @@ const summaryAPI = {
     fetchMerchant: {
         url : '/api/v1/business/merchant-details',
         method: 'GET'
-    }, 
+    }
 }
 
 export default summaryAPI

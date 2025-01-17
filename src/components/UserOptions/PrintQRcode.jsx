@@ -1,155 +1,227 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import QRcode from "../../assets/png/QRcode.png";
+import QRCode from "qrcode";
+import { useNavigate } from "react-router-dom";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
+import { useAppContext } from "../../common/AuthContext";
 
 
-const PrintQRcode =()=>{
-    return(
-        <Container>
-        <Wrapper>           
-            <Header>
-                SAIL04 SUPERMARKET
-            </Header>
-            <Subhead>
-                Invites you to QMART
-            </Subhead>
-            <Scan>
-                Scan my QR code,sign up and
-           
-            
-            <Red>Shop NOW!</Red>
-            </Scan>
-            
-            <Image src={QRcode} alt="QRcode" />
-            
-            <Footer>
-                QMART,seamless shopping anytime,anywhere!
-            </Footer>
-        </Wrapper>
-        </Container>
-    )
-}
+const PrintQRcode = () => {
+  const { role } = useAppContext(); // Access role from context
+  const [qrCodeUrl, setQrCodeUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const componentRef = useRef(null);
 
-export default PrintQRcode
+  useEffect(() => {
+    if (role !== "merchant") {
+      navigate("/dashboard"); // Redirect non-merchants to the homepage or another route
+      return;
+    }
+
+    const generateQRCode = async () => {
+      const data = {
+        businessName: "SAIL04 SUPERMARKET",
+        accountNumber: "1234567890",
+        amount: "5000", // Example data
+      };
+      try {
+        setLoading(true);
+        const qrCode = await QRCode.toDataURL(JSON.stringify(data));
+        setQrCodeUrl(qrCode);
+        setLoading(false);
+      } catch (err) {
+        console.error("Failed to generate QR code:", err);
+        setLoading(false);
+      }
+    };
+
+    generateQRCode();
+  }, [role, navigate]);
+
+  const handleDownloadClick = async () => {
+    const element = componentRef.current;
+    if (!element) return;
+
+    try {
+      const canvas = await html2canvas(element);
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save("PrintQRcode.pdf");
+    } catch (error) {
+      console.error("Failed to generate PDF:", error);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    navigate("/dashboard");
+  };
+
+  if (role !== "merchant") {
+    return <p>Unauthorized Access</p>; // Render a message or blank screen for non-merchants
+  }
+
+  return (
+    <Container>
+      <Wrapper ref={componentRef}>
+        <Header>SAIL04 SUPERMARKET</Header>
+        <Subhead>Invites you to QMART</Subhead>
+        <Scan>
+          Scan my QR code, sign up and <Red>Shop NOW!</Red>
+        </Scan>
+        <QrCodeContainer>
+          {loading ? (
+            <p>Generating QR Code...</p>
+          ) : (
+            <img src={qrCodeUrl} alt="QR Code" />
+          )}
+        </QrCodeContainer>
+        <Footer>QMART, seamless shopping anytime, anywhere!</Footer>
+        <Buttons>
+          <button onClick={handleDownloadClick} type="button">
+            Download as PDF
+          </button>
+          <button onClick={handleLogout} type="button">
+            Close
+          </button>
+        </Buttons>
+      </Wrapper>
+    </Container>
+  );
+};
+
+export default PrintQRcode;
+
+// Styled components remain the same
 
 
-const Container=styled.div`
-background-color:rgba(27, 99, 146, 1);
- /* border: 40px rgba(27, 99, 146, 1); */
-    /* max-width: 1280px; */
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding-top: 100px;
-    padding-bottom: 80px;
+const Container = styled.div`
+  background-color: rgba(27, 99, 146, 1);
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 40px;
+  margin: 100px auto;
+  animation: slideInFromTop 1s ease-out;
 
-
-`
-const Wrapper=styled.div`
-    background-color: rgba(255, 255, 255, 1);
-    border-radius:30px;
-    max-width: 1280px;
-    align-items: center;
-    justify-self: center;
-    justify-items: center;
-    align-self: center;
-    flex-wrap: wrap;
-    padding-top:70px;
-    margin-top: 50px;
+  @media (max-width: 768px) {
     width: 90%;
-`
+  }
+`;
 
-const Header =styled.h1`
-    margin-top: 30px;
-    font-weight:700px;
-    font-size:90px;
-    text-align: center;
-    margin-bottom: 10px;
-    line-height:px ;
+const Wrapper = styled.div`
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 30px;
+  max-width: 1280px;
+  padding: 40px 20px;
+  margin-top: 50px;
+  width: 90%;
+  text-align: center;
+`;
 
-    @media(max-width:725px) {
-        font-size: 85px;
+const Header = styled.h1`
+  margin-top: 30px;
+  font-weight: 700;
+  font-size: 40px;
+  text-align: center;
+  margin-bottom: 10px;
+
+  @media (max-width: 725px) {
+    font-size: 30px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 20px;
+  }
+`;
+
+const Subhead = styled.h2`
+  margin-bottom: 30px;
+  font-weight: 600;
+  font-size: 20px;
+  text-align: center;
+  color: rgba(26, 26, 26, 1);
+
+  @media (max-width: 685px) {
+    font-size: 14px;
+  }
+`;
+
+const Scan = styled.p`
+  text-align: center;
+  font-weight: 400;
+  font-size: 30px;
+
+  @media (max-width: 685px) {
+    font-size: 16px;
+  }
+`;
+
+const Red = styled.span`
+  color: red;
+  font-weight: 400;
+  font-size: 30px;
+
+  @media (max-width: 685px) {
+    font-size: 14px;
+  }
+`;
+
+const QrCodeContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+
+  img {
+    width: 300px;
+    @media (max-width: 685px) {
+      width: 150px;
     }
+  }
+`;
 
-    @media(max-width:685px) {
-        font-size: 60px;  
-    }
-    @media(max-width:480px) {
-        font-size: 40px;   
-    }
-`
-const Subhead =styled.h2`
-    margin-bottom: 30px;
-    font-weight: 600;
-    font-size: 60px;
-    line-height: px;
-    text-align: center;
-    color: rgba(26,26,26,1);
-
-    @media(max-width:685px) {
-        font-size: 30px;
-
-        
-    }
-`
-const Scan =styled.p`
-    //margin: 20px 0;
-    align-items: center;
-    text-align: center;
-    font-weight: 400;
-    font-size: 60px;
-    line-height:px;
-
-    @media(max-width:685px) {
-        font-size: 30px;
-
-        
-    }
-`
-const Red =styled.p`
-    color: red;
-    font-weight: 400;
-    align-self:center ;
-    text-align: center;
-    line-height: px;
-    font-size: 60px;
-    margin-bottom: 35px;
-
-    @media(max-width:685px) {
-        font-size: 30px;
-
-        
-    }
-    
-`
-const Image =styled.img`
-    /* max-width: 1280px; */
-    width: 600px;
-    //margin: 20px 0;
-
-    @media(max-width:685px) {
-        width:400px;
-        
-    }
-`
 const Footer = styled.p`
-    padding-top: 80px;
-    padding-bottom: 150px;
-    font-size: 40px;
-    line-height:px;
-    flex-wrap: wrap;
-    font-style: italic;
-    font-weight: 400;
-    text-align:center ;
+  padding-bottom: 50px;
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 400;
 
-    @media(max-width:685px) {
-        font-size: 15px;
+  @media (max-width: 685px) {
+    font-size: 15px;
+  }
+`;
 
-        
+const Buttons = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #1b6392;
+    color: white;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #154a6c;
     }
 
-
-    /* @media (max-width: 480px) {
-        font-size: 11px;
-    } */
-`
+    &:disabled {
+      background-color: #a1c4d6;
+      cursor: not-allowed;
+    }
+  }
+`;

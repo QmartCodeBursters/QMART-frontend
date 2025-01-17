@@ -42,14 +42,15 @@ const Signup = () => {
     });
 
     const newErrors = { ...errors };
+  
+    if (name === "firstName" && (value.length < 3 || value.length > 20)) {
 
-    if (name === "firstName" && (value.length < 3 || value.length > 8)) {
       newErrors.firstName = "First name should include 3-8 characters";
     } else {
       delete newErrors.firstName;
     }
 
-    if (name === "lastName" && (value.length < 3 || value.length > 8)) {
+    if (name === "lastName" && (value.length < 3 || value.length > 20)) {
       newErrors.lastName = "Last name should include 3-8 characters";
     } else {
       delete newErrors.lastName;

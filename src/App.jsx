@@ -37,6 +37,9 @@ import { AppProvider } from "./common/AuthContext";
 import CreateBiz from "./components/Login-Signup/CreateBiz";
 import VerifyEmailOTP from "./components/Login-Signup/Reset";
 import OtpResetPassword from "./components/Login-Signup/OtpResetPassword";
+import QrcodeManagement from "./pages/QRcodePage/QrcodeManagement";
+import NotificationSettings from "./components/notification/Notification";
+import MainUserProfile from "./components/userprofile/Mainuserprofile";
 
 
 function App() {
@@ -63,17 +66,18 @@ function App() {
           <Route path="/paymentsuccess" element={<PaymentSuccess />} />
           <Route path="/wallet" element={<Wallet />} />
           <Route path="/WalletSettings" element={<WalletSettings />} />
-          <Route path="WithdrawalHistory" element={<WithdrawalHistory />} />
+          <Route path="/WithdrawalHistory" element={<WithdrawalHistory />} />
           <Route path="/withdrawaldetails" element={<TransactionDetails />} />
           <Route path="/paymenthistory" element={<Order />} />
           <Route path="/Settings" element={<Settingspage />} />
-          <Route path="UserSettings" element={<UserSettingspage />} />
+          <Route path="/UserSettings" element={<UserSettingspage />} />
           <Route path="/UserScan" element={<ScanHere />} />
           <Route path="/qr-code" element={<QrCode />} />
           <Route path="/UserWallet" element={<UserWallet />} />
           {/* <Route path="/ReceivePay" element={<ReceivePayment />} /> */}
           <Route path="/ReceivePayment" element={<ReceivePayment />} />
-
+          <Route path="/qr-code-management" element={<QrcodeManagement />} />
+          <Route path="/notification-settings" element={<NotificationSettings />}/>
           <Route path="/QRcode" element={<PrintQRcode />} />
           <Route path="/loading" element={<UserPaymentLoading />} />
           <Route
@@ -81,6 +85,7 @@ function App() {
             element={<UserPaymentSuccessPage />}
           />
           <Route path="/Confam" element={<UserPaymentConfir />} />
+          <Route path="/profile" element={<MainUserProfile />} />
           <Route path="/order/:orderId" element={<Extend />} />
         </Routes>
         <Footer />

@@ -36,7 +36,7 @@ const Contactcta = () => {
                     <Cardonedetails>
                         <h4>Chat with us</h4>
                         <p>We are available online from 9:00 AM to 5:00 PM (GMT+5:45). Chat with us now!</p>
-                        <span>Codebursters@gmail.com</span>
+                        <span>codebursters@gmail.com</span>
 
                         {/* <Link to= "/signup"><button className="butTwo">CONTACT US<MdArrowRightAlt/> </button></Link> */}
                     </Cardonedetails>
@@ -87,9 +87,9 @@ animation: slideInFromTop 1s ease-out;
 
 text-align: center;
     p {
-        font-size: 28px;
+        font-size: 20px;
         font-weight: 500;
-        margin: 30px;
+        /* margin: 30px; */
     }
 
     button {
@@ -121,23 +121,26 @@ const Herocard = styled.div`
     
 `;
 const Cardone = styled.div`
-
+flex: 1;
+    width: 90%;
     img {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
     }
 
     padding: 20px;
     display: flex;
     gap: 20px;
     height: auto;
-    max-width: 450px;
+    max-width: 400px;
 
     background-color: white;
     border-radius:5px;
 `;
 
 const Cardonedetails = styled.div`
+
+
         h4 {
             font-size: 20px;
         }
@@ -149,7 +152,7 @@ const Cardonedetails = styled.div`
         }
 
         span {
-            font-size: 20px;
+            font-size: 16px;
             
         }
         button {
@@ -159,7 +162,7 @@ const Cardonedetails = styled.div`
         color: white;
         border: none;
         margin: 20px 0;
-
+            
         display: flex;
         align-items: center;
         cursor: pointer;
@@ -168,6 +171,8 @@ const Cardonedetails = styled.div`
         &:hover {
         background-color: #c96d05;
         }
+
+      
 }
 
     .butTwo {

@@ -53,6 +53,7 @@ const QrCode = () => {
       <h1>Scan QR Code</h1>
       {qrCodeUrl ? (
         <div>
+
           <img
             src={qrCodeUrl}
             alt="QR Code"
@@ -64,6 +65,12 @@ const QrCode = () => {
           <div style={{ marginTop: "5px", fontSize: "16px" }}>
             <strong>Account Number:</strong> {userDetails?.accountNumber}
           </div>
+
+//           <img src={qrCodeUrl} alt="QR Code" style={{ width: "300px" }} />
+//           <div>{userDetails?.business?.businessName || "Default Business Name"}</div>
+//           <div>Account Number: {userDetails?.accountNumber}</div>
+          {/* Navigate to PaymentPage passing businessName, accountName, walletBalance, and amount */}
+
           <button
             style={{
               marginTop: "20px",
@@ -96,3 +103,4 @@ const QrCode = () => {
 };
 
 export default QrCode;
+

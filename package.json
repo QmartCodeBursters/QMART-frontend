@@ -12,7 +12,11 @@
   "dependencies": {
     "antd": "^5.23.1",
     "axios": "^1.7.9",
+    "chart.js": "^4.4.7",
+    "chartjs-plugin-datalabels": "^2.2.0",
+    "html2canvas": "^1.4.1",
     "js-cookie": "^3.0.5",
+    "jspdf": "^2.5.2",
     "jsqr": "^1.4.0",
     "jwt-decode": "^4.0.0",
     "libphonenumber-js": "^1.11.17",

@@ -3,6 +3,7 @@ import QRCode from "qrcode";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../common/AuthContext"; 
 
+
 const QrCode = () => {
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const { userDetails, businessName } = useAppContext(); 
@@ -12,6 +13,7 @@ const QrCode = () => {
   const amount = queryParams.get("amount");
 
   useEffect(() => {
+
     const generateQRCode = async () => {
       if (!userDetails || !amount || !businessName) {
         console.error("Missing required information for QR code generation.");
@@ -26,12 +28,17 @@ const QrCode = () => {
       };
 
       try {
-        const qrCode = await QRCode.toDataURL(JSON.stringify(data));
+        const qrCode = await QRCode.toDataURL(JSON.stringify(finalDetails));
         setQrCodeUrl(qrCode);
       } catch (err) {
-        console.error("Failed to generate QR code:", err);
+        console.error("Error generating QR Code:", err);
       }
     };
+
+
+     generateQRCode();
+  }, [amount, userDetails, businessName]);
+
 
     generateQRCode();
   }, [amount, userDetails, businessName]);
@@ -47,8 +54,7 @@ const QrCode = () => {
   if (!businessName && !userDetails?.business?.businessName) {
     return <p style={{ textAlign: "center" }}>Business name is missing.</p>;
   }
-
-  return (
+ return (
     <div style={{ textAlign: "center", padding: "20px", marginTop: "100px" }}>
       <h1>Scan QR Code</h1>
       {qrCodeUrl ? (
@@ -103,4 +109,3 @@ const QrCode = () => {
 };
 
 export default QrCode;
-

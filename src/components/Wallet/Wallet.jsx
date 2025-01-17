@@ -35,15 +35,13 @@ function Wallet() {
   // Mock data for wallet balance
   const storeData = {
     storeName: "QMart Stores",
-
     balance: 0, // Example balance
-
-    
-
+  };
 
   // Mock API call for transactions
   useEffect(() => {
     const fetchTransactions = async () => {
+      // Commented out the mock data for now
       // const mockData = [
       //   {
       //     bank: "Access Bank (*****7890)",
@@ -106,7 +104,7 @@ function Wallet() {
       //     status: "Completed",
       //   },
       // ];
-      const mockData = [];
+      const mockData = []; // Empty data while testing or waiting for the actual data
       setTransactions(mockData);
     };
 

@@ -245,7 +245,6 @@ const PinInput = styled.div`
   display: flex;
 `;
 
-
 const PaymentPage = () => {
   const location = useLocation(); // Get location using useLocation hook
   const { state } = location || {}; // Destructure state safely
@@ -264,7 +263,7 @@ const PaymentPage = () => {
   const [transactionFee] = useState("50.00");
   const [openPinModal, setOpenPinModal] = useState(false);
   const [userPin, setUserPin] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);  
   const { userDetails } = useAppContext();
 
   const navigate = useNavigate();

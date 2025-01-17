@@ -7,10 +7,8 @@ import summaryAPI, { baseURL } from "../../common/summaryAPI";
 import { useAppContext } from "../../common/AuthContext";
 import AxiosToastError from "../../utilis/AxiosToastError";
 
-
-
 const Login = () => {
-  const { setEmail, setRole, setUserDetails } = useAppContext(); // Access context
+  const { setEmail, setRole, setUserDetails, setBusinessName, setAccountNumber } = useAppContext(); // Access context
   const navigate = useNavigate();
   const [email, setEmailInput] = useState("");
   const [password, setPassword] = useState("");
@@ -20,7 +18,7 @@ const Login = () => {
 
     try {
       const response = await axios({
-        method: "POST", // Assuming POST, update if necessary
+        method: "POST",
         url: `${baseURL}${summaryAPI.login.url}`,
         data: { email, password },
         withCredentials: true,
@@ -31,12 +29,13 @@ const Login = () => {
 
         const { user } = response.data.data;
 
-        // Update context values
+        
         setEmail(user.email);
         setRole(user.role);
-        setUserDetails(user); // Set full user details in the context
+        setUserDetails(user); 
+        
 
-        // Navigation logic based on user role
+        
         if (user.role === "merchant") {
           if (user.business) {
             navigate("/dashboard");
@@ -90,7 +89,6 @@ const Login = () => {
 };
 
 export default Login;
-
 
 const Wrapper = styled.div``;
 
@@ -171,4 +169,3 @@ const FormContainer = styled.div`
     }
   }
 `;
-

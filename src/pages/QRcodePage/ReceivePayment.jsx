@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useAppContext } from "../../common/AuthContext";
 
 const Container = styled.div`
   display: flex;
@@ -14,6 +15,19 @@ const Container = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   box-sizing: border-box;
+  animation: slideInFromTop 1s ease-out;
+
+
+  @keyframes slideInFromTop {
+        from {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
 `;
 
 const BackButton = styled.div`
@@ -186,7 +200,8 @@ const ReminderPopup = styled.div`
 `;
 
 
-const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
+const PaymentPage = () => {
+  const { userDetails } = useAppContext(); // Get user details from context
   const [amount, setAmount] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showCancelPopup, setShowCancelPopup] = useState(false);
@@ -196,6 +211,11 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Default values for storeName, accountNumber, and walletBalance if userDetails is not available
+  const storeName = userDetails?.business?.businessName || "Default Business Name";
+  const accountNumber = userDetails?.accountNumber || "N/A";
+  const walletBalance = userDetails?.accountBalance || "0.00";
+
   const handleNumberInput = (value) => {
     if (value === "x") {
       setAmount((prev) => prev.slice(0, -1));
@@ -203,20 +223,6 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
       setAmount((prev) => prev + value);
     }
   };
-
-  // const handlePayment = () => {
-  //   if (amount && parseFloat(amount) > 0) {
-  //     const data = {
-  //       amount,
-  //       businessName: storeName,
-  //       accountNumber,
-  //     };
-  //     sessionStorage.setItem("paymentDetails", JSON.stringify(data));
-  //     navigate("/qr-code");
-  //   } else {
-  //     alert("Please enter a valid amount.");
-  //   }
-  // };
 
   const handlePayment = () => {
     if (amount && parseFloat(amount) > 0) {
@@ -226,15 +232,13 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
         accountNumber,
       };
       sessionStorage.setItem("paymentDetails", JSON.stringify(data));
-  
+
       // Add the amount as a query parameter in the URL
       navigate(`/qr-code?amount=${amount}`);
     } else {
       alert("Please enter a valid amount.");
     }
   };
-  
-  
 
   const handleCancelConfirmation = () => {
     setShowCancelPopup(true);
@@ -264,10 +268,6 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
       <Header>{storeName}</Header>
       <SubHeader>Account No: {accountNumber}</SubHeader>
 
-      {/* <InfoCard>
-        <span>Wallet Balance: ₦{walletBalance}</span>
-      </InfoCard> */}
-
       <AmountDisplay>₦{amount || "0"}</AmountDisplay>
 
       <PinGrid>
@@ -277,14 +277,12 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
           </PinButton>
         ))}
       </PinGrid>
+
       {!loading ? (
         <SendButton onClick={handlePayment}>Receive Payment</SendButton>
       ) : (
         <SendButton disabled>Please Wait....</SendButton>
       )}
-
-      {/* Overlay */}
-      <Overlay show={showConfirmation} />
 
       {/* Confirmation Page */}
       {showConfirmation && (
@@ -345,10 +343,5 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
   );
 };
 
-PaymentPage.defaultProps = {
-  storeName: "QMART Stores",
-  accountNumber: "123456789",
-  walletBalance: "1000.00",
-};
-
 export default PaymentPage;
+

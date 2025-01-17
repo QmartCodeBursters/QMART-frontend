@@ -1,24 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import backgroundImage from "../../assets/png/bg.png";
+import toast from "react-hot-toast";
+import axios from "axios";
+import AxiosToastError from "../../utilis/AxiosToastError";
 
-
+// Global Styles
 const GlobalStyle = createGlobalStyle`
   body {
-    background-color: rgba(242, 242, 242, 1);
-    background: url(${backgroundImage}) no-repeat; 
+    /* background-color: rgba(242, 242, 242, 1); */
+    /* background: url(${backgroundImage}) no-repeat center center fixed; */
+    background-size: cover;
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    /* font-family: Arial, sans-serif; */
   }
 `;
 
+// Styled Components
 const Container = styled.div`
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  margin-top: 5rem;
+  max-width: 550px;
+  margin: 100px auto;
+  padding: 50px;
+  /* margin-top: 5rem; */
+  /* background: white; */
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+  rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  border-radius: 10px;
+  animation: slideInFromTop 1s ease-out;
+
+  @keyframes slideInFromTop {
+      from {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
 `;
 
 const Header = styled.h1`
@@ -40,6 +60,7 @@ const Section = styled.div`
 const SectionTitle = styled.h3`
   font-size: 1.2rem;
   margin-bottom: 10px;
+  color: rgba(27, 99, 146, 1);
 `;
 
 const Toggle = styled.label`
@@ -51,15 +72,12 @@ const Toggle = styled.label`
   border: 1px solid #ddd;
   border-radius: 5px;
   cursor: pointer;
-
   input {
     display: none;
   }
-
   .text {
     color: #004a79;
   }
-
   .status {
     color: ${(props) => (props.enabled ? "#004a79" : "grey")};
   }
@@ -69,24 +87,27 @@ const CheckboxContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 20px;
 `;
 
 const SaveButton = styled.button`
   display: block;
   width: 100%;
   background-color: ${(props) =>
-    props.disabled ? "gray" : "rgba(27, 99, 146, 1)"};
+    props.disabled ? "gray" : " #fa8232;"};
   color: white;
   border: none;
   padding: 10px;
   border-radius: 5px;
   font-size: 1rem;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  transition: background-color 0.3s;
+
+  &:hover {
+        background-color: #803e00;
+      }
 `;
 
-// PopUp styling
-
+// Popup Styling
 const PopUp = styled.div`
   position: fixed;
   top: 0;
@@ -105,41 +126,42 @@ const PopUp = styled.div`
 const PopUpContent = styled.div`
   background-color: #f4f7f9;
   padding: 20px;
-  border-radius: 5px;
-  width: 300px;
+  border-radius: 10px;
+  width: 350px;
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
 const PopUpHeader = styled.h3`
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   color: rgba(27, 99, 146, 1);
 `;
 
 const PasswordInput = styled.input`
   padding: 10px;
   margin-bottom: 20px;
-  width: 80%;
+  width: 100%;
   border-radius: 5px;
   border: 1px solid #ccc;
-  text-align: center;
 `;
 
 const PopUpButton = styled.button`
   padding: 10px;
-  width: 80%;
-  background-color: rgba(27, 99, 146, 1);
+  width: 100%;
+  background-color: #fa8232;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+
+  &:hover {
+        background-color: #803e00;
+      }
 `;
 
-
-const NotificationSettings = () => {
+// Main Component
+const NotificationSettings = ({ userId, role }) => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [emailEnabled, setEmailEnabled] = useState(true);
   const [smsEnabled, setSmsEnabled] = useState(true);
@@ -150,23 +172,44 @@ const NotificationSettings = () => {
   const [showPopUp, setShowPopUp] = useState(false);
   const [password, setPassword] = useState("");
 
+  useEffect(() => {
+    if (!userId || !role) {
+      console.error("userId or role is not defined");
+      return;
+    }
+    const fetchSettings = async () => {
+      try {
+        const response = await axios.get(`/api/notifications/${userId}/${role}`);
+        const data = response.data;
+  
+        setNotificationsEnabled(data.notificationsEnabled);
+        setEmailEnabled(data.emailEnabled);
+        setSmsEnabled(data.smsEnabled);
+        setPaymentsEnabled(data.paymentsEnabled);
+        setWithdrawalsEnabled(data.withdrawalsEnabled);
+        setNewslettersEnabled(data.newslettersEnabled);
+        setUpdatesEnabled(data.updatesEnabled);
+      } catch (error) {
+        AxiosToastError(error);
+        console.error("Error fetching settings:", error.message);
+      }
+    };
+  
+    fetchSettings();
+  }, [userId, role]);
+
   const handleSave = () => {
     setShowPopUp(true);
   };
 
-  // const handlePasswordSubmit = () => {
-  //   alert("Password submitted successfully!");
-  //   setShowPopUp(false);
-  //   setPassword(""); 
-  // };
-
   const handlePasswordSubmit = () => {
     if (password === "") {
-      alert("Please input your password.");
+      toast.error("Please input your password.");
+      // alert("Please input your password.");
     } else {
-      alert("Changes made successfully!");
+      toast.success("Settings saved successfully!");
       setShowPopUp(false);
-      setPassword(""); // Clear the password field after submission
+      setPassword("");
     }
   };
 
@@ -239,7 +282,9 @@ const NotificationSettings = () => {
                   <input
                     type="checkbox"
                     checked={withdrawalsEnabled}
-                    onChange={() => setWithdrawalsEnabled(!withdrawalsEnabled)}
+                    onChange={() =>
+                      setWithdrawalsEnabled(!withdrawalsEnabled)
+                    }
                   />
                   <span className="status">
                     {withdrawalsEnabled ? "ON" : "OFF"}
@@ -251,7 +296,9 @@ const NotificationSettings = () => {
                   <input
                     type="checkbox"
                     checked={newslettersEnabled}
-                    onChange={() => setNewslettersEnabled(!newslettersEnabled)}
+                    onChange={() =>
+                      setNewslettersEnabled(!newslettersEnabled)
+                    }
                   />
                   <span className="status">
                     {newslettersEnabled ? "ON" : "OFF"}
@@ -274,8 +321,6 @@ const NotificationSettings = () => {
           </>
         )}
 
-        {/* SAVE CHANGES BUTTON */}
-
         <SaveButton
           disabled={
             !notificationsEnabled &&
@@ -292,14 +337,13 @@ const NotificationSettings = () => {
         </SaveButton>
       </Container>
 
-      {/* POPUP COMPONENT */}
-
+      {/* Pop-up */}
       <PopUp show={showPopUp}>
         <PopUpContent>
           <PopUpHeader>Enter your password</PopUpHeader>
           <PasswordInput
             type="password"
-            placeholder=""
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />

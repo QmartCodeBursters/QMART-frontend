@@ -104,6 +104,7 @@ const HeroDetails = styled.div`
 
         display: flex;
         align-items: center;
+        justify-content: center;
         cursor: pointer;
         animation: fadeInFromTop 1.5s ease-out;
 

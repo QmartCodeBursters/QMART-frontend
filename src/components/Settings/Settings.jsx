@@ -1,16 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import image from "../../assets/png/Profileimage.png";
 import { Button } from "./AddressForm";
+import { useAppContext } from "../../common/AuthContext";	
 
 const AccountSettings = () => {
+  const { userDetails } = useAppContext();
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
+    firstName: userDetails.firstName || "",
+    lastName:userDetails.lastName || "",
+    email:userDetails.email || "",
+    phoneNumber:userDetails.phoneNumber || "",
+    businessName: "",
+    businessDescr: "",
+    regNumber: "",
   });
+
+  
   const [profileimage, setProfileImage] = useState(image);
+
   const handleForm = (e) => {
     e.preventDefault();
     setFormData({
@@ -18,6 +26,7 @@ const AccountSettings = () => {
       [e.target.name]: e.target.value,
     });
   };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -27,113 +36,124 @@ const AccountSettings = () => {
   };
 
   return (
-    <>
-      <Container>
-        <AcctSettingsContainer>
-          <AccountSetting>
-            <header> Account Settings</header>
-            <Settingform>
-              <Left>
-                <form>
-                  <div>
-                    <label>First Name</label> <br />
-                    <input
-                      type="text"
-                      name="firstName"
-                      value={formData.firstName}
-                      onChange={handleForm}
-                      placeholder="First name"
-                    />
-                  </div>
-                  <br />
-                  <div>
-                    <label>
-                      Last Name <br />
-                      <input
-                        type="text"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleForm}
-                        placeholder="Last name"
-                      />
-                    </label>
-                  </div>
-                  <br />
-                  <div>
-                    <label>Email </label>
-                    <br />
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleForm}
-                      placeholder="Email address"
-                    />
-                  </div>
-
-                  <br />
-                  <div>
-                    <label>Phone Number </label>
-                    <br />
-                    <input
-                      type="Number"
-                      name="phoneNumber"
-                      value={formData.phoneNumber}
-                      onChange={handleForm}
-                      placeholder="Phone number"
-                    />
-                  </div>
-                  <br />
-                  <div>
-                    <label>Business/Store Name </label> <br />
-                    <input type="text" name="businessName" placeholder="Business name"/>
-                    <br />
-                    <br />
-                  </div>
-
-                  <div>
-                    <label>Business/Store Description (Max : 100 words) </label>{" "}
-                    <br />
-                    <input type="text" name="businessDescr" rows="3" placeholder=" Business description"/>
-                    <br />
-                    <br />
-                  </div>
-
-                  <div>
-                    <label>Business/Store Registration Number </label> <br />
-                    <input type="Number" name="regNumber" placeholder="Business registration number" />
-                    <br />
-                    <br />
-                  </div>
-                  <SettingsButton type="submit">save changes</SettingsButton>
-                </form>
-              </Left>
-              <Right>
-                <img src={profileimage} alt="User Image" />
-                <input
-                  type="file"
-                  id="imageUpload"
-                  accept="image/*"
-                  style={{ display: "none" }} // Hide the file input
-                  onChange={handleImageChange}
-                />
-                <button
-                  onClick={() => document.getElementById("imageUpload").click()}
-                >
-                  Choose Image
-                </button>
-              </Right>
-            </Settingform>
-          </AccountSetting>
-        </AcctSettingsContainer>
-      </Container>
-    </>
+    <Container>
+      <AcctSettingsContainer>
+        <AccountSetting>
+          <header>Account Settings</header>
+          <Settingform>
+            <Left>
+              <form>
+                <div>
+                  <label>First Name</label> <br />
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleForm}
+                    placeholder="First name"
+                    readOnly
+                  />
+                </div>
+                <br />
+                <div>
+                  <label>Last Name</label> <br />
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleForm}
+                    placeholder="Last name"
+                    readOnly
+                  />
+                </div>
+                <br />
+                <div>
+                  <label>Email</label> <br />
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleForm}
+                    placeholder="Email address"
+                    readOnly
+                  />
+                </div>
+                <br />
+                <div>
+                  <label>Phone Number</label> <br />
+                  <input
+                    type="Number"
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleForm}
+                    placeholder="Phone number"
+                    readOnly
+                  />
+                </div>
+                <br />
+                <div>
+                  <label>Business/Store Name</label> <br />
+                  <input
+                    type="text"
+                    name="businessName"
+                    value={formData.businessName}
+                    onChange={handleForm}
+                    placeholder="Business name"
+                  />
+                </div>
+                <br />
+                <div>
+                  <label>Business/Store Description</label> <br />
+                  <input
+                    type="text"
+                    name="businessDescr"
+                    value={formData.businessDescr}
+                    onChange={handleForm}
+                    placeholder="Business description"
+                  />
+                </div>
+                <br />
+                <div>
+                  <label>Business/Store Registration Number</label> <br />
+                  <input
+                    type="Number"
+                    name="regNumber"
+                    value={formData.regNumber}
+                    onChange={handleForm}
+                    placeholder="Business registration number"
+                  />
+                </div>
+                <br />
+                <SettingsButton type="submit">Save changes</SettingsButton>
+              </form>
+            </Left>
+            <Right>
+              <img src={profileimage} alt="User Image" />
+              <input
+                type="file"
+                id="imageUpload"
+                accept="image/*"
+                style={{ display: "none" }} 
+                onChange={handleImageChange}
+              />
+              <button
+                onClick={() => document.getElementById("imageUpload").click()}
+              >
+                Choose Image
+              </button>
+            </Right>
+          </Settingform>
+        </AccountSetting>
+      </AcctSettingsContainer>
+    </Container>
   );
 };
 
 export default AccountSettings;
+
+
+
 const Container = styled.div`
-  /* max-width: 100%; */
   justify-content: center;
   width: 90%;
   max-width: 1280px;
@@ -142,10 +162,9 @@ const Container = styled.div`
   border: 1px solid #e6e6e6;
   border-radius: 5px;
 
-  @media (max-width:768px)
-{
+  @media (max-width: 768px) {
     margin-top: 95px;
-}
+  }
 `;
 
 const AccountSetting = styled.div`
@@ -156,13 +175,13 @@ const AccountSetting = styled.div`
   header {
     font-weight: 600;
     margin-bottom: 10px;
-    /* padding-left: 15px; */
     padding: 15px;
     box-shadow: 0px 1px #e5e5e5;
   }
 `;
 
 const AcctSettingsContainer = styled.div``;
+
 const Settingform = styled.div`
   display: flex;
   justify-content: space-between;
@@ -195,8 +214,7 @@ const Left = styled.div`
 `;
 
 const SettingsButton = styled(Button)`
-margin-top: 0px;
-
+  margin-top: 0px;
 `;
 
 const Right = styled.div`
@@ -207,30 +225,19 @@ const Right = styled.div`
   margin: auto;
   margin-right: 150px;
 
-  @media (max-width:768px){
-    margin:auto;
+  @media (max-width: 768px) {
+    margin: auto;
     justify-content: center;
-  };
-
+  }
 
   img {
     height: 300px;
     width: 300px;
     border-radius: 50%;
     object-fit: cover;
-    flex-direction: column;
-
-    @media (max-width: 768px) {
-      height: 200px;
-      width: 200px;
-      flex-direction: column;
-      justify-content: center;
-      /* align-items: center; */
-      /* margin-left:70px; */
-    }
   }
 
-button {
+  button {
     border: none;
     margin-top: 20px;
     padding: 12px 20px;

@@ -1,4 +1,6 @@
+
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import Balance from "./Balance";
 import CashFlow from "./CashFlow";
 import RecentPayments from "./RecentPayments";
@@ -7,7 +9,7 @@ import AxiosToastError from "../../utilis/AxiosToastError";
 import Axios from "../../utilis/Axios";
 import summaryAPI from "../../common/summaryAPI";
 import toast from "react-hot-toast";
-
+import { useAppContext } from "../../common/AuthContext"; 
 const Button = styled.div``;
 const Container = styled.div`
   font-family: "Poppins", sans-serif;
@@ -17,191 +19,69 @@ const Container = styled.div`
 `;
 
 const Dashboard = () => {
+  const [user, setUser] = useState({});
+  const navigate = useNavigate();
   const [storeData, setStoreData] = useState({
     role: "",
     storeName: "",
     balance: 0,
   });
 
-  // const recentPaymentsData = [
-  //   {
-  //     name: "Aserikan Adetola",
-  //     date: "9 January 2023",
-  //     amount: 0,
-  //     status: "completed",
-  //   },
-  //   {
-  //     name: "Fatimah Fatimah",
-  //     date: "January 25th",
-  //     amount: 0,
-  //     status: "on the way",
-  //   },
-  //   {
-  //     name: "Foluso Ojo",
-  //     date: "January 25th",
-  //     amount: 0,
-  //     status: "completed",
-  //   },
-  //   {
-  //     name: "Aserikan Adetola",
-  //     date: "9 January 2023",
-  //     amount: 0,
-  //     status: "completed",
-  //   },
-  //   {
-  //     name: "Fatimah Fatimah",
-  //     date: "January 25th",
-  //     amount: 0,
-  //     status: "on the way",
-  //   },
-  //   {
-  //     name: "Foluso Ojo",
-  //     date: "January 25th",
-  //     amount: 0,
-  //     status: "completed",
-  //   },
-  //   {
-  //     name: "Aserikan Adetola",
-  //     date: "9 January 2023",
-  //     amount: 0,
-  //     status: "completed",
-  //   },
-  //   {
-  //     name: "Fatimah Fatimah",
-  //     date: "January 25th",
-  //     amount: 0,
-  //     status: "on the way",
-  //   },
-  //   {
-  //     name: "Foluso Ojo",
-  //     date: "January 25th",
-  //     amount: 0,
-  //     status: "completed",
-  //   },
-  //   {
-  //     name: "Aserikan Adetola",
-  //     date: "9 January 2023",
-  //     amount: 0,
-  //     status: "completed",
-  //   },
-  //   {
-  //     name: "Fatimah Fatimah",
-  //     date: "January 25th",
-  //     amount: 0,
-  //     status: "on the way",
-  //   },
-  //   {
-  //     name: "Foluso Ojo",
-  //     date: "January 25th",
-  //     amount: 0,
-  //     status: "completed",
-  //   },
-  //   {
-  //     name: "Aserikan Adetola",
-  //     date: "9 January 2023",
-  //     amount: 0,
-  //     status: "completed",
-  //   },
-  //   {
-  //     name: "Fatimah Fatimah",
-  //     date: "January 25th",
-  //     amount: 0,
-  //     status: "on the way",
-  //   },
-  //   {
-  //     name: "Foluso Ojo",
-  //     date: "January 25th",
-  //     amount: 0,
-  //     status: "completed",
-  //   },
-  // ];
-
+  const { updateBusinessName } = useAppContext(); 
   const recentPaymentsData = [];
-  // Mock data for different months (for dynamic month selection)
   const mockData = {
     currentMonth: "January",
     months: [
-      {
-        name: "January",
-        paymentReceived: 0,
-        amountWithdrawn: 0,
-      },
+      { name: "January", paymentReceived: 0, amountWithdrawn: 0 },
       { name: "February", paymentReceived: 0, amountWithdrawn: 0 },
       { name: "March", paymentReceived: 0, amountWithdrawn: 0 },
-      { name: "April", paymentReceived: 0, amountWithdrawn: 0 },
-      { name: "May", paymentReceived: 0, amountWithdrawn: 0 },
-      { name: "June", paymentReceived: 0, amountWithdrawn: 0 },
-      { name: "July", paymentReceived: 0, amountWithdrawn: 0 },
-      { name: "August", paymentReceived: 0, amountWithdrawn: 0 },
-      {
-        name: "September",
-        paymentReceived: 0,
-        amountWithdrawn: 0,
-      },
-      { name: "October", paymentReceived: 0, amountWithdrawn: 0 },
-      { name: "November", paymentReceived: 0, amountWithdrawn: 0 },
-      { name: "December", paymentReceived: 0, amountWithdrawn: 0 },
+     
     ],
   };
 
-  const [selectedMonthReceived, setSelectedMonthReceived] = useState(
-    mockData.currentMonth
-  );
-  const [selectedMonthWithdrawn, setSelectedMonthWithdrawn] = useState(
-    mockData.currentMonth
-  );
+  const [selectedMonthReceived, setSelectedMonthReceived] = useState(mockData.currentMonth);
+  const [selectedMonthWithdrawn, setSelectedMonthWithdrawn] = useState(mockData.currentMonth);
 
-  // Get the data for the selected month for both received and withdrawn
-  const selectedMonthReceivedData = mockData.months.find(
-    (month) => month.name === selectedMonthReceived
-  );
-  const selectedMonthWithdrawnData = mockData.months.find(
-    (month) => month.name === selectedMonthWithdrawn
-  );
+  const selectedMonthReceivedData = mockData.months.find((month) => month.name === selectedMonthReceived);
+  const selectedMonthWithdrawnData = mockData.months.find((month) => month.name === selectedMonthWithdrawn);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await Axios({
-          method: "GET",
-          url: summaryAPI.fetchUser.url,
-        });
+        const response = await Axios({ method: "GET", url: summaryAPI.fetchUser.url });
         const user = response.data;
-        console.log(user);
-
         if (user.role === "merchant") {
           setStoreData({
             role: user.role,
             storeName: user.businessName || "No business name",
             balance: user.accountBalance || 0,
           });
+          updateBusinessName(user.businessName || "No business name"); 
         } else if (user.role === "customer") {
           setStoreData({
             role: user.role,
             storeName: user.firstName || "Customer",
             balance: user.accountBalance || 0,
           });
+          updateBusinessName(user.firstName || "Customer"); 
         }
-
-        // if (response.data.success) {
-        //   toast.success(response.data.message);
-        // } else {
-        //   toast.error(response.data.message);
-        // }
       } catch (error) {
         AxiosToastError(error);
       }
     };
     fetchUserData();
-  }, []);
+  }, [updateBusinessName]);
+
+  const navigateToQRCodePage = () => {
+    navigate({
+      pathname: '/qrcode', 
+      state: { businessName: storeData.storeName }
+    });
+  };
 
   return (
     <Container>
-      <Balance
-        storeName={storeData.storeName}
-        balance={storeData.balance}
-        role={storeData.role}
-      />
+      <Balance storeName={storeData.storeName} balance={storeData.balance} role={storeData.role} />
       <CashFlow
         selectedMonthReceived={selectedMonthReceived}
         setSelectedMonthReceived={setSelectedMonthReceived}
@@ -211,7 +91,10 @@ const Dashboard = () => {
         amountWithdrawn={selectedMonthWithdrawnData.amountWithdrawn}
       />
       <RecentPayments transactions={recentPaymentsData} />
-      {/* Render buttons based on role */}
+      {/* Render button to navigate to QRCodePage */}
+      <Button>
+        <button onClick={navigateToQRCodePage}>Generate QR Code</button>
+      </Button>
     </Container>
   );
 };

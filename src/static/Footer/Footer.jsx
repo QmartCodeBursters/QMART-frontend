@@ -231,7 +231,7 @@ button {
  const Logocont = styled.div`
     display: flex;
     color: white;
-    font-size: 28px;
+    font-size: 20px;
     gap: 10px;
     img{
         width: 40px;

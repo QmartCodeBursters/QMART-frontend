@@ -1,16 +1,11 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { FaUser, FaHistory, FaQrcode, FaBell, FaCog, FaSignOutAlt } from "react-icons/fa";
-import { MdLogout } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify"; // Assuming you're using react-toastify for toast notifications.
-
-
-
 
 const Container = styled.div`
   position: relative;
   margin-top: 4rem;
+  
+
+
+  
 `;
 
 const Header = styled.div`
@@ -19,13 +14,17 @@ const Header = styled.div`
   align-items: center;
   margin-bottom: 20px;
   transition: transform 0.3s ease-in-out;
+  animation: slideInFromTop 1s ease-out;
+
+ 
 
   @media (max-width: 1024px) {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
   }
-`;
+
+  `;
 
 const LeftSection = styled.div`
   display: flex;
@@ -74,6 +73,19 @@ const BalanceCard = styled.div`
   color: white;
   margin-bottom: 20px;
   transition: transform 0.3s ease-in-out;
+  animation: slideInFromTop 1s ease-out;
+
+
+  @keyframes slideInFromTop {
+        from {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
 
   p {
     margin: 0;
@@ -104,17 +116,18 @@ const ButtonGroup = styled.div`
 
   button {
     flex: 1;
+    font-family: 'Poppins', sans-serif;
   }
 `;
 
 const Button = styled.button`
   padding: 10px 20px;
-  font-size: 0.9rem;
+  font-size: 18px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   background-color: ${(props) =>
-    props.primary ? "#fff" : "rgba(27, 99, 146, 1)"};
+    props.primary ? "#fff" : "#FA8232;"};
   color: ${(props) => (props.primary ? "rgba(27, 99, 146, 1)" : "#fff")};
   font-weight: bold;
 
@@ -180,11 +193,26 @@ const Overlay = styled.div`
 
 
 
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FaUser, FaHistory, FaQrcode, FaBell, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import styled from 'styled-components';
+
 const Balance = ({ storeName, balance, role }) => {
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Track login state
+  const [currentTime, setCurrentTime] = useState(new Date()); // State for time
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date()); // Update time every second
+    }, 1000);
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
 
   const toggleBalanceVisibility = () => {
     setIsBalanceVisible((prevState) => !prevState);
@@ -242,10 +270,10 @@ const Balance = ({ storeName, balance, role }) => {
             <DropdownItem onClick={() => handleNavigation("/paymenthistory")}>
               <FaHistory /> Payment History
             </DropdownItem>
-            <DropdownItem onClick={() => handleNavigation("/qr-code")}>
+            <DropdownItem onClick={() => handleNavigation("/QRcode")}>
               <FaQrcode /> QR Code Management
             </DropdownItem>
-            <DropdownItem onClick={() => handleNavigation("/notificationsettings")}>
+            <DropdownItem onClick={() => handleNavigation("/notification-settings")}>
               <FaBell /> Notification Settings
             </DropdownItem>
             <DropdownItem onClick={() => handleNavigation("/accountsettings")}>
@@ -268,7 +296,7 @@ const Balance = ({ storeName, balance, role }) => {
         </LeftSection>
         <RightSection>
           <h1>Welcome {storeName} 👌</h1>
-          <p>{new Date().toLocaleString()}</p>
+          <p>{currentTime.toLocaleString()}</p>
         </RightSection>
       </Header>
 
@@ -305,11 +333,11 @@ const Balance = ({ storeName, balance, role }) => {
         <ButtonGroup>
           {role === "customer" && isLoggedIn ? (
             <Button primary onClick={() => navigate("/UserScan")}>
-              MAKE PAYMENT
+              Make Payment
             </Button>
           ) : role === "merchant" && isLoggedIn ? (
             <Button primary onClick={() => navigate("/ReceivePayment")}>
-              RECEIVE PAYMENT
+              Receive Payment
             </Button>
           ) : null}
           {isLoggedIn && (

@@ -446,7 +446,7 @@ const QrCode = () => {
           <img src={qrCodeUrl} alt="QR Code" style={{ width: "300px" }} />
           <div>{userDetails?.business?.businessName || "Default Business Name"}</div>
           <div>Account Number: {userDetails?.accountNumber}</div>
-          {/* Navigate to PaymentPage passing businessName, accountName, and walletBalance */}
+          {/* Navigate to PaymentPage passing businessName, accountName, walletBalance, and amount */}
           <button
             onClick={() => {
               navigate("/payment", {
@@ -454,6 +454,7 @@ const QrCode = () => {
                   businessName: userDetails?.business?.businessName,
                   accountName: userDetails?.accountNumber,
                   walletBalance: userDetails?.walletBalance,
+                  amount, // Pass the amount here
                 },
               });
             }}
@@ -469,6 +470,7 @@ const QrCode = () => {
 };
 
 export default QrCode;
+
 
 
 

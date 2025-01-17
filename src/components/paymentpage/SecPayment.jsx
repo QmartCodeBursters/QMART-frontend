@@ -1,10 +1,11 @@
 import "./sec.css";
 
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Modal } from "antd";
 import OtpInput from "react-otp-input";
+import { useAppContext } from "../../common/AuthContext";
 
 const Container = styled.div`
   display: flex;
@@ -244,7 +245,17 @@ const PinInput = styled.div`
   display: flex;
 `;
 
-const PaymentPage = ({ storeName, accountNumber, walletBalance, accountBalance }) => {
+
+const PaymentPage = () => {
+  const location = useLocation(); // Get location using useLocation hook
+  const { state } = location || {}; // Destructure state safely
+
+  const { 
+    businessName = "N/A", 
+    accountNumber = "N/A", 
+    walletBalance = "0.00" 
+  } = state || {}; // Use fallback values in case state is undefined
+
   const [amount, setAmount] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showCancelPopup, setShowCancelPopup] = useState(false);
@@ -254,31 +265,14 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance, accountBalance }
   const [openPinModal, setOpenPinModal] = useState(false);
   const [userPin, setUserPin] = useState("");
   const [loading, setLoading] = useState(false);
+  const { userDetails } = useAppContext();
 
   const navigate = useNavigate();
 
   const togglePinModalDisplay = () => setOpenPinModal(!openPinModal);
 
-  const handleNumberInput = (value) => {
-    if (value === "x") {
-      // setAmount((prev) => prev.slice(0, -1));
-      setUserPin((prev) => prev.slice(0, -1));
-    } else {
-      console.log(value);
-      // setAmount((prev) => prev + value);
-      setUserPin((prev) => prev + value);
-    }
-  };
-
   const handlePayment = () => {
     togglePinModalDisplay();
-    // if (amount && parseFloat(amount) <= parseFloat(walletBalance)) {
-    //   setShowConfirmation(true);
-    // } else if (!amount) {
-    //   alert("Please enter an amount.");
-    // } else {
-    //   alert("Insufficient funds.");
-    // }
   };
 
   const confirmUserPin = () => {
@@ -301,7 +295,6 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance, accountBalance }
 
   const handlePinSubmit = () => {
     if (pin === "1234") {
-      // Placeholder for actual PIN verification
       navigate("/paymentsuccess");
     } else {
       alert("Invalid PIN. Please try again.");
@@ -314,28 +307,17 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance, accountBalance }
       <Header>Make Payment</Header>
 
       <SubHeader>Sending money to</SubHeader>
-      <CircleImage>{storeName.charAt(0)}</CircleImage>
-      <Header>{storeName}</Header>
+      <CircleImage>{businessName.charAt(0)}</CircleImage>
+      <Header>{businessName}</Header>
       <SubHeader>Account No: {accountNumber}</SubHeader>
 
       <InfoCard>
-        <span>Wallet Balance: ₦{accountBalance}</span>
+        <span>Wallet Balance: ₦{walletBalance}</span>
       </InfoCard>
 
       <AmountDisplay>₦{amount}</AmountDisplay>
 
-      {/* <PinGrid>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0, "x"].map((num) => (
-          <PinButton key={num} onClick={() => handleNumberInput(num)}>
-            {num === "x" ? "⌫" : num}
-          </PinButton>
-        ))}
-      </PinGrid> */}
-
       <SendButton onClick={handlePayment}>Send Money</SendButton>
-
-      {/* Overlay */}
-      <Overlay show={showConfirmation} />
 
       {/* Confirmation Page */}
       {showConfirmation && (
@@ -344,11 +326,11 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance, accountBalance }
             <XIcon onClick={handleCancelConfirmation}>✕</XIcon>
             <Header>₦{amount}</Header>
           </ConfirmationHeader>
-          <SubHeader>Business: {storeName}</SubHeader>
+          <SubHeader>Business: {businessName}</SubHeader>
           <SubHeader>Account Number: {accountNumber}</SubHeader>
           <SubHeader>Amount: ₦{amount}</SubHeader>
           <SubHeader>Transaction Fee: ₦{transactionFee}</SubHeader>
-          <SubHeader>Payment Method: Wallet (Balance: ₦2000.00)</SubHeader>
+          <SubHeader>Payment Method: Wallet (Balance: ₦{walletBalance})</SubHeader>
 
           <SendButton onClick={() => setShowPinPopUp(true)}>Pay</SendButton>
         </ConfirmationPage>
@@ -390,43 +372,11 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance, accountBalance }
           <XIcon onClick={() => setShowPinPopUp(false)}>✕</XIcon>
         </PinPopup>
       )}
-      <Modal open={openPinModal} onCancel={togglePinModalDisplay} footer={null}>
-        <div className="otp-form">
-          <h4>Enter Your 4-digit PIN</h4>
-          <div className="otp-div">
-            <OtpInput
-              value={userPin}
-              onChange={setUserPin}
-              numInputs={4}
-              renderSeparator={<span>-</span>}
-              renderInput={(props) => <input {...props} />}
-            />
-          </div>
-          <PinGrid>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0, "x"].map((num) => (
-              <PinButton key={num} onClick={() => handleNumberInput(num)}>
-                {num === "x" ? "⌫" : num}
-              </PinButton>
-            ))}
-          </PinGrid>
-          <div>
-            {!loading ? (
-              <SendButton onClick={confirmUserPin}>Complete Payment</SendButton>
-            ) : (
-              <SendButton disabled>Please Wait....</SendButton>
-            )}
-          </div>
-        </div>
-      </Modal>
-
     </Container>
   );
 };
 
-PaymentPage.defaultProps = {
-  storeName: "QMART Stores",
-  accountNumber: "123456709",
-  walletBalance: "1000.00",
-};
-
 export default PaymentPage;
+
+
+

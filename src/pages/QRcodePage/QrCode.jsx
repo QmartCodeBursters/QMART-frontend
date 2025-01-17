@@ -13,7 +13,6 @@ const QrCode = () => {
   const amount = queryParams.get("amount");
 
   useEffect(() => {
-
     const generateQRCode = async () => {
       if (!userDetails || !amount || !businessName) {
         console.error("Missing required information for QR code generation.");
@@ -21,7 +20,7 @@ const QrCode = () => {
       }
 
       const accountNumber = userDetails.accountNumber || "N/A";
-      const data = {
+      const finalDetails = {
         amount,
         businessName: businessName || userDetails?.business?.businessName || "Default Business Name", // Ensure businessName is properly set
         accountNumber,
@@ -37,10 +36,6 @@ const QrCode = () => {
 
 
      generateQRCode();
-  }, [amount, userDetails, businessName]);
-
-
-    generateQRCode();
   }, [amount, userDetails, businessName]);
 
   if (!userDetails) {
@@ -72,9 +67,9 @@ const QrCode = () => {
             <strong>Account Number:</strong> {userDetails?.accountNumber}
           </div>
 
-//           <img src={qrCodeUrl} alt="QR Code" style={{ width: "300px" }} />
+{/* //           <img src={qrCodeUrl} alt="QR Code" style={{ width: "300px" }} />
 //           <div>{userDetails?.business?.businessName || "Default Business Name"}</div>
-//           <div>Account Number: {userDetails?.accountNumber}</div>
+//           <div>Account Number: {userDetails?.accountNumber}</div> */}
           {/* Navigate to PaymentPage passing businessName, accountName, walletBalance, and amount */}
 
           <button
@@ -106,6 +101,6 @@ const QrCode = () => {
       )}
     </div>
   );
-};
+}
 
 export default QrCode;

@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAppContext } from "../../common/AuthContext";
+import toast from "react-hot-toast";
 
 const Container = styled.div`
+position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,6 +19,21 @@ const Container = styled.div`
   box-sizing: border-box;
   animation: slideInFromTop 1s ease-out;
 
+  form {
+    display: flex;
+    width: 100%;
+
+    input {
+      width: 100%;
+      padding: 16px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      outline: none;
+      font-size: 14px;
+  }
+  }
 
   @keyframes slideInFromTop {
         from {
@@ -45,6 +62,7 @@ const BackButton = styled.div`
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
+  z-index: 50;
 
   &:hover {
     background-color: #f0f8ff;
@@ -147,7 +165,7 @@ const Overlay = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 10;
+  z-index: 5;
   display: ${({ show }) => (show ? "block" : "none")};
 `;
 
@@ -198,6 +216,40 @@ const ReminderPopup = styled.div`
     }
   }
 `;
+const PinPopup = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 300px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 30;
+  text-align: center;
+
+  h3 {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #333;
+  }
+
+  ${PinGrid} {
+    margin-top: 10px;
+  }
+
+  .closeButton {
+    margin-top: 20px;
+    font-size: 14px;
+    background-color: transparent;
+    border: none;
+    color: #f00;
+    cursor: pointer;
+  }
+`;
+
 
 
 const PaymentPage = () => {
@@ -210,11 +262,23 @@ const PaymentPage = () => {
   const [transactionFee] = useState("50.00");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [data, setData] = useState({
+    details : ""	
+  });
 
   // Default values for storeName, accountNumber, and walletBalance if userDetails is not available
   const storeName = userDetails?.business?.businessName || "Default Business Name";
   const accountNumber = userDetails?.accountNumber || "N/A";
   const walletBalance = userDetails?.accountBalance || "0.00";
+
+  const handleInput = (e) => {
+   const { name, value} = e.target;
+    setData((prevData)=>({
+      ...prevData,
+      [name]: value
+    }))
+  }
+
 
   const handleNumberInput = (value) => {
     if (value === "x") {
@@ -226,17 +290,18 @@ const PaymentPage = () => {
 
   const handlePayment = () => {
     if (amount && parseFloat(amount) > 0) {
-      const data = {
+      const paymentData  = {
         amount,
+        details: data.details,
         businessName: storeName,
         accountNumber,
       };
-      sessionStorage.setItem("paymentDetails", JSON.stringify(data));
+      sessionStorage.setItem("paymentDetails", JSON.stringify(paymentData ));
 
       // Add the amount as a query parameter in the URL
       navigate(`/qr-code?amount=${amount}`);
     } else {
-      alert("Please enter a valid amount.");
+      toast.error("Please enter a valid amount.");
     }
   };
 
@@ -256,7 +321,7 @@ const PaymentPage = () => {
       // Placeholder for actual PIN verification
       navigate("/paymentsuccess");
     } else {
-      alert("Invalid PIN. Please try again.");
+     toast.error("Invalid PIN. Please try again.");
     }
   };
 
@@ -268,7 +333,12 @@ const PaymentPage = () => {
       <Header>{storeName}</Header>
       <SubHeader>Account No: {accountNumber}</SubHeader>
 
+      <form action="">
+        <input type="text" placeholder="Transaction Details" name="details" value={data.details} onChange={handleInput}/>
+      </form>
+
       <AmountDisplay>₦{amount || "0"}</AmountDisplay>
+     
 
       <PinGrid>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0, "x"].map((num) => (
@@ -318,7 +388,6 @@ const PaymentPage = () => {
       {showPinPopUp && (
         <PinPopup>
           <h3>Enter Transaction PIN</h3>
-
           <PinGrid>
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0, "x"].map((num) => (
               <PinButton
@@ -336,9 +405,12 @@ const PaymentPage = () => {
             ))}
           </PinGrid>
           <SendButton onClick={handlePinSubmit}>Submit PIN</SendButton>
-          <XIcon onClick={() => setShowPinPopUp(false)}>✕</XIcon>
+          <button className="closeButton" onClick={() => setShowPinPopUp(false)}>
+            Close
+          </button>
         </PinPopup>
       )}
+
     </Container>
   );
 };

@@ -389,78 +389,129 @@ import { useLocation } from "react-router-dom";
 //   );
 // };
 
+// const QrCode = () => {
+//   const [qrCodeUrl, setQrCodeUrl] = useState("");
+//   const { userDetails } = useAppContext();
+//   const location = useLocation();
+//   const queryParams = new URLSearchParams(location.search);
+//   const amount = queryParams.get("amount");
+
+//   useEffect(() => {
+//     console.log("User Details:", userDetails); // Debugging userDetails
+  
+//     if (!userDetails) {
+//       console.log("User is not logged in.");
+//       return;
+//     }
+  
+//     if (!amount) {
+//       console.log("Amount is missing in the URL.");
+//       return;
+//     }
+  
+//     const businessName = userDetails?.business?.businessName || "Default Business Name";
+//     const accountName = userDetails?.accountNumber || "N/A";
+
+//     const data = {
+//       amount,
+//       businessName,
+//       accountNumber: userDetails?.accountNumber || "N/A",
+//     };
+  
+//     const generateQRCode = async () => {
+//       try {
+//         const qrCode = await QRCode.toDataURL(JSON.stringify(data));
+//         setQrCodeUrl(qrCode);
+//       } catch (err) {
+//         console.error("Failed to generate QR code:", err);
+//       }
+//     };
+  
+//     generateQRCode();
+//   }, [amount, userDetails]);
+
+//   if (!userDetails) {
+//     return <p>Please log in to view the QR code.</p>;
+//   }
+
+//   if (!amount) {
+//     return <p>No amount specified in the URL.</p>;
+//   }
+
+//   return (
+//     <div style={{ textAlign: "center", padding: "20px", marginTop: "100px" }}>
+//       <h1>Scan QR Code</h1>
+//       {qrCodeUrl ? (
+//         <div>
+//           <img src={qrCodeUrl} alt="QR Code" style={{ width: "300px" }} />
+//           <div>{userDetails?.business?.businessName || "Default Business Name"}</div>
+//           <div>Account Number: {userDetails?.accountNumber}</div>
+//           {/* Navigate to PaymentPage passing businessName, accountName, walletBalance, and amount */}
+//           <button
+//             onClick={() => {
+//               navigate("/payment", {
+//                 state: {
+//                   businessName: userDetails?.business?.businessName,
+//                   accountName: userDetails?.accountNumber,
+//                   walletBalance: userDetails?.walletBalance,
+//                   amount, // Pass the amount here
+//                 },
+//               });
+//             }}
+//           >
+            
+//           </button>
+//         </div>
+//       ) : (
+//         <p>Generating QR Code...</p>
+//       )}
+//     </div>
+//   );
+// };
+
 const QrCode = () => {
-  const [qrCodeUrl, setQrCodeUrl] = useState("");
-  const { userDetails } = useAppContext();
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const amount = queryParams.get("amount");
+  const [paymentDetails, setPaymentDetails] = useState({
+    amount: "0",
+    details: "",
+  });
+  const [qrCodeUrl, setQrCodeUrl] = useState("");
 
   useEffect(() => {
-    console.log("User Details:", userDetails); // Debugging userDetails
-  
-    if (!userDetails) {
-      console.log("User is not logged in.");
-      return;
-    }
-  
-    if (!amount) {
-      console.log("Amount is missing in the URL.");
-      return;
-    }
-  
-    const businessName = userDetails?.business?.businessName || "Default Business Name";
-    const accountName = userDetails?.accountNumber || "N/A";
+    const queryParams = new URLSearchParams(location.search);
+    const amount = queryParams.get("amount");
+    const details = queryParams.get("details");
 
-    const data = {
-      amount,
-      businessName,
-      accountNumber: userDetails?.accountNumber || "N/A",
+    // Fallback to sessionStorage if query params are not available
+    const sessionData = JSON.parse(sessionStorage.getItem("paymentDetails")) || {};
+    const finalDetails = {
+      amount: amount || sessionData.amount || "0",
+      details: details || sessionData.details || "",
     };
-  
+
+    setPaymentDetails(finalDetails);
+
+    // Generate QR Code with the payment details
     const generateQRCode = async () => {
       try {
-        const qrCode = await QRCode.toDataURL(JSON.stringify(data));
+        const qrCode = await QRCode.toDataURL(JSON.stringify(finalDetails));
         setQrCodeUrl(qrCode);
       } catch (err) {
-        console.error("Failed to generate QR code:", err);
+        console.error("Error generating QR Code:", err);
       }
     };
-  
+
     generateQRCode();
-  }, [amount, userDetails]);
-
-  if (!userDetails) {
-    return <p>Please log in to view the QR code.</p>;
-  }
-
-  if (!amount) {
-    return <p>No amount specified in the URL.</p>;
-  }
+  }, [location]);
 
   return (
-    <div style={{ textAlign: "center", padding: "20px", marginTop: "100px" }}>
-      <h1>Scan QR Code</h1>
+    <div style={{ textAlign: "center", padding: "20px", marginTop: "50px" }}>
+      <h1>QR Code Page</h1>
+      {/* <p>Amount: ₦{paymentDetails.amount}</p> */}
+      {/* <p>Details: {paymentDetails.details || "No details provided"}</p> */}
       {qrCodeUrl ? (
         <div>
-          <img src={qrCodeUrl} alt="QR Code" style={{ width: "300px" }} />
-          <div>{userDetails?.business?.businessName || "Default Business Name"}</div>
-          <div>Account Number: {userDetails?.accountNumber}</div>
-          {/* Navigate to PaymentPage passing businessName, accountName, walletBalance, and amount */}
-          <button
-            onClick={() => {
-              navigate("/payment", {
-                state: {
-                  businessName: userDetails?.business?.businessName,
-                  accountName: userDetails?.accountNumber,
-                  walletBalance: userDetails?.walletBalance,
-                  amount, // Pass the amount here
-                },
-              });
-            }}
-          >
-            
-          </button>
+          <img src={qrCodeUrl} alt="QR Code" style={{ width: "300px", margin: "20px auto" }} />
         </div>
       ) : (
         <p>Generating QR Code...</p>
@@ -468,6 +519,7 @@ const QrCode = () => {
     </div>
   );
 };
+
 
 export default QrCode;
 

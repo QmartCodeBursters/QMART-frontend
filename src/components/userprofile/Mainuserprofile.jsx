@@ -34,28 +34,28 @@ const UserProfile = () => {
 
   useEffect(() => {
     if (chartRef.current && !profileImage) {
-      // Clear the canvas context and draw the initials manually
       const ctx = chartRef.current.getContext("2d");
       const initials = getInitials(firstName, lastName);
-
-      // Draw initials directly on the canvas
-      ctx.clearRect(0, 0, chartRef.current.width, chartRef.current.height);  // Clear previous content
-      ctx.font = "bold 24px Arial";  // Set font style
-      ctx.fillStyle = "#4CAF50";  // Set text color
-      ctx.textAlign = "center";  // Center the text horizontally
-      ctx.textBaseline = "middle";  // Center the text vertically
-      ctx.fillText(initials, chartRef.current.width / 2, chartRef.current.height / 2);  // Draw the initials
+  
+      ctx.clearRect(0, 0, chartRef.current.width, chartRef.current.height);
+      ctx.font = "bold 24px Arial";
+      ctx.fillStyle = "#4CAF50";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(initials, chartRef.current.width / 2, chartRef.current.height / 2);
     }
   }, [firstName, lastName, profileImage]);
+  
 
   const initials = getInitials(firstName, lastName);
 
   return (
     <Container>
       <h1>PROFILE</h1>
+      
       <ProfileCard>
         {profileImage ? (
-          <ProfileImage src={profileImage} alt={`${firstName} ${lastName}'s profile`} />
+           <ProfileImage initials={`${firstName.charAt(0)}${lastName.charAt(0)}`} />
         ) : (
           <ProfileCanvas ref={chartRef} width="80" height="80">
             {initials}

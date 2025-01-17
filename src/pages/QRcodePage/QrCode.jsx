@@ -21,7 +21,7 @@ const QrCode = () => {
       const accountNumber = userDetails.accountNumber || "N/A";
       const data = {
         amount,
-        businessName,
+        businessName: businessName || userDetails?.business?.businessName || "Default Business Name", // Ensure businessName is properly set
         accountNumber,
       };
 
@@ -36,7 +36,6 @@ const QrCode = () => {
     generateQRCode();
   }, [amount, userDetails, businessName]);
 
-
   if (!userDetails) {
     return <p style={{ textAlign: "center" }}>Please log in to view the QR code.</p>;
   }
@@ -45,7 +44,7 @@ const QrCode = () => {
     return <p style={{ textAlign: "center" }}>No amount specified in the URL.</p>;
   }
 
-  if (!businessName) {
+  if (!businessName && !userDetails?.business?.businessName) {
     return <p style={{ textAlign: "center" }}>Business name is missing.</p>;
   }
 
@@ -60,10 +59,10 @@ const QrCode = () => {
             style={{ width: "300px", margin: "20px auto" }}
           />
           <div style={{ marginTop: "10px", fontSize: "18px" }}>
-            <strong>Business Name:</strong> {businessName}
+            <strong>Business Name:</strong> {businessName || userDetails?.business?.businessName || "Default Business Name"}
           </div>
           <div style={{ marginTop: "5px", fontSize: "16px" }}>
-            <strong>Account Number:</strong> {userDetails.accountNumber}
+            <strong>Account Number:</strong> {userDetails?.accountNumber}
           </div>
           <button
             style={{
@@ -78,9 +77,10 @@ const QrCode = () => {
             onClick={() =>
               navigate("/payment", {
                 state: {
-                  businessName,
-                  accountNumber: userDetails.accountNumber,
-                  walletBalance: userDetails.walletBalance,
+                  businessName: businessName || userDetails?.business?.businessName,
+                  accountName: userDetails?.accountNumber,
+                  walletBalance: userDetails?.walletBalance,
+                  amount, // Pass the amount here
                 },
               })
             }

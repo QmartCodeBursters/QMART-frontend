@@ -11,7 +11,7 @@ import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { useAppContext } from "../../common/AuthContext"; // Import useAppContext
 
 const Signup = () => {
-  const { setUserData } = useAppContext(); // Access setUserData from context
+  const {   setUserDetails } = useAppContext(); // Access   setUserDetails from context
   const [isCheckedBoxChecked, setIsCheckedBoxChecked] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [role, setRole] = useState("");
@@ -62,22 +62,16 @@ const Signup = () => {
     }
 
     if (name === "phoneNumber") {
-      const newErrors = { ...errors };
+      const phoneNumberParsed = parsePhoneNumberFromString(value, "NG");
 
-      try {
-        const phoneNumberParsed = parsePhoneNumberFromString(value, "NG");
-
-        if (!phoneNumberParsed || !phoneNumberParsed.isValid()) {
-          newErrors.phoneNumber = "Please enter a valid phone number";
-        } else if (value.length < 10) {
-          newErrors.phoneNumber = "Phone number must be at least 10 digits long";
-        } else if (value.length > 15) {
-          newErrors.phoneNumber = "Phone number must not exceed 15 digits";
-        } else {
-          delete newErrors.phoneNumber;
-        }
-      } catch (error) {
+      if (!phoneNumberParsed || !phoneNumberParsed.isValid()) {
         newErrors.phoneNumber = "Please enter a valid phone number";
+      } else if (value.length < 10) {
+        newErrors.phoneNumber = "Phone number must be at least 10 digits long";
+      } else if (value.length > 15) {
+        newErrors.phoneNumber = "Phone number must not exceed 15 digits";
+      } else {
+        delete newErrors.phoneNumber;
       }
 
       setErrors(newErrors);
@@ -104,30 +98,30 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!role) {
       toast.error("Please select a role");
       return;
     }
-
+  
     if (data.password !== data.confirmPassword) {
       toast.error("Passwords do not match!");
       return;
     }
-
+  
     try {
       const response = await Axios({
         ...summaryAPI.signUp,
         data: { ...data, role },
       });
-
-      if (response.data.error) {
-        toast.error(response.data.message);
+  
+      // Ensure the response structure is checked correctly
+      if (response && response.data && response.data.error) {
+        toast.error(response.data.message); // Handle the error case
       } else {
-        // Store user data in context
-        setUserData({ ...data, role });
-
+          setUserDetails({ ...data, role });
         toast.success(response.data.message);
+  
         setData({
           firstName: "",
           lastName: "",
@@ -137,14 +131,18 @@ const Signup = () => {
           password: "",
           confirmPassword: "",
         });
+  
         setRole("");
+  
         navigate("/otp-verification", { state: { email: data.email } });
       }
     } catch (error) {
+      console.error("Signup request failed:", error.response || error);
       AxiosToastError(error);
     }
   };
-
+  
+    
   return (
     <Wrapper>
       <FormContainer>
@@ -199,28 +197,6 @@ const Signup = () => {
                 phoneNumber: value,
               }))
             }
-            onBlur={() => {
-              const newErrors = { ...errors };
-              const phoneNumber = data.phoneNumber;
-
-              try {
-                const phoneNumberParsed = parsePhoneNumberFromString(phoneNumber, "NG");
-
-                if (!phoneNumberParsed || !phoneNumberParsed.isValid()) {
-                  newErrors.phoneNumber = "Please enter a valid phone number";
-                } else if (phoneNumberParsed.number.length < 10) {
-                  newErrors.phoneNumber = "Phone number must be at least 10 digits long";
-                } else if (phoneNumberParsed.number.length > 15) {
-                  newErrors.phoneNumber = "Phone number must not exceed 15 digits";
-                } else {
-                  delete newErrors.phoneNumber;
-                }
-              } catch (error) {
-                newErrors.phoneNumber = "Please enter a valid phone number";
-              }
-
-              setErrors(newErrors);
-            }}
           />
           <span className="error">{errors.phoneNumber}</span>
 
@@ -247,7 +223,7 @@ const Signup = () => {
             </select>
           </RoleWrapper>
 
-         
+        
           <PasswordWrapper>
             <input
               type={passwordVisible ? "text" : "password"}
@@ -265,7 +241,6 @@ const Signup = () => {
             </span>
           </PasswordWrapper>
 
-        
           <input
             type={passwordVisible ? "text" : "password"}
             placeholder="Confirm your password"

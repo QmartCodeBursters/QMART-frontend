@@ -253,7 +253,7 @@ const PinPopup = styled.div`
 
 
 const PaymentPage = () => {
-  const { userDetails } = useAppContext(); // Get user details from context
+  const { userDetails, businessName } = useAppContext(); // Get user details and businessName from context
   const [amount, setAmount] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showCancelPopup, setShowCancelPopup] = useState(false);
@@ -263,22 +263,21 @@ const PaymentPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [data, setData] = useState({
-    details : ""	
+    details: ""
   });
 
   // Default values for storeName, accountNumber, and walletBalance if userDetails is not available
-  const storeName = userDetails?.business?.businessName || "Default Business Name";
+  const storeName = businessName || userDetails?.business?.businessName || "Default Business Name";
   const accountNumber = userDetails?.accountNumber || "N/A";
   const walletBalance = userDetails?.accountBalance || "0.00";
 
   const handleInput = (e) => {
-   const { name, value} = e.target;
-    setData((prevData)=>({
+    const { name, value } = e.target;
+    setData((prevData) => ({
       ...prevData,
       [name]: value
-    }))
-  }
-
+    }));
+  };
 
   const handleNumberInput = (value) => {
     if (value === "x") {
@@ -290,13 +289,13 @@ const PaymentPage = () => {
 
   const handlePayment = () => {
     if (amount && parseFloat(amount) > 0) {
-      const paymentData  = {
+      const paymentData = {
         amount,
         details: data.details,
         businessName: storeName,
         accountNumber,
       };
-      sessionStorage.setItem("paymentDetails", JSON.stringify(paymentData ));
+      sessionStorage.setItem("paymentDetails", JSON.stringify(paymentData));
 
       // Add the amount as a query parameter in the URL
       navigate(`/qr-code?amount=${amount}`);
@@ -321,7 +320,7 @@ const PaymentPage = () => {
       // Placeholder for actual PIN verification
       navigate("/paymentsuccess");
     } else {
-     toast.error("Invalid PIN. Please try again.");
+      toast.error("Invalid PIN. Please try again.");
     }
   };
 
@@ -334,11 +333,10 @@ const PaymentPage = () => {
       <SubHeader>Account No: {accountNumber}</SubHeader>
 
       <form action="">
-        <input type="text" placeholder="Transaction Details" name="details" value={data.details} onChange={handleInput}/>
+        <input type="text" placeholder="Transaction Details" name="details" value={data.details} onChange={handleInput} />
       </form>
 
       <AmountDisplay>₦{amount || "0"}</AmountDisplay>
-     
 
       <PinGrid>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0, "x"].map((num) => (
@@ -365,9 +363,7 @@ const PaymentPage = () => {
           <SubHeader>Account Number: {accountNumber}</SubHeader>
           <SubHeader>Amount: ₦{amount}</SubHeader>
           <SubHeader>Transaction Fee: ₦{transactionFee}</SubHeader>
-          <SubHeader>
-            Payment Method: Wallet (Balance: ₦{walletBalance})
-          </SubHeader>
+          <SubHeader>Payment Method: Wallet (Balance: ₦{walletBalance})</SubHeader>
 
           <SendButton onClick={() => setShowPinPopUp(true)}>Pay</SendButton>
         </ConfirmationPage>
@@ -410,10 +406,9 @@ const PaymentPage = () => {
           </button>
         </PinPopup>
       )}
-
     </Container>
   );
-};
+};;
 
 export default PaymentPage;
 

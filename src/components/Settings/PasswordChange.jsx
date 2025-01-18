@@ -10,14 +10,6 @@ export default function changePassword (){
         <header>Change Password</header>
         
         <PasswordSection>
-          <label>
-            Current Password <br />
-            <input type="text,number" placeholder="Enter current password"
-            />
-          </label>
-
-          <br />
-          <br />
 
           <NewPass>
             <label>
@@ -38,11 +30,18 @@ export default function changePassword (){
 };
 const Container = styled.div`
  background-color: #edeff2;
-  width: 100%;
+  width: 55.5%;
   padding-top: 1rem;
   color: #1a1a1a;
   display: flex;
   justify-content: center;
+  margin: auto;
+
+
+  @media (max-width: 768px) {
+    /* margin-top: 95px; */
+    width: 88%;
+  }
 `;
 const PasswordContainer = styled.div`
  background-color: #ffffff;

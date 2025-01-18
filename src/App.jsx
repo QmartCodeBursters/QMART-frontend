@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import Header from "./static/Header/Headerr";
 import Footer from "./static/Footer/Footer";
@@ -37,15 +37,27 @@ import { AppProvider } from "./common/AuthContext";
 import CreateBiz from "./components/Login-Signup/CreateBiz";
 import VerifyEmailOTP from "./components/Login-Signup/Reset";
 import OtpResetPassword from "./components/Login-Signup/OtpResetPassword";
-import QrcodeManagement from "./pages/QRcodePage/QrcodeManagement";
+
 import NotificationSettings from "./components/notification/Notification";
 import MainUserProfile from "./components/userprofile/Mainuserprofile";
+import { useEffect } from "react";
 
+function ScrollToTop() {
+  const location = useLocation();
+  useEffect(() => {
+    
+    window.scrollTo(0, 0);
+  }, [location]); 
+
+  return null;
+}
 
 function App() {
+
   return (
     <AppProvider>
       <BrowserRouter>
+      <ScrollToTop />
         <Header />
         <Routes>
           <Route path="/" element={<Homepage />} />
@@ -76,7 +88,7 @@ function App() {
           <Route path="/UserWallet" element={<UserWallet />} />
           {/* <Route path="/ReceivePay" element={<ReceivePayment />} /> */}
           <Route path="/ReceivePayment" element={<ReceivePayment />} />
-          <Route path="/qr-code-management" element={<QrcodeManagement />} />
+          
           <Route path="/notification-settings" element={<NotificationSettings />}/>
           <Route path="/QRcode" element={<PrintQRcode />} />
           <Route path="/loading" element={<UserPaymentLoading />} />

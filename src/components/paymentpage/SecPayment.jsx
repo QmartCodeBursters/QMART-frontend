@@ -247,13 +247,12 @@ const PinInput = styled.div`
 
 const PaymentPage = () => {
   const location = useLocation(); // Get location using useLocation hook
-  const { state } = location || {}; // Destructure state safely
+  const { state } = location || {}; 
+  const { userDetails, businessName } = useAppContext(); // Destructure state safely
 
-  const { 
-    businessName = "N/A", 
-    accountNumber = "N/A", 
-    walletBalance = "0.00" 
-  } = state || {}; // Use fallback values in case state is undefined
+  const storeName = businessName || userDetails?.business?.businessName || "Default Business Name";
+  const accountNumber = userDetails?.accountNumber || "N/A";
+  const walletBalance = userDetails?.accountBalance || "0.00";
 
   const [amount, setAmount] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -264,7 +263,7 @@ const PaymentPage = () => {
   const [openPinModal, setOpenPinModal] = useState(false);
   const [userPin, setUserPin] = useState("");
   const [loading, setLoading] = useState(false);  
-  const { userDetails } = useAppContext();
+  
 
   const navigate = useNavigate();
 
@@ -306,8 +305,8 @@ const PaymentPage = () => {
       <Header>Make Payment</Header>
 
       <SubHeader>Sending money to</SubHeader>
-      <CircleImage>{businessName.charAt(0)}</CircleImage>
-      <Header>{businessName}</Header>
+      <CircleImage>{storeName.charAt(0)}</CircleImage>
+      <Header>{storeName}</Header>
       <SubHeader>Account No: {accountNumber}</SubHeader>
 
       <InfoCard>

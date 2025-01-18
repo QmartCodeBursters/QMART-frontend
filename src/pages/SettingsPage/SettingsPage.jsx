@@ -5,7 +5,7 @@ const Settingspage = () => {
   return (
     <div>
         <Settings/>
-        <AddresForm/>
+        {/* <AddresForm/> */}
         <Password/>
     </div>
   )

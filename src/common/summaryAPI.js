@@ -32,6 +32,10 @@ const summaryAPI = {
     fetchMerchant: {
         url : '/api/v1/business/merchant-details',
         method: 'GET'
+    },
+    uploadProfileImage: {
+        url : '/api/v1/user/upload-avatar',
+        method: 'PUT'
     }
 }
 

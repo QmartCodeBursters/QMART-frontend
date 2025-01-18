@@ -6,13 +6,16 @@ import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import { useAppContext } from "../../common/AuthContext";
 
-
 const PrintQRcode = () => {
-  const { role } = useAppContext(); // Access role from context
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const componentRef = useRef(null);
+  const { role, userDetails, businessName } = useAppContext();
+
+  const storeName = businessName || userDetails?.business?.businessName || "Default Business Name";
+  const accountNumber = userDetails?.accountNumber || "N/A";
+  const walletBalance = userDetails?.accountBalance || "0.00";
 
   useEffect(() => {
     if (role !== "merchant") {
@@ -22,9 +25,10 @@ const PrintQRcode = () => {
 
     const generateQRCode = async () => {
       const data = {
-        businessName: "SAIL04 SUPERMARKET",
-        accountNumber: "1234567890",
-        amount: "5000", // Example data
+        businessName: storeName,
+        accountNumber,
+        amount: walletBalance,
+        // Other data for QR code
       };
       try {
         setLoading(true);
@@ -38,7 +42,7 @@ const PrintQRcode = () => {
     };
 
     generateQRCode();
-  }, [role, navigate]);
+  }, [role, navigate, storeName, accountNumber, walletBalance]);
 
   const handleDownloadClick = async () => {
     const element = componentRef.current;
@@ -65,6 +69,26 @@ const PrintQRcode = () => {
     navigate("/dashboard");
   };
 
+  // Simulate checking email after scanning QR code (replace with actual check logic)
+  const handleEmailCheck = (email) => {
+    // Simulate checking email in your system
+    const emailExists = userDetails?.email === email;
+
+    if (!emailExists) {
+      // Navigate to the signup page if email is not found
+      navigate("/signup");
+    }
+  };
+
+  const handleScanQRCode = (scannedData) => {
+    const scannedEmail = scannedData?.email; // Assume scanned data contains email field
+    if (scannedEmail) {
+      handleEmailCheck(scannedEmail);
+    } else {
+      console.log("No email found in scanned QR code.");
+    }
+  };
+
   if (role !== "merchant") {
     return <p>Unauthorized Access</p>; // Render a message or blank screen for non-merchants
   }
@@ -72,7 +96,7 @@ const PrintQRcode = () => {
   return (
     <Container>
       <Wrapper ref={componentRef}>
-        <Header>SAIL04 SUPERMARKET</Header>
+        <Header>{storeName}</Header>
         <Subhead>Invites you to QMART</Subhead>
         <Scan>
           Scan my QR code, sign up and <Red>Shop NOW!</Red>
@@ -99,6 +123,7 @@ const PrintQRcode = () => {
 };
 
 export default PrintQRcode;
+
 
 // Styled components remain the same
 

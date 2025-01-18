@@ -1,21 +1,29 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useAppContext } from "../../common/AuthContext";
 
 const UserProfile = () => {
   const { userDetails } = useAppContext();
   const chartRef = useRef(null); // Reference for the Chart.js canvas
+  const [profileImage, setProfileImage] = useState(null); // State to store the profile image
 
   // Ensure userDetails is not null or undefined
   if (!userDetails) {
     return <div>Loading...</div>;
   }
 
+  // Retrieve the avatar from localStorage on component mount
+  useEffect(() => {
+    const storedAvatar = localStorage.getItem('avatar');
+    if (storedAvatar) {
+      setProfileImage(storedAvatar); // Set the profile image from localStorage
+    }
+  }, []);
+
   const {
     firstName = "N/A",
     lastName = "N/A",
     role = "N/A",
-    profileImage = "default-profile.jpg",  // Default image or Cloudinary URL
     businessName = "N/A",
     address = "N/A",
     email = "N/A",
@@ -45,7 +53,6 @@ const UserProfile = () => {
       ctx.fillText(initials, chartRef.current.width / 2, chartRef.current.height / 2);
     }
   }, [firstName, lastName, profileImage]);
-  
 
   const initials = getInitials(firstName, lastName);
 
@@ -55,7 +62,7 @@ const UserProfile = () => {
       
       <ProfileCard>
         {profileImage ? (
-           <ProfileImage initials={`${firstName.charAt(0)}${lastName.charAt(0)}`} />
+           <ProfileImage src={profileImage} alt="User Image" />
         ) : (
           <ProfileCanvas ref={chartRef} width="80" height="80">
             {initials}
@@ -117,44 +124,85 @@ const UserProfile = () => {
 
 export default UserProfile;
 
-// Styled-components
 const Container = styled.div`
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
   margin: 100px auto;
+  padding: 50px;
+  border-radius: 16px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  animation: slideInFromTop 1s ease-out;
+
+
+  @keyframes slideInFromTop {
+      from {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  
 
   h1 {
     text-align: center;
-    padding: 10px;
+    padding: 20px 0;
+    font-size: 20px;
+    color: #333;
+    font-weight: 600;
   }
 `;
 
 const ProfileCard = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
-  padding: 20px;
-  background-color: #ffffff;
+  background-color: #fff;
+  padding: 25px;
   border-radius: 12px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  transition: all 0.3s ease;
+  /* margin: 0 auto; */
+
+  &:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
 `;
 
 const ProfileImage = styled.img`
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   object-fit: cover;
   margin-right: 20px;
+  border: 3px solid #d58308; /* Green border for accent */
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    border-color: #eac408; /* Darker green on hover */
+  }
 `;
 
 const ProfileCanvas = styled.canvas`
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   margin-right: 20px;
+  background-color: #4CAF50;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  font-weight: bold;
+  color: #fff;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
 const ProfileDetails = styled.div`
@@ -162,44 +210,67 @@ const ProfileDetails = styled.div`
   flex-direction: column;
 `;
 
-const Name = styled.h1`
-  font-size: 1.5rem;
-  font-weight: bold;
+const Name = styled.h2`
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
   margin: 0;
 `;
 
 const Role = styled.p`
-  font-size: 1rem;
-  color: #555;
+  font-size: 20px;
+  color: #777;
   margin-top: 5px;
 `;
 
+const EditLink = styled.a`
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #1b6392;
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #3b8d9e;
+  }
+`;
+
 const StoreInfo = styled.div`
-  margin-bottom: 20px;
-  padding: 20px;
-  background-color: #ffffff;
+  margin-bottom: 30px;
+  background-color: #fff;
+  padding: 25px;
   border-radius: 12px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
 `;
 
 const BusinessDetails = styled.div`
-  padding: 20px;
-  background-color: #ffffff;
+  background-color: #fff;
+  padding: 25px;
   border-radius: 12px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
 `;
 
-const SectionTitle = styled.h2`
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #1b6392;
-  margin-bottom: 10px;
+const SectionTitle = styled.h3`
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
 `;
 
 const InfoRow = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 
   &:last-child {
     margin-bottom: 0;
@@ -208,14 +279,14 @@ const InfoRow = styled.div`
 
 const Label = styled.span`
   font-size: 1rem;
-  font-weight: 600;
-  color: #333;
+  font-weight: 500;
+  color: #555;
 `;
 
 const Value = styled.span`
   font-size: 1rem;
   font-weight: 400;
-  color: #555;
+  color: #444;
   text-align: right;
-  word-wrap: break-word;
 `;
+

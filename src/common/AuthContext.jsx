@@ -12,6 +12,7 @@ export const AppProvider = ({ children }) => {
     lastname: "",
     email: "",
     phoneNumber: "",
+    address: ""
   });
   const [businessName, setBusinessName] = useState("Fetching business name...");
   const [accountNumber, setAccountNumber] = useState(null);
@@ -54,6 +55,7 @@ export const AppProvider = ({ children }) => {
       lastname: userData.lastname,
       email: userData.email,
       phoneNumber: userData.phoneNumber,
+      address: userData.address
     });
   };
 

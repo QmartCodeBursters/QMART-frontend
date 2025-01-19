@@ -13,6 +13,15 @@ const Header = () => {
   const [toggle, setToggle] = useState(false);
   const { email, setEmail, role, setRole } = useAppContext();
 
+  // Handle sign-out logic
+  const handleSignOut = () => {
+    Cookies.remove("jwt"); // Remove the JWT token from cookies
+    setEmail(""); // Clear the email state
+    setRole(""); // Clear the role state
+    toast.success("You have successfully signed out!");
+    navigate("/"); // Navigate to the home page or login page
+  };
+
   // Set email and role on token detection
   useEffect(() => {
     const token = Cookies.get("jwt");
@@ -68,6 +77,8 @@ const Header = () => {
                 <p>
                   <Link to="/aboutUs">About Us</Link>
                 </p>
+                {/* Sign Out Button */}
+                <SignOutButton onClick={handleSignOut}>Sign Out</SignOutButton>
               </>
             ) : (
               <>
@@ -113,8 +124,6 @@ const Header = () => {
 
 export default Header;
 
-
-
 const Wrapper = styled.div`
   width: 100%;
   height: 70px;
@@ -144,6 +153,8 @@ const Navbar = styled.div`
 
 const Navlist = styled.div`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   gap: 20px;
   font-size: 12px;
   cursor: pointer;
@@ -209,19 +220,6 @@ const SigninButton = styled.button`
   }
 `;
 
-const LogoutButton = styled.button`
-  padding: 8px 24px;
-  border-radius: 4px;
-  background-color: #f54242;
-  color: white;
-  border: none;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #c70000;
-  }
-`;
-
 const Sidenav = styled.div`
   font-size: 40px;
   display: none;
@@ -229,5 +227,19 @@ const Sidenav = styled.div`
 
   @media (max-width: 768px) {
     display: block;
+  }
+`;
+
+const SignOutButton = styled.button`
+  background-color: #fa8232;
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 4px;
+  /* margin-left: 50px; */
+  cursor: pointer;
+  
+  &:hover {
+    background-color: #c96d05;
   }
 `;

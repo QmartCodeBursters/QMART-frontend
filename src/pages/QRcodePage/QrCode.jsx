@@ -22,7 +22,7 @@ const QrCode = () => {
       const accountNumber = userDetails.accountNumber || "N/A";
       const finalDetails = {
         amount,
-        businessName: businessName || userDetails?.business?.businessName || "Default Business Name", // Ensure businessName is properly set
+        businessName: businessName || userDetails?.business?.businessName || "Default Business Name", 
         accountNumber,
       };
 
@@ -81,7 +81,9 @@ const QrCode = () => {
               border: "none",
               borderRadius: "5px",
               cursor: "pointer",
+              display: "none"
             }}
+            
             onClick={() =>
               navigate("/payment", {
                 state: {
@@ -93,7 +95,7 @@ const QrCode = () => {
               })
             }
           >
-            Proceed to Payment
+            {/* Proceed to Payment */}
           </button>
         </div>
       ) : (

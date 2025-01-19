@@ -41,6 +41,7 @@ import OtpResetPassword from "./components/Login-Signup/OtpResetPassword";
 import NotificationSettings from "./components/notification/Notification";
 import MainUserProfile from "./components/userprofile/Mainuserprofile";
 import { useEffect } from "react";
+import PaymentPagetwo from "./components/paymentpage/unrealPaymentPage";
 
 function ScrollToTop() {
   const location = useLocation();
@@ -75,6 +76,7 @@ function App() {
           <Route path="/merchant-create-business" element={<CreateBiz />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/makepayment" element={<PaymentPage />} />
+          <Route path="/makepayment-two" element={<PaymentPagetwo />} />
           <Route path="/paymentsuccess" element={<PaymentSuccess />} />
           <Route path="/wallet" element={<Wallet />} />
           <Route path="/WalletSettings" element={<WalletSettings />} />

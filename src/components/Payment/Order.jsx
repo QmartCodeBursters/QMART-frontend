@@ -12,25 +12,8 @@ const Order = () => {
   const ordersData = {
     1: [
       { orderId: '#1521', name: 'John Doe', date: '2023-01-09', total: '#200.00', status: 'Processing' },
-      { orderId: '#5829', name: 'Abraham Lincoln', date: '2023-02-15', total: '#120.00', status: 'On the Way' },
-      { orderId: '#3010', name: 'Alice Wonderland', date: '2023-01-25', total: '#300.00', status: 'Processing' },
-      { orderId: '#1150', name: 'Mark Twain', date: '2023-01-28', total: '#500.00', status: 'Shipped' },
-      { orderId: '#6743', name: 'Elon Musk', date: '2023-02-01', total: '#800.00', status: 'On the Way' },
     ],
-    2: [
-      { orderId: '#4295', name: 'Tiny Tom', date: '2023-02-03', total: '#75.00', status: 'Completed' },
-      { orderId: '#3024', name: 'Yogi Berra', date: '2023-02-09', total: '#650.00', status: 'Completed' },
-      { orderId: '#7532', name: 'Marie Curie', date: '2023-02-05', total: '#240.00', status: 'Shipped' },
-      { orderId: '#1142', name: 'Julius Caesar', date: '2023-02-13', total: '#380.00', status: 'Completed' },
-      { orderId: '#5682', name: 'Albert Einstein', date: '2023-02-16', total: '#150.00', status: 'On the Way' },
-    ],
-    3: [
-      { orderId: '#2984', name: 'John Doe', date: '2023-01-15', total: '#90.00', status: 'Completed' },
-      { orderId: '#9741', name: 'Walter White', date: '2023-02-19', total: '#225.00', status: 'Completed' },
-      { orderId: '#5098', name: 'Sherlock Holmes', date: '2023-02-01', total: '#120.00', status: 'Completed' },
-      { orderId: '#8741', name: 'Bruce Wayne', date: '2023-02-10', total: '#180.00', status: 'Processing' },
-      { orderId: '#9911', name: 'Tony Stark', date: '2023-02-25', total: '#550.00', status: 'On the Way' },
-    ],
+
   };
 
   const handlePageChange = (page) => {
@@ -64,7 +47,7 @@ const Order = () => {
   return (
     <Wrapper>
       <Table>
-        <TableHeading>Payment History</TableHeading>
+        <TableHeading>Transaction History</TableHeading>
         
         {/* Date Filter */}
         <DateFilter>
@@ -72,6 +55,12 @@ const Order = () => {
           <input type="date" value={startDate} onChange={handleStartDateChange} />
           <label>End Date:</label>
           <input type="date" value={endDate} onChange={handleEndDateChange} />
+          <select name="" id="Options">
+            <option value="Debit">Debit</option>
+            <option value="Credit">Credit</option>
+            <option value="Deposit">Deposit</option>
+            <option value="Withdrawal">Withdrawal</option>
+          </select>
         </DateFilter>
 
         <TableElement>

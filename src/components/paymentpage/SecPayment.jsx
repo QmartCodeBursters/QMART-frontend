@@ -263,6 +263,17 @@ const PaymentPage = () => {
   const [openPinModal, setOpenPinModal] = useState(false);
   const [userPin, setUserPin] = useState("");
   const [loading, setLoading] = useState(false);  
+  const { profileImage, setProfileImage } = useAppContext();
+
+
+  useEffect(() => {
+    const storedAvatar = localStorage.getItem('avatar');
+    if (storedAvatar) {
+      setProfileImage(storedAvatar); // Restore image from localStorage
+    }
+  }, []);
+  console.log(localStorage.getItem('avatar'));
+
   
 
   const navigate = useNavigate();
@@ -299,13 +310,32 @@ const PaymentPage = () => {
     }
   };
 
+  useEffect(() => {
+      const storedAvatar = localStorage.getItem('avatar');
+      if (storedAvatar) {
+        setProfileImage(storedAvatar); // Restore image from localStorage
+      }
+    }, []);
+
   return (
     <Container>
       <BackButton onClick={() => navigate("/dashboard")}>&larr;</BackButton>
       <Header>Make Payment</Header>
 
       <SubHeader>Sending money to</SubHeader>
-      <CircleImage>{storeName.charAt(0)}</CircleImage>
+      <CircleImage>
+        {profileImage ? (
+          <img
+            src={profileImage}
+            alt="Profile"
+            style={{ width: "100%", height: "100%", borderRadius: "50%" }}
+          />
+        ) : (
+          <span>storeName.charAt(0)</span>
+         // Fallback: First letter of storeName
+        )}
+      </CircleImage>
+
       <Header>{storeName}</Header>
       <SubHeader>Account No: {accountNumber}</SubHeader>
 

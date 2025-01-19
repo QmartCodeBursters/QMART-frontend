@@ -146,11 +146,6 @@ const OtpResetPassword = () => {
 
 export default OtpResetPassword;
 
-
-
-
-// Styled Components
-
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;

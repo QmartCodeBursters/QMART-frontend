@@ -16,13 +16,14 @@ export const AppProvider = ({ children }) => {
   });
   const [businessName, setBusinessName] = useState("Fetching business name...");
   const [accountNumber, setAccountNumber] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
 
   
   useEffect(() => {
     if (!userDetails?._id) return; // Early return if userDetails or _id is missing
 
     const fetchBusinessNameAndAccountNumber = async () => {
-      const constructedURL = `${summaryAPI.fetchUserData.url}/${userDetails._id}`;
+      const constructedURL = `${summaryAPI.fetchMerchant.url}/${userDetails._id}`;
 
       try {
         const response = await axios.get(constructedURL);
@@ -84,6 +85,8 @@ export const AppProvider = ({ children }) => {
         updateBusinessName,
         updateAccountNumber,
         updateUserDetails, 
+        profileImage,
+      setProfileImage,
       }}
     >
       {children}

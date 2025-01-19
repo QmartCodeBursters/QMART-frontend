@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useAppContext } from "../../common/AuthContext";
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  max-width: 960px;
+  /* padding: 20px; */
+  width: 80%;
+  max-width: 500px;
   margin: 0 auto;
   margin-top: 100px;
   margin-bottom: 100px;
@@ -16,19 +17,19 @@ const Container = styled.div`
   /* background-color: #ffff; */
   position: relative;
   box-sizing: border-box;
-  box-shadow: 3px 4px 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+      rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   border-radius: 10px;
-  padding-top: 20px;
-  padding-bottom: 40px;
+  padding: 30px;
   position: relative;
 `;
 
 const BackButton = styled.div`
-  position: absolute;
+ position: absolute;
   top: 20px;
   left: 20px;
-  background-color: #fff;
-  color: rgba(27, 99, 146, 1);
+  background-color: #333;
+  color: white;
   font-size: 24px;
   width: 40px;
   height: 40px;
@@ -54,10 +55,10 @@ const SubHeader = styled.p`
 `;
 
 const CircleImage = styled.div`
-  width: 80px;
+ width: 80px;
   height: 80px;
   border-radius: 50%;
-  background-color: rgba(27, 99, 146, 1);
+  background-color: #fa8232;
   color: #fff;
   display: flex;
   align-items: center;
@@ -87,8 +88,8 @@ const AmountDisplay = styled.div`
   font-size: 32px;
   font-weight: bold;
   text-align: center;
-  background-color: #edeff2;
-  border-radius: 10px;
+  background-color: #f0cea5;
+  border-radius: 8px;
   margin: 20px 20px;
   box-sizing: border-box;
 `;
@@ -124,7 +125,7 @@ const SendButton = styled.button`
   padding: 15px;
   font-size: 18px;
   color: white;
-  background-color: rgba(27, 99, 146, 1);
+  background-color: #fa8232;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -132,7 +133,7 @@ const SendButton = styled.button`
   font-weight: bold;
 
   &:hover {
-    background-color: #0b4166;
+    background-color: #803e00;
   }
 `;
 
@@ -154,11 +155,11 @@ const ConfirmationPage = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 10px 10px;
-  padding-bottom: 40px;
+  padding: 40px;
+  margin: 0 auto;
   width: 100%;
   overflow: hidden;
-  margin-right: 0px;
+  /* margin-right: 0px; */
   margin-bottom: 0px;
   height: auto;
   background-color: #fff;
@@ -192,24 +193,35 @@ const ReminderPopup = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 30;
   text-align: center;
-  width: 200px;
+  width: 300px;
 
   .popupButton {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 20px;
 
     button {
-      background-color: rgba(27, 99, 146, 1);
+      background-color: red;
       color: white;
       border: none;
       border-radius: 2px;
+      padding: 8px 12px;
+      margin-top: 10px;
+      cursor: pointer;
+
+      &:nth-child(2) {
+      background-color: #fa8232;
     }
+    }
+
+   
+
   }
 `;
 
 const PinPopup = styled.div`
   position: absolute;
+  width: 300px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -219,7 +231,7 @@ const PinPopup = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 40;
   text-align: center;
-  width: 200px;
+  
 
   .popupButton {
     display: flex;
@@ -231,23 +243,54 @@ const PinPopup = styled.div`
       color: white;
       border: none;
       border-radius: 2px;
+      padding: 8px 12px;
+      margin-top: 10px;
     }
   }
 `;
+
+const PinInputBox = styled.input`
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  font-size: 24px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin: 15px 5px;
+  color: #333;
+  font-weight: bold;
+  background-color: #f9f9f9;
+  &::placeholder {
+    color: transparent;
+  }
+  &:focus {
+    outline: none;
+    border-color: #fa8232;
+  }
+`;
+
+const PinInputContainer = styled.div``
 
 const PinInput = styled.div`
   display: flex;
 `;
 
-const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
+
+
+const PaymentPagetwo = () => {
   const [amount, setAmount] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showCancelPopup, setShowCancelPopup] = useState(false);
   const [showPinPopUp, setShowPinPopUp] = useState(false);
   const [pin, setPin] = useState("");
-  const [transactionFee] = useState("50.00");
+  const [transactionFee] = useState("0.05");
+  const [pinInputs, setPinInputs] = useState(["", "", "", ""]);
+  const pinRefs = useRef([]);
   const navigate = useNavigate();
 
+  const { userDetails } = useAppContext();
+
+  // Helper Functions
   const handleNumberInput = (value) => {
     if (value === "x") {
       setAmount((prev) => prev.slice(0, -1));
@@ -257,7 +300,7 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
   };
 
   const handlePayment = () => {
-    if (amount && parseFloat(amount) <= parseFloat(walletBalance)) {
+    if (amount && parseFloat(amount) <= parseFloat(userDetails?.walletBalance || 0)) {
       setShowConfirmation(true);
     } else if (!amount) {
       alert("Please enter an amount.");
@@ -277,9 +320,43 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
     }
   };
 
+  const handlePinInputChange = (e, index) => {
+    const value = e.target.value;
+    if (value.length <= 1 && /^[0-9]$/.test(value)) {
+      const newPinInputs = [...pinInputs];
+      newPinInputs[index] = value;
+      setPinInputs(newPinInputs);
+      setPin(newPinInputs.join(""));
+      if (index < 3 && value) {
+        pinRefs.current[index + 1]?.focus();
+      }
+    }
+  };
+
+  const handlePinBackspace = (e, index) => {
+    if (e.key === "Backspace" && !pinInputs[index] && index > 0) {
+      const prevInput = pinRefs.current[index - 1];
+      if (prevInput) {
+        prevInput.focus();
+      }
+    }
+  };
+
+  const handlePinButtonClick = (num) => {
+    const emptyIndex = pinInputs.findIndex((pin) => pin === "");
+    if (emptyIndex !== -1) {
+      const newPinInputs = [...pinInputs];
+      newPinInputs[emptyIndex] = num;
+      setPinInputs(newPinInputs);
+      setPin(newPinInputs.join(""));
+      if (emptyIndex < 3) {
+        pinRefs.current[emptyIndex + 1]?.focus();
+      }
+    }
+  };
+
   const handlePinSubmit = () => {
     if (pin === "1234") {
-      // Placeholder for actual PIN verification
       navigate("/paymentsuccess");
     } else {
       alert("Invalid PIN. Please try again.");
@@ -292,12 +369,18 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
       <Header>Make Payment</Header>
 
       <SubHeader>Sending money to</SubHeader>
-      <CircleImage>{storeName.charAt(0)}</CircleImage>
-      <Header>{storeName}</Header>
-      <SubHeader>Account No: {accountNumber}</SubHeader>
+      <CircleImage>
+        {userDetails?.business?.businessName.charAt(0) || "Default Business Name"}
+      </CircleImage>
+      <Header>{userDetails?.business?.businessName || "Fetching Name..."}</Header>
+      <SubHeader>
+        Account No: {userDetails?.accountNumber || "Fetching Data..."}
+      </SubHeader>
 
       <InfoCard>
-        <span>Wallet Balance: ₦{walletBalance}</span>
+        <span>
+          Wallet Balance: ₦{userDetails?.walletBalance || "Fetching Data..."}
+        </span>
       </InfoCard>
 
       <AmountDisplay>₦{amount || "0"}</AmountDisplay>
@@ -312,29 +395,31 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
 
       <SendButton onClick={handlePayment}>Send Money</SendButton>
 
-      {/* Overlay */}
       <Overlay show={showConfirmation} />
 
-      {/* Confirmation Page */}
       {showConfirmation && (
         <ConfirmationPage show={showConfirmation}>
           <ConfirmationHeader>
             <XIcon onClick={handleCancelConfirmation}>✕</XIcon>
             <Header>₦{amount}</Header>
           </ConfirmationHeader>
-          <SubHeader>Business: {storeName}</SubHeader>
-          <SubHeader>Account Number: {accountNumber}</SubHeader>
+          <SubHeader>
+            Business: {userDetails?.business?.businessName || "Fetching Name..."}
+          </SubHeader>
+          <SubHeader>
+            Account Number: {userDetails?.accountNumber || "Fetching Data..."}
+          </SubHeader>
           <SubHeader>Amount: ₦{amount}</SubHeader>
           <SubHeader>Transaction Fee: ₦{transactionFee}</SubHeader>
           <SubHeader>
-            Payment Method: Wallet (Balance: ₦{walletBalance})
+            Payment Method: Wallet (Balance: ₦
+            {userDetails?.walletBalance || "Fetching Data..."})
           </SubHeader>
 
           <SendButton onClick={() => setShowPinPopUp(true)}>Pay</SendButton>
         </ConfirmationPage>
       )}
 
-      {/* Reminder Popup */}
       {showCancelPopup && (
         <ReminderPopup>
           <p>Are you sure you want to cancel the payment?</p>
@@ -345,27 +430,44 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
         </ReminderPopup>
       )}
 
-      {/* PIN Popup */}
       {showPinPopUp && (
         <PinPopup>
           <h3>Enter Transaction PIN</h3>
 
+          <PinInputContainer>
+            {pinInputs.map((digit, index) => (
+              <PinInputBox
+                key={index}
+                ref={(el) => (pinRefs.current[index] = el)}
+                id={`pin-${index}`}
+                type="text"
+                maxLength="1"
+                value={digit}
+                onChange={(e) => handlePinInputChange(e, index)}
+                onFocus={(e) => e.target.select()}
+                onKeyDown={(e) => handlePinBackspace(e, index)}
+              />
+            ))}
+          </PinInputContainer>
+
           <PinGrid>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0, "x"].map((num) => (
-              <PinButton
-                key={num}
-                onClick={() => {
-                  if (num === "x") {
-                    setPin((prev) => prev.slice(0, -1));
-                  } else {
-                    setPin((prev) => prev + num);
-                  }
-                }}
-              >
-                {num === "x" ? "⌫" : num}
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((num) => (
+              <PinButton key={num} onClick={() => handlePinButtonClick(num)}>
+                {num}
               </PinButton>
             ))}
+            <PinButton
+              key="x"
+              onClick={() => {
+                setPinInputs(["", "", "", ""]);
+                setPin("");
+                pinRefs.current[0]?.focus();
+              }}
+            >
+              ⌫
+            </PinButton>
           </PinGrid>
+
           <SendButton onClick={handlePinSubmit}>Submit PIN</SendButton>
           <XIcon onClick={() => setShowPinPopUp(false)}>✕</XIcon>
         </PinPopup>
@@ -374,10 +476,6 @@ const PaymentPage = ({ storeName, accountNumber, walletBalance }) => {
   );
 };
 
-PaymentPage.defaultProps = {
-  storeName: "QMART Stores",
-  accountNumber: "123456789",
-  walletBalance: "1000.00",
-};
+export default PaymentPagetwo;
 
-export default PaymentPage;
+

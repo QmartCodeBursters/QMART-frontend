@@ -196,31 +196,79 @@ const Overlay = styled.div`
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaUser, FaHistory, FaQrcode, FaBell, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { FaUser, FaHistory, FaQrcode, FaBell, FaCog, FaSignOutAlt, FaWallet, FaHome } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
+import AxiosToastError from '../../utilis/AxiosToastError';
+import Axios from '../../utilis/Axios';
+import summaryAPI from '../../common/summaryAPI';
+import axios from 'axios';
 
-const Balance = ({ storeName, balance, role }) => {
+const Balance = () => {
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Track login state
-  const [currentTime, setCurrentTime] = useState(new Date()); // State for time
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [currentTime, setCurrentTime] = useState(new Date());
   const navigate = useNavigate();
+  const [merchantDetails, setMerchantDetails] = useState({
+    accountBalance: 0,
+    accountNumber: "",
+    businessName: "",
+    businessRegNumber: "",
+    businessDescription: "",
+    role: "",
+  });
 
   useEffect(() => {
+    // Update time every second
     const interval = setInterval(() => {
-      setCurrentTime(new Date()); // Update time every second
+      setCurrentTime(new Date());
     }, 1000);
 
-    return () => clearInterval(interval); // Cleanup on unmount
+    return () => clearInterval(interval);
+  }, []);
+
+  const fetchMerchantDetails = async () => {
+    try {
+      const response = await Axios({
+        method: "GET",
+        url: summaryAPI.fetchUser.url, 
+      });
+
+      console.log("API Response:", response.data);
+
+      if (response.data) {
+        // Update state with API response
+        setMerchantDetails({
+          accountBalance: response.data.accountBalance || 0,
+          accountNumber: response.data.accountNumber || "",
+          businessName: response.data.businessName || "Default Business Name",
+          businessRegNumber: response.data.businessRegNumber || "",
+          businessDescription: response.data.businessDescription || "",
+          role: response.data.role || "",
+          firstName: response.data.firstName || "",
+        });
+
+        toast.success("Details fetched successfully!");
+      } else {
+        toast.error("Failed to fetch merchant details.");
+      }
+    } catch (error) {
+      console.error("Error fetching merchant details:", error);
+      AxiosToastError(error) ||"Error fetching details. Please try again.";
+    }
+  };
+
+  useEffect(() => {
+    fetchMerchantDetails();
   }, []);
 
   const toggleBalanceVisibility = () => {
-    setIsBalanceVisible((prevState) => !prevState);
+    setIsBalanceVisible((prev) => !prev);
   };
 
   const toggleDropdown = () => {
-    setIsDropdownOpen((prevState) => !prevState);
+    setIsDropdownOpen((prev) => !prev);
   };
 
   const closeDropdown = () => {
@@ -239,22 +287,34 @@ const Balance = ({ storeName, balance, role }) => {
     };
   };
 
-  const handleLogout = () => {
-    // Clear storage
-    localStorage.clear();
-    sessionStorage.clear();
-    setIsLoggedIn(false); // Update login state
+  const handleLogout = async () => {
+    try {
+      
+      const response = await Axios({
+        ...summaryAPI.logOut,
+      }) 
+      
+      if (response.data.error) {
+        toast.error(response.data.message || "Something went wrong");
+        return;
+      }
 
-    // Show success toast
-    toast.success("Logout successful!");
-
-    // Disable browser back navigation
-    disableBackNavigation();
-
-    // Navigate to home
-    navigate("/", { replace: true });
-    closeDropdown();
+      localStorage.clear();
+      sessionStorage.clear();
+      
+      setIsLoggedIn(false);
+      
+      toast.success("Logout successful!");
+      
+      disableBackNavigation();
+      navigate("/", { replace: true });
+      closeDropdown();
+    } catch (error) {
+      console.error("Logout Error:", error.message);
+      toast.error("Failed to log out.");
+    }
   };
+  
 
   return (
     <Container>
@@ -265,6 +325,9 @@ const Balance = ({ storeName, balance, role }) => {
       <DropdownMenu className={isDropdownOpen ? "open" : ""}>
         {isLoggedIn && (
           <>
+            <DropdownItem onClick={() => handleNavigation("/dashboard")}>
+              <FaHome /> Dashboard
+            </DropdownItem>
             <DropdownItem onClick={() => handleNavigation("/profile")}>
               <FaUser /> Profile
             </DropdownItem>
@@ -273,6 +336,9 @@ const Balance = ({ storeName, balance, role }) => {
             </DropdownItem>
             <DropdownItem onClick={() => handleNavigation("/QRcode")}>
               <FaQrcode /> QR Code Management
+            </DropdownItem>
+            <DropdownItem onClick={() => handleNavigation("/wallet")}>
+              <FaWallet /> Wallet
             </DropdownItem>
             <DropdownItem onClick={() => handleNavigation("/notification-settings")}>
               <FaBell /> Notification Settings
@@ -296,47 +362,31 @@ const Balance = ({ storeName, balance, role }) => {
           <h5>Dashboard</h5>
         </LeftSection>
         <RightSection>
-          <h1>Welcome {storeName} 👌</h1>
+        <h1> Welcome, {merchantDetails.role === "customer" ? merchantDetails.firstName : merchantDetails.businessName} 👌</h1>
+   
           <p>{currentTime.toLocaleString()}</p>
         </RightSection>
       </Header>
 
-      {/* Navbar */}
-      <nav>
-        {isLoggedIn ? (
-          // Links for logged-in users
-          <>
-            {/* <a href="/dashboard">Dashboard</a>
-            <a href="/wallet">Wallet</a>
-            <a href="/profile">Profile</a> */}
-          </>
-        ) : (
-          // Links for non-logged-in users
-          <>
-            <a href="/">Home</a>
-            <a href="/contact">Contact</a>
-            <a href="/about">About</a>
-            <a href="/login">Login</a>
-            <a href="/signup">Sign Up</a>
-          </>
-        )}
-      </nav>
-
       {/* Balance Card */}
       <BalanceCard>
         <p>
-          Dear {storeName}, here is your balance:{" "}
+          Dear {merchantDetails.role  === 'customer' ? merchantDetails.firstName : merchantDetails.businessName || 'Merchant'}, here is your balance:{" "}
           <span onClick={toggleBalanceVisibility}>
             {isBalanceVisible ? "👁️" : "👁️‍🗨️"}
           </span>
         </p>
-        <h2>{isBalanceVisible ? `₦${balance.toLocaleString()}` : "₦****"}</h2>
+        <h2>
+          {isBalanceVisible
+            ? `₦${merchantDetails.accountBalance.toLocaleString()}`
+            : "₦****"}
+        </h2>
         <ButtonGroup>
-          {role === "customer" && isLoggedIn ? (
+          {merchantDetails.role === "customer" && isLoggedIn ? (
             <Button primary onClick={() => navigate("/UserScan")}>
               Make Payment
             </Button>
-          ) : role === "merchant" && isLoggedIn ? (
+          ) : merchantDetails.role === "merchant" && isLoggedIn ? (
             <Button primary onClick={() => navigate("/ReceivePayment")}>
               Receive Payment
             </Button>
@@ -349,6 +399,8 @@ const Balance = ({ storeName, balance, role }) => {
     </Container>
   );
 };
+
+
 
 export default Balance;
 

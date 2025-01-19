@@ -205,6 +205,7 @@ const NameSection = styled.div`
     border-radius: 5px;
     border: 1px solid #e6e6e6;
     margin-top: 5px;
+    outline: none;
   }
 `;
 

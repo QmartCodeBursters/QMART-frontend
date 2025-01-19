@@ -42,15 +42,29 @@ const AccountSettings = () => {
     });
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    console.log(file); // Log the file to ensure it's being selected
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   console.log(file); // Log the file to ensure it's being selected
+  //   if (file) {
+  //     const imageURL = URL.createObjectURL(file);
+  //     setProfileImage(imageURL);
+  //     setImageFile(file); // Store the file for later upload
+  //   }
+  // };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
     if (file) {
-      const imageURL = URL.createObjectURL(file);
-      setProfileImage(imageURL);
-      setImageFile(file); // Store the file for later upload
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64Image = reader.result; // Get Base64 encoded image
+        localStorage.setItem('avatar', base64Image);
+        setProfileImage(base64Image);
+      };
+      reader.readAsDataURL(file);
     }
   };
+  
 
   const handleSaveChanges = async (e) => {
     e.preventDefault();
@@ -227,10 +241,6 @@ const AccountSettings = () => {
 
 export default AccountSettings;
 
-
-
-
-
 const Container = styled.div`
   justify-content: center;
   width: 50%;
@@ -298,6 +308,7 @@ const Left = styled.div`
     padding:8px 2px;
     border-radius: 5px;
     border: 1px solid #e6e6e6;
+    outline: none;
   }
 `;
 

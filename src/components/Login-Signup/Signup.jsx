@@ -45,13 +45,13 @@ const Signup = () => {
   
     if (name === "firstName" && (value.length < 3 || value.length > 20)) {
 
-      newErrors.firstName = "First name should include 3-8 characters";
+      newErrors.firstName = "First name should include 3-20 characters";
     } else {
       delete newErrors.firstName;
     }
 
     if (name === "lastName" && (value.length < 3 || value.length > 20)) {
-      newErrors.lastName = "Last name should include 3-8 characters";
+      newErrors.lastName = "Last name should include 3-20 characters";
     } else {
       delete newErrors.lastName;
     }

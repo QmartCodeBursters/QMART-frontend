@@ -36,6 +36,18 @@ const summaryAPI = {
     uploadProfileImage: {
         url : '/api/v1/user/upload-avatar',
         method: 'PUT'
+    },
+    verifyOTPreset: {
+        url : '/api/v1/user/verifyResetPasswordOTP',
+        method: 'POST'
+    },
+    resetPassword: {
+        url : '/api/v1/user/reset-password',
+        method: 'PATCH'
+    },
+    logOut: {
+        url: '/api/v1/user/signout',
+        method: 'POST'
     }
 }
 

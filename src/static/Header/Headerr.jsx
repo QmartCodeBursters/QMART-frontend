@@ -15,11 +15,11 @@ const Header = () => {
 
   // Handle sign-out logic
   const handleSignOut = () => {
-    Cookies.remove("jwt"); // Remove the JWT token from cookies
-    setEmail(""); // Clear the email state
-    setRole(""); // Clear the role state
-    toast.success("You have successfully signed out!");
-    navigate("/"); // Navigate to the home page or login page
+    // Cookies.remove("jwt"); // Remove the JWT token from cookies
+    // setEmail(""); // Clear the email state
+    // setRole(""); // Clear the role state
+    // toast.success("You have successfully signed out!");
+    // navigate("/"); // Navigate to the home page or login page
   };
 
   // Set email and role on token detection

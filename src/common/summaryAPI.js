@@ -1,4 +1,6 @@
-export const baseURL = "http://localhost:2230";
+
+
+export const baseURL = "https://qmartcode.netlify.app";
 
 const summaryAPI = {
     signUp: {

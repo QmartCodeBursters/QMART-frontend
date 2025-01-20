@@ -13,7 +13,7 @@ import { useAppContext } from "../../common/AuthContext";
 const Dashboard = () => {
   const [user, setUser] = useState({});
   const navigate = useNavigate();
-  const { userDetails, businessName, updateBusinessName } = useAppContext(); // Access context directly
+  const { userDetails, businessName, updateBusinessName } = useAppContext(); 
 
   const [storeData, setStoreData] = useState({
     role: "",
@@ -88,7 +88,7 @@ const Dashboard = () => {
   return (
     <Container>
       <Balance
-        storeName={businessName} // Use businessName directly from context
+        storeName={businessName} 
         balance={storeData.balance}
         role={storeData.role}
       />

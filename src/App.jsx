@@ -9,6 +9,7 @@ import Login from "./components/Login-Signup/Login";
 import Contactpage from "./pages/Contactpage/Contactpage";
 import ForgotPassword from "./components/forgotpassword/ForgotPassword";
 import OTPPage from "./components/forgotpassword/OTPPage";
+import passwordUpdate from "./components/Login-Signup/passwordUpdate";
 
 // import PaymentPage from "./components/paymentpage/PaymentPage";
 import PaymentPage from "./components/paymentpage/SecPayment";
@@ -42,6 +43,8 @@ import NotificationSettings from "./components/notification/Notification";
 import MainUserProfile from "./components/userprofile/Mainuserprofile";
 import { useEffect } from "react";
 import PaymentPagetwo from "./components/paymentpage/unrealPaymentPage";
+import PasswordUpdate from "./components/Login-Signup/passwordUpdate";
+
 
 function ScrollToTop() {
   const location = useLocation();
@@ -70,6 +73,7 @@ function App() {
           <Route path="/otppage" element={<OTPPage />} />
           <Route path="/reset-password" element={<VerifyEmailOTP />} />
           <Route path="/otp-password-verification" element={<OtpResetPassword />} />
+          
 
           <Route path="/contact" element={<Contactpage />} />
           <Route path="/aboutUs" element={<About />} />
@@ -101,6 +105,7 @@ function App() {
           <Route path="/Confam" element={<UserPaymentConfir />} />
           <Route path="/profile" element={<MainUserProfile />} />
           <Route path="/order/:orderId" element={<Extend />} />
+          <Route path="/password-update" element={<PasswordUpdate />}/>
         </Routes>
         <Footer />
         <Toaster />

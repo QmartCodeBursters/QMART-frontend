@@ -1,20 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
+import axios from 'axios';
 
 const Order = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [ordersData, setOrdersData] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const totalPages = 3;
 
-  const ordersData = {
-    1: [
-      { orderId: '#1521', name: 'John Doe', date: '2023-01-09', total: '#200.00', status: 'Processing' },
-    ],
+  // Fetch orders from the backend
+  useEffect(() => {
+    const fetchOrders = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await axios({
+          method: "POST",
+          url: `${baseURL}${summaryAPI.fetchTransactions.url}`,
+          data: { email, password },
+          withCredentials: true,});
+          
+          const { data } = response;
+        setOrdersData((prevOrders) => ({
+          ...prevOrders,
+          [currentPage]: data.orders, 
+        }));
+      } catch (err) {
+        setError('Failed to fetch orders. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  };
+    fetchOrders();
+  }, [currentPage]);
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -26,7 +50,7 @@ const Order = () => {
   const handleEndDateChange = (e) => setEndDate(e.target.value);
 
   const filterOrdersByDate = (orders) => {
-    if (!startDate && !endDate) return orders;  // Return all orders if no dates are selected
+    if (!startDate && !endDate) return orders;
 
     const filteredOrders = orders.filter((order) => {
       const orderDate = new Date(order.date);
@@ -42,13 +66,13 @@ const Order = () => {
     return filteredOrders;
   };
 
-  const filteredOrders = filterOrdersByDate(ordersData[currentPage]);
+  const filteredOrders = ordersData[currentPage] ? filterOrdersByDate(ordersData[currentPage]) : [];
 
   return (
     <Wrapper>
       <Table>
         <TableHeading>Transaction History</TableHeading>
-        
+
         {/* Date Filter */}
         <DateFilter>
           <label>Start Date:</label>
@@ -63,31 +87,36 @@ const Order = () => {
           </select>
         </DateFilter>
 
-        <TableElement>
-          <thead>
-            <tr className="up">
-              <td>NAME</td>
-              <td>DATE</td>
-              <td>TOTAL</td>
-              <td>STATUS</td>
-              <td> </td>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredOrders.map((order, index) => (
-              <tr key={index}>
-                <td>{order.name}</td>
-                <td>{order.date}</td>
-                <td>{order.total}</td>
-                <td>{order.status}</td>
-                <td className="view-details">
-                  {/* Link to the OrderDetails page with orderId in URL */}
-                  <Link to={`/order/${encodeURIComponent(order.orderId)}`}>View Details</Link>
-                </td>
+        {loading ? (
+          <p>Loading orders...</p>
+        ) : error ? (
+          <p style={{ color: 'red' }}>{error}</p>
+        ) : (
+          <TableElement>
+            <thead>
+              <tr className="up">
+                <td>NAME</td>
+                <td>DATE</td>
+                <td>TOTAL</td>
+                <td>STATUS</td>
+                <td> </td>
               </tr>
-            ))}
-          </tbody>
-        </TableElement>
+            </thead>
+            <tbody>
+              {filteredOrders.map((order, index) => (
+                <tr key={index}>
+                  <td>{order.name}</td>
+                  <td>{order.date}</td>
+                  <td>{order.total}</td>
+                  <td>{order.status}</td>
+                  <td className="view-details">
+                    <Link to={`/order/${encodeURIComponent(order.orderId)}`}>View Details</Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </TableElement>
+        )}
 
         <Contain>
           <button
@@ -97,9 +126,15 @@ const Order = () => {
           >
             <MdOutlineKeyboardArrowLeft />
           </button>
-          <button onClick={() => handlePageChange(1)}>1</button>
-          <button onClick={() => handlePageChange(2)}>2</button>
-          <button onClick={() => handlePageChange(3)}>3</button>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i + 1}
+              className={currentPage === i + 1 ? "active" : ""}
+              onClick={() => handlePageChange(i + 1)}
+            >
+              {i + 1}
+            </button>
+          ))}
           <button
             className={currentPage === totalPages ? "disabled" : ""}
             onClick={() => handlePageChange(currentPage + 1)}
@@ -114,6 +149,9 @@ const Order = () => {
 };
 
 export default Order;
+
+
+
 
 
 

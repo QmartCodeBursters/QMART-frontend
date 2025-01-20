@@ -8,10 +8,11 @@ import Axios from "../../utilis/Axios";
 import AxiosToastError from "../../utilis/AxiosToastError";
 
 const VerifyEmailOTP = () => {
-  const {setEmail } = useAppContext();
+  const { setEmail } = useAppContext();
   const [data, setData] = useState({
     email: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,16 +26,27 @@ const VerifyEmailOTP = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      if (!data.email.trim()) {
-        toast.error("Email is required");
-        return;
-      }
+    if (!data.email.trim()) {
+      toast.error("Email is required");
+      return;
+    }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      console.log("Sending request to:", summaryAPI.emailResetPass.url);
       const response = await Axios({
         ...summaryAPI.emailResetPass,
-        data: data,
+        data: { email: data.email },
       });
+
+      console.log("API response:", response.data);
 
       if (response.data.error) {
         toast.error(response.data.message || "Something went wrong");
@@ -42,15 +54,17 @@ const VerifyEmailOTP = () => {
       }
 
       if (response.data.success) {
-        toast.success(response.data.message) || "Email sent successfully";
+        toast.success(response.data.message || "Email sent successfully");
         setEmail(data.email);
-        setData({
-          email: "",
-        });
-        navigate("/otp-verification");
+        setData({ email: "" });
+        navigate("/otp-password-verification", { state: { email: data.email } });
+        console.log("Navigating to /otp-password-verification");
       }
     } catch (error) {
+      console.error("Error during API request:", error);
       AxiosToastError(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -64,23 +78,22 @@ const VerifyEmailOTP = () => {
             <h2>FORGOT PASSWORD</h2>
             <StyledInput
               type="email"
-              placeholder="Enter your Registerd Email"
+              placeholder="Enter your Registered Email"
               name="email"
               value={data.email}
               onChange={handleChange}
             />
             <SubmitButton
               type="submit"
-              className={isEmailValid ? "active" : ""}
-              disabled={!isEmailValid}
+              className={isEmailValid && !isLoading ? "active" : ""}
+              disabled={!isEmailValid || isLoading}
             >
-              Verify
+              {isLoading ? "Verifying..." : "Verify"}
             </SubmitButton>
 
             <span>
               Already have an account? <Link to="/login">Login</Link>
             </span>
-
           </form>
         </FormCont>
       </InnerWrapper>
@@ -89,7 +102,6 @@ const VerifyEmailOTP = () => {
 };
 
 export default VerifyEmailOTP;
-
 
 const Wrapper = styled.div`
   display: flex;
@@ -113,14 +125,12 @@ const FormCont = styled.div`
   border-radius: 8px;
   margin: 0 auto;
 
-
   form {
     display: flex;
     flex-direction: column;
     gap: 15px;
     font-size: 20px;
     font-weight: 500;
-    
 
     h2 {
       font-size: 24px;
@@ -128,20 +138,18 @@ const FormCont = styled.div`
     }
 
     span {
-        font-size: 12px;
+      font-size: 12px;
 
-        a {
-            text-decoration: none;
-            color: red;
-        }
+      a {
+        text-decoration: none;
+        color: red;
+      }
     }
   }
 
   @media (max-width: 768px) {
     width: 80%;
   }
-  
-  
 `;
 
 const StyledInput = styled.input`
@@ -177,4 +185,3 @@ const SubmitButton = styled.button`
     opacity: 0.6;
   }
 `;
-

@@ -42,6 +42,8 @@ import NotificationSettings from "./components/notification/Notification";
 import MainUserProfile from "./components/userprofile/Mainuserprofile";
 import { useEffect } from "react";
 import PaymentPagetwo from "./components/paymentpage/unrealPaymentPage";
+import PaymentCallback from "./components/Paystack/paymentCall";
+import PaymentFailure from "./components/Paystack/paymentfailed";
 
 function ScrollToTop() {
   const location = useLocation();
@@ -90,17 +92,20 @@ function App() {
           <Route path="/UserWallet" element={<UserWallet />} />
           {/* <Route path="/ReceivePay" element={<ReceivePayment />} /> */}
           <Route path="/ReceivePayment" element={<ReceivePayment />} />
+          <Route path="/payment/callback" element={<PaymentCallback />} />
           
           <Route path="/notification-settings" element={<NotificationSettings />}/>
           <Route path="/QRcode" element={<PrintQRcode />} />
           <Route path="/loading" element={<UserPaymentLoading />} />
           <Route
-            path="/transaction-status"
+            path="/transaction/success"
             element={<UserPaymentSuccessPage />}
           />
           <Route path="/Confam" element={<UserPaymentConfir />} />
           <Route path="/profile" element={<MainUserProfile />} />
           <Route path="/order/:orderId" element={<Extend />} />
+          <Route path="/payment/failure" element={<PaymentFailure/>} />
+
         </Routes>
         <Footer />
         <Toaster />

@@ -288,31 +288,31 @@ const Balance = () => {
   };
 
   const handleLogout = async () => {
-    try {
+    // try {
       
-      const response = await Axios({
-        ...summaryAPI.logOut,
-      }) 
+    //   const response = await Axios({
+    //     ...summaryAPI.logOut,
+    //   }) 
       
-      if (response.data.error) {
-        toast.error(response.data.message || "Something went wrong");
-        return;
-      }
+    //   if (response.data.error) {
+    //     toast.error(response.data.message || "Something went wrong");
+    //     return;
+    //   }
 
-      localStorage.clear();
-      sessionStorage.clear();
+    //   localStorage.clear();
+    //   sessionStorage.clear();
       
-      setIsLoggedIn(false);
+    //   setIsLoggedIn(false);
       
-      toast.success("Logout successful!");
+    //   toast.success("Logout successful!");
       
-      disableBackNavigation();
-      navigate("/", { replace: true });
-      closeDropdown();
-    } catch (error) {
-      console.error("Logout Error:", error.message);
-      toast.error("Failed to log out.");
-    }
+    //   disableBackNavigation();
+    //   navigate("/", { replace: true });
+    //   closeDropdown();
+    // } catch (error) {
+    //   console.error("Logout Error:", error.message);
+    //   toast.error("Failed to log out.");
+    // }
   };
   
 

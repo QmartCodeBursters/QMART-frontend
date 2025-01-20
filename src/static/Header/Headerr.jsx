@@ -69,7 +69,7 @@ const Header = () => {
                   <Link to="/dashboard">Dashboard</Link>
                 </p>
                 <p>
-                  <Link to="/wallet">Wallet</Link>
+                  <Link to="/UserWallet">Wallet</Link>
                 </p>
                 <p>
                   <Link to="/contact">Contact Us</Link>

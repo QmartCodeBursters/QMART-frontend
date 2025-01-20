@@ -30,6 +30,7 @@
     "react-phone-input-2": "^2.15.1",
     "react-router-dom": "^7.0.1",
     "react-toastify": "^11.0.2",
+    "socket.io-client": "^4.8.1",
     "styled-components": "^6.1.13"
   },
   "devDependencies": {

@@ -106,6 +106,8 @@ function App() {
           <Route path="/profile" element={<MainUserProfile />} />
           <Route path="/order/:orderId" element={<Extend />} />
           <Route path="/password-update" element={<PasswordUpdate />}/>
+
+          <Route path="/payment/failure" element={<PaymentFailure/>} />
         </Routes>
         <Footer />
         <Toaster />

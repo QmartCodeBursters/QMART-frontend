@@ -48,6 +48,14 @@ const summaryAPI = {
     logOut: {
         url: '/api/v1/user/signout',
         method: 'POST'
+    },
+    initializePayment: {
+        url: '/api/v1/payment/initialize',
+        method: 'POST'
+    },
+    verifyPayment: {
+        url: '/api/v1/payment/verify',
+        method: 'GET'
     }
 }
 

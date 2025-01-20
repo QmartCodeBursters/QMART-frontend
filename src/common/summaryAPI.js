@@ -63,4 +63,4 @@ const summaryAPI = {
     },
 }
 
-export default summaryAPI
+export default summaryAPI;

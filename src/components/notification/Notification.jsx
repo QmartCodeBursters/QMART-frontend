@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import backgroundImage from "../../assets/png/bg.png";
 import toast from "react-hot-toast";
 import axios from "axios";
 import AxiosToastError from "../../utilis/AxiosToastError";
+import DropdownMenu from "../../static/Sidebar/Dropdownmenu";
+import { FiMenu } from "react-icons/fi"; // Import the hamburger icon
 
 // Global Styles
 const GlobalStyle = createGlobalStyle`
   body {
-    /* background-color: rgba(242, 242, 242, 1); */
-    /* background: url(${backgroundImage}) no-repeat center center fixed; */
     background-size: cover;
     margin: 0;
     padding: 0;
-    /* font-family: Arial, sans-serif; */
   }
 `;
 
@@ -22,8 +20,6 @@ const Container = styled.div`
   max-width: 550px;
   margin: 100px auto;
   padding: 50px;
-  /* margin-top: 5rem; */
-  /* background: white; */
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
   rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   border-radius: 10px;
@@ -55,6 +51,15 @@ const Subtitle = styled.p`
 
 const Section = styled.div`
   margin-bottom: 20px;
+`;
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
 `;
 
 const SectionTitle = styled.h3`
@@ -103,8 +108,8 @@ const SaveButton = styled.button`
   transition: background-color 0.3s;
 
   &:hover {
-        background-color: #803e00;
-      }
+    background-color: #803e00;
+  }
 `;
 
 // Popup Styling
@@ -156,8 +161,26 @@ const PopUpButton = styled.button`
   cursor: pointer;
 
   &:hover {
-        background-color: #803e00;
-      }
+    background-color: #803e00;
+  }
+`;
+
+// Hamburger Menu Styled Component
+const HamburgerMenu = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  background: transparent;
+  position: absolute;
+  top: 100px;
+  left: 430px;
+
+  &:hover {
+    background-color: #f4f4f4;
+    border-radius: 5px;
+  }
 `;
 
 // Main Component
@@ -171,6 +194,7 @@ const NotificationSettings = ({ userId, role }) => {
   const [updatesEnabled, setUpdatesEnabled] = useState(true);
   const [showPopUp, setShowPopUp] = useState(false);
   const [password, setPassword] = useState("");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (!userId || !role) {
@@ -181,7 +205,7 @@ const NotificationSettings = ({ userId, role }) => {
       try {
         const response = await axios.get(`/api/notifications/${userId}/${role}`);
         const data = response.data;
-  
+
         setNotificationsEnabled(data.notificationsEnabled);
         setEmailEnabled(data.emailEnabled);
         setSmsEnabled(data.smsEnabled);
@@ -194,9 +218,17 @@ const NotificationSettings = ({ userId, role }) => {
         console.error("Error fetching settings:", error.message);
       }
     };
-  
+
     fetchSettings();
   }, [userId, role]);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(prevState => !prevState); // Toggle dropdown visibility
+  };
+
+  const closeDropdown = () => {
+    setIsDropdownOpen(false); // Close the dropdown
+  };
 
   const handleSave = () => {
     setShowPopUp(true);
@@ -205,7 +237,6 @@ const NotificationSettings = ({ userId, role }) => {
   const handlePasswordSubmit = () => {
     if (password === "") {
       toast.error("Please input your password.");
-      // alert("Please input your password.");
     } else {
       toast.success("Settings saved successfully!");
       setShowPopUp(false);
@@ -216,6 +247,25 @@ const NotificationSettings = ({ userId, role }) => {
   return (
     <>
       <GlobalStyle />
+      {/* Hamburger Menu Button */}
+      <HamburgerMenu onClick={toggleDropdown}>
+        <FiMenu size={30} color="#333" />
+      </HamburgerMenu>
+
+      {/* Overlay to close dropdown */}
+      {isDropdownOpen && <Overlay onClick={closeDropdown} />}
+
+      {/* Dropdown menu */}
+      {isDropdownOpen && (
+        <DropdownMenu
+          isOpen={isDropdownOpen}
+          closeDropdown={closeDropdown}
+          handleNavigation={() => {}}
+          handleLogout={() => {}}
+          isLoggedIn={true}
+        />
+      )}
+
       <Container>
         <Header>Notification Settings</Header>
         <Subtitle>Choose how you want to receive alerts and updates.</Subtitle>

@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useAppContext } from "../../common/AuthContext";
+import DropdownMenu from "../../static/Sidebar/Dropdownmenu";
+import { FiMenu } from "react-icons/fi"; // Import Hamburger Icon from react-icons
 
 const UserProfile = () => {
   const { userDetails } = useAppContext();
   const chartRef = useRef(null); // Reference for the Chart.js canvas
   const [profileImage, setProfileImage] = useState(null); // State to store the profile image
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for dropdown visibility
 
   // Ensure userDetails is not null or undefined
   if (!userDetails) {
@@ -56,8 +59,37 @@ const UserProfile = () => {
 
   const initials = getInitials(firstName, lastName);
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const closeDropdown = () => {
+    setIsDropdownOpen(false);
+  };
+
   return (
-    <Container>
+    <Container> 
+         {/* Hamburger Menu Button */}
+      <HamburgerMenu onClick={toggleDropdown}>
+        <FiMenu size={30} color="#333" />
+      </HamburgerMenu>
+
+      {/* Overlay to close dropdown */}
+      {isDropdownOpen && <Overlay onClick={closeDropdown} />}
+
+    {/* Dropdown menu */}
+    {isDropdownOpen && (
+        <DropdownMenu
+          isOpen={isDropdownOpen}
+          closeDropdown={closeDropdown}
+          handleNavigation={() => {}}
+          handleLogout={() => {}}
+          isLoggedIn={true}
+        
+        />
+      )}
+  
+
       <h1>PROFILE</h1>
       
       <ProfileCard>
@@ -127,24 +159,22 @@ export default UserProfile;
 const Container = styled.div`
   max-width: 700px;
   margin: 100px auto;
-  padding: 50px;
+ padding: 20px;
   border-radius: 16px;
   background-color: #f9f9f9;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   animation: slideInFromTop 1s ease-out;
 
-
   @keyframes slideInFromTop {
-      from {
-        transform: translateY(-20px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
     }
-  
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
 
   h1 {
     text-align: center;
@@ -152,6 +182,42 @@ const Container = styled.div`
     font-size: 20px;
     color: #333;
     font-weight: 600;
+  }
+`;
+
+// Styling for Hamburger Menu
+const HamburgerMenu = styled.div`
+  position:;
+  top: 90px;
+  left: 90px;
+  cursor: pointer;
+  z-index: 1000; /* Ensure it's on top of other elements */
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+`;
+const Sidebar = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transform: ${(props) => (props.isOpen ? 'translateX(0)' : 'translateX(-100%)')};
+  transition: transform 0.3s ease-in-out;
+  padding: 20px;
+  z-index: 999;
+
+  @media (max-width: 768px) {
+    width: 200px;
   }
 `;
 
@@ -164,7 +230,6 @@ const ProfileCard = styled.div`
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
   margin-bottom: 30px;
   transition: all 0.3s ease;
-  /* margin: 0 auto; */
 
   &:hover {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);

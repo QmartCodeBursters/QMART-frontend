@@ -8,7 +8,8 @@ import AxiosToastError from "../../utilis/AxiosToastError";
 import Axios from "../../utilis/Axios";
 import summaryAPI from "../../common/summaryAPI";
 import { toast } from "react-toastify";
- // Assuming this is a custom hook for app context
+import DropdownMenu from "../../static/Sidebar/Dropdownmenu";
+import { FiMenu } from "react-icons/fi";  // Add hamburger icon from react-icons
 
 const AccountSettings = () => {
   const { userDetails } = useAppContext();
@@ -25,6 +26,7 @@ const AccountSettings = () => {
 
   const [profileimage, setProfileImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // state for dropdown menu
 
   // Load avatar from localStorage when component mounts
   useEffect(() => {
@@ -42,16 +44,6 @@ const AccountSettings = () => {
     });
   };
 
-  // const handleImageChange = (e) => {
-  //   const file = e.target.files[0];
-  //   console.log(file); // Log the file to ensure it's being selected
-  //   if (file) {
-  //     const imageURL = URL.createObjectURL(file);
-  //     setProfileImage(imageURL);
-  //     setImageFile(file); // Store the file for later upload
-  //   }
-  // };
-
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -64,11 +56,9 @@ const AccountSettings = () => {
       reader.readAsDataURL(file);
     }
   };
-  
 
   const handleSaveChanges = async (e) => {
     e.preventDefault();
-
     const data = new FormData();
     data.append('firstName', formData.firstName);
     data.append('lastName', formData.lastName);
@@ -80,10 +70,7 @@ const AccountSettings = () => {
     data.append('regNumber', formData.regNumber);
 
     if (imageFile) {
-      console.log("Appending image:", imageFile);
       data.append('profileImage', imageFile);
-    } else {
-      console.log("No image selected");
     }
 
     try {
@@ -100,138 +87,161 @@ const AccountSettings = () => {
       }
 
       if (response.data.success) {
-        console.log("Success response:", response.data);
-        toast.success(response.data.message) || "Profile updated successfully";	
-        
-        // Save the new avatar to localStorage and state
+        toast.success(response.data.message);
         const avatarURL = response.data.data.avatar;
         setProfileImage(avatarURL);
-        localStorage.setItem('avatar', avatarURL);  // Persist avatar URL in localStorage
+        localStorage.setItem('avatar', avatarURL);
       }
     } catch (error) {
       AxiosToastError(error);
     }
   };
 
+  // Toggle the dropdown menu
+  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+
+  // Close the dropdown when clicking outside
+  const closeDropdown = () => setIsDropdownOpen(false);
+
   return (
     <Container>
+      {/* Hamburger Menu Button */}
+      <HamburgerMenu onClick={toggleDropdown}>
+        <FiMenu size={30} color="#333" />
+      </HamburgerMenu>
+
+      {/* Overlay to close dropdown */}
+      {isDropdownOpen && <Overlay onClick={closeDropdown} />}
+
+      {/* Dropdown menu */}
+      {isDropdownOpen && (
+        <DropdownMenu
+          isOpen={isDropdownOpen}
+          closeDropdown={closeDropdown}
+          handleNavigation={() => {}}
+          handleLogout={() => {}}
+          isLoggedIn={true}
+        />
+      )}
+
       <AcctSettingsContainer>
         <AccountSetting>
           <header>Account Settings</header>
           <Settingform>
-              <Left>
-                <form onSubmit={handleSaveChanges}>
-                  <div>
-                    <label>First Name</label> 
-                    <input
-                      type="text"
-                      name="firstName"
-                      value={formData.firstName}
-                      onChange={handleForm}
-                      placeholder="First name"
-                      readOnly
-                    />
-                  </div>
-                  
-                  <div>
-                    <label>Last Name</label> 
-                    <input
-                      type="text"
-                      name="lastName"
-                      value={formData.lastName}
-                      onChange={handleForm}
-                      placeholder="Last name"
-                      readOnly
-                    />
-                  </div>
-                  
-                  <div>
-                    <label>Email</label> 
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleForm}
-                      placeholder="Email address"
-                      readOnly
-                    />
-                  </div>
-                
-                  <div>
-                    <label>Phone Number</label>
-                    <input
-                      type="Number"
-                      name="phoneNumber"
-                      value={formData.phoneNumber}
-                      onChange={handleForm}
-                      placeholder="Phone number"
-                      readOnly
-                    />
-                  </div>
-                
-                  <div>
-                    <label>Address</label>
-                    <input
-                      type="text"
-                      name="address"
-                      value={formData.address}
-                      onChange={handleForm}
-                      placeholder="Address"
-                      readOnly
-                    />
-                  </div>
-                  
-                  <div>
-                    <label>Business/Store Name</label> 
-                    <input
-                      type="text"
-                      name="businessName"
-                      value={formData.businessName}
-                      onChange={handleForm}
-                      placeholder="Business name"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label>Business/Store Description</label> 
-                    <input
-                      type="text"
-                      name="businessDescr"
-                      value={formData.businessDescr}
-                      onChange={handleForm}
-                      placeholder="Business description"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label>Business/Store Registration Number</label> 
-                    <input
-                      type="Number"
-                      name="regNumber"
-                      value={formData.regNumber}
-                      onChange={handleForm}
-                      placeholder="Business registration number"
-                    />
-                  </div>
-                  
-                  <SettingsButton type="submit">Save changes</SettingsButton>
-                </form>
-              </Left>
-              <Right>
-                <img src={profileimage} alt="User Image" />
-                <input
-                  type="file"
-                  id="imageUpload"
-                  accept="image/*"
-                  style={{ display: "none" }}
-                  onChange={handleImageChange}
-                />
-                <button
-                  onClick={() => document.getElementById("imageUpload").click()}
-                >
-                  Choose Image
-                </button>
-              </Right>
+            <Left>
+              <form onSubmit={handleSaveChanges}>
+                <div>
+                  <label>First Name</label>
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleForm}
+                    placeholder="First name"
+                    readOnly
+                  />
+                </div>
+
+                <div>
+                  <label>Last Name</label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleForm}
+                    placeholder="Last name"
+                    readOnly
+                  />
+                </div>
+
+                <div>
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleForm}
+                    placeholder="Email address"
+                    readOnly
+                  />
+                </div>
+
+                <div>
+                  <label>Phone Number</label>
+                  <input
+                    type="Number"
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleForm}
+                    placeholder="Phone number"
+                    readOnly
+                  />
+                </div>
+
+                <div>
+                  <label>Address</label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleForm}
+                    placeholder="Address"
+                    readOnly
+                  />
+                </div>
+
+                <div>
+                  <label>Business/Store Name</label>
+                  <input
+                    type="text"
+                    name="businessName"
+                    value={formData.businessName}
+                    onChange={handleForm}
+                    placeholder="Business name"
+                  />
+                </div>
+
+                <div>
+                  <label>Business/Store Description</label>
+                  <input
+                    type="text"
+                    name="businessDescr"
+                    value={formData.businessDescr}
+                    onChange={handleForm}
+                    placeholder="Business description"
+                  />
+                </div>
+
+                <div>
+                  <label>Business/Store Registration Number</label>
+                  <input
+                    type="Number"
+                    name="regNumber"
+                    value={formData.regNumber}
+                    onChange={handleForm}
+                    placeholder="Business registration number"
+                  />
+                </div>
+
+                <SettingsButton type="submit">Save changes</SettingsButton>
+              </form>
+            </Left>
+
+            <Right>
+              <img src={profileimage || image} alt="User Image" />
+              <input
+                type="file"
+                id="imageUpload"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={handleImageChange}
+              />
+              <button
+                onClick={() => document.getElementById("imageUpload").click()}
+              >
+                Choose Image
+              </button>
+            </Right>
           </Settingform>
         </AccountSetting>
       </AcctSettingsContainer>
@@ -240,6 +250,8 @@ const AccountSettings = () => {
 };
 
 export default AccountSettings;
+
+// Styled components for the layout and dropdown behavior
 
 const Container = styled.div`
   justify-content: center;
@@ -251,36 +263,55 @@ const Container = styled.div`
   border-radius: 5px;
   animation: slideInFromTop 1s ease-out;
 
-
   @media (max-width: 768px) {
-    /* margin-top: 95px; */
     width: 80%;
   }
 `;
 
+const HamburgerMenu = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: absolute;
+  top: 200px;
+  left: 500px;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+`;
+
+const AcctSettingsContainer = styled.div``;
+
 const AccountSetting = styled.div`
-  /* margin-top: -10px; */
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
-  /* max-width: 450px; */
   width: 100%;
+
   header {
     font-weight: 600;
-    margin-bottom: 10px;
     padding: 15px;
     box-shadow: 0px 1px #e5e5e5;
   }
 `;
-
-const AcctSettingsContainer = styled.div``;
 
 const Settingform = styled.div`
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
   padding: 24px;
-  /* flex-grow: 1; */
 
   @media (max-width: 768px) {
     flex-direction: column-reverse;
@@ -290,9 +321,7 @@ const Settingform = styled.div`
 `;
 
 const Left = styled.div`
-  /* flex: 1; */
   form {
-    /* padding: 24px; */
     font-size: 12px;
     color: grey;
     font-weight: bold;
@@ -305,30 +334,16 @@ const Left = styled.div`
     width: 100%;
     max-width: 500px;
     margin: 10px 0;
-    padding:8px 2px;
+    padding: 8px 2px;
     border-radius: 5px;
     border: 1px solid #e6e6e6;
     outline: none;
   }
 `;
 
-const SettingsButton = styled(Button)`
-  margin-top: 0px;
-`;
-
 const Right = styled.div`
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
-  /* align-items: center; */
-  /* margin: auto; */
-  /* margin-right: 150px; */
-  /* border: 1px solid; */
-
-  @media (max-width: 768px) {
-    margin: auto;
-    justify-content: center;
-  }
 
   img {
     height: 200px;
@@ -350,3 +365,8 @@ const Right = styled.div`
     }
   }
 `;
+
+const SettingsButton = styled(Button)`
+  margin-top: 20px;
+`;
+

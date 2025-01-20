@@ -14,38 +14,10 @@ const Header = () => {
   const { email, setEmail, role, setRole } = useAppContext();
 
   // Handle sign-out logic
-  const handleSignOut = () => {
-    Cookies.remove("jwt"); // Remove the JWT token from cookies
-    setEmail(""); // Clear the email state
-    setRole(""); // Clear the role state
-    toast.success("You have successfully signed out!");
-    navigate("/"); // Navigate to the home page or login page
-  };
+ 
 
   // Set email and role on token detection
-  useEffect(() => {
-    const token = Cookies.get("jwt");
-    if (token) {
-      setEmail(""); // Replace with actual email if needed
-      setRole("User"); // Replace with actual role if needed
-    }
-  }, [setEmail, setRole]);
-
-  // Prevent back navigation
-  useEffect(() => {
-    const preventBack = () => {
-      window.history.pushState(null, null, window.location.href);
-    };
-
-    if (email) {
-      window.history.pushState(null, null, window.location.href);
-      window.addEventListener("popstate", preventBack);
-
-      return () => {
-        window.removeEventListener("popstate", preventBack);
-      };
-    }
-  }, [email]);
+  
 
   const handleToggle = () => {
     setToggle(!toggle);
@@ -53,69 +25,46 @@ const Header = () => {
 
   return (
     <>
-      <Wrapper>
-        <Navbar>
-          {/* Logo */}
-          <Logocont>
-            <img src={qlogo} alt="logo" />
-            <p>Qmart</p>
-          </Logocont>
-
-          {/* Navigation Links */}
-          <Navlist>
-            {email ? (
-              <>
-                <p>
-                  <Link to="/dashboard">Dashboard</Link>
-                </p>
-                <p>
-                  <Link to="/UserWallet">Wallet</Link>
-                </p>
-                <p>
-                  <Link to="/contact">Contact Us</Link>
-                </p>
-                <p>
-                  <Link to="/aboutUs">About Us</Link>
-                </p>
-                {/* Sign Out Button */}
-                <SignOutButton onClick={handleSignOut}>Sign Out</SignOutButton>
-              </>
-            ) : (
-              <>
-                <p>
-                  <Link to="./">Home</Link>
-                </p>
-                <p>
-                  <Link to="/contact">Contact Us</Link>
-                </p>
-                <p>
-                  <Link to="/aboutUs">About Us</Link>
-                </p>
-              </>
-            )}
-          </Navlist>
-
-          {/* Conditional Buttons */}
-          <Signcont>
-            {!email && (
-              <>
-                <Link to="/login">
-                  <LoginButton>Login</LoginButton>
-                </Link>
-                <Link to="/signup">
-                  <SigninButton>Sign up</SigninButton>
-                </Link>
-              </>
-            )}
-          </Signcont>
-
-          {/* Mobile Sidebar Toggle */}
-          <Sidenav onClick={handleToggle}>
-            <IoReorderTwoOutline />
-          </Sidenav>
-        </Navbar>
-      </Wrapper>
-
+      {email === "" && ( // Show navbar only when no user is logged in
+        <Wrapper>
+          <Navbar>
+            {/* Logo */}
+            <Logocont>
+              <img src={qlogo} alt="logo" />
+              <p>Qmart</p>
+            </Logocont>
+  
+            {/* Navigation Links */}
+            <Navlist>
+              <p>
+                <Link to="./">Home</Link>
+              </p>
+              <p>
+                <Link to="/contact">Contact Us</Link>
+              </p>
+              <p>
+                <Link to="/aboutUs">About Us</Link>
+              </p>
+            </Navlist>
+  
+            {/* Sign-in Buttons */}
+            <Signcont>
+              <Link to="/login">
+                <LoginButton>Login</LoginButton>
+              </Link>
+              <Link to="/signup">
+                <SigninButton>Sign up</SigninButton>
+              </Link>
+            </Signcont>
+  
+            {/* Mobile Sidebar Toggle */}
+            <Sidenav onClick={handleToggle}>
+              <IoReorderTwoOutline />
+            </Sidenav>
+          </Navbar>
+        </Wrapper>
+      )}
+  
       {/* Sidebar */}
       {toggle && <Sidebar setDisplay={setToggle} />}
     </>

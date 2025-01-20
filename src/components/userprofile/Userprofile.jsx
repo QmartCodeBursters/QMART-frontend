@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ProfileImg from "../../assets/png/Profileimage.png";
 import backgroundImage from "../../assets/png/bg.png";
+import DropdownMenu from "../../static/Sidebar/Dropdownmenu";
+import { FiMenu } from "react-icons/fi"; // Importing Hamburger Icon from react-icons
 
 const UserProfileWrapper = styled.div`
   display: flex;
@@ -14,7 +16,7 @@ const UserProfileWrapper = styled.div`
   padding: 2rem 1rem;
   margin-top: 3rem;
 
-  h2{
+  h2 {
     color: rgba(27, 99, 146, 1);
     font-family: sans-serif;
   }
@@ -54,7 +56,7 @@ const Card = styled.div`
   box-sizing: border-box;
 
   @media (max-width: 768px) {
-    padding: 1rem; 
+    padding: 1rem;
   }
 `;
 
@@ -137,7 +139,28 @@ const InfoCard = styled(Card)`
   }
 `;
 
+// Styling for Hamburger Menu
+const HamburgerMenu = styled.div`
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+  z-index: 1000; /* Ensure it's on top of other elements */
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+`;
+
 const UserProfile = ({ user }) => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // state to control dropdown visibility
+
   const {
     name,
     role,
@@ -151,15 +174,50 @@ const UserProfile = ({ user }) => {
     businessRegNumber,
   } = user;
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen); // Toggle dropdown
+  };
+
+  const closeDropdown = () => {
+    setIsDropdownOpen(false); // Close dropdown if overlay clicked
+  };
+
+  const handleNavigation = (path) => {
+    console.log(`Navigating to: ${path}`);
+  };
+
+  const handleLogout = () => {
+    console.log("Logging out...");
+  };
+
   return (
     <UserProfileWrapper>
+      {/* Hamburger Menu Button */}
+      <HamburgerMenu onClick={toggleDropdown}>
+        <FiMenu size={30} color="rgba(27, 99, 146, 1)" />
+      </HamburgerMenu>
+
+      {/* Overlay to close dropdown */}
+      {isDropdownOpen && <Overlay onClick={closeDropdown} />}
+
+      {/* Dropdown menu */}
+      {isDropdownOpen && (
+        <DropdownMenu
+          isOpen={isDropdownOpen}
+          closeDropdown={closeDropdown}
+          handleNavigation={handleNavigation}
+          handleLogout={handleLogout}
+          isLoggedIn={true}
+        />
+      )}
+
       <h2>User Profile</h2>
       <UserProfileContent>
         <ProfileSection>
           <ProfileCard>
             <img
-              src={ProfileImg} // Use dynamic image from API(profileImage)
-              alt=""
+              src={profileImage || ProfileImg} // Use dynamic image from API(profileImage)
+              alt="Profile"
             />
             <h3>{name}</h3>
             <p>{role}</p>

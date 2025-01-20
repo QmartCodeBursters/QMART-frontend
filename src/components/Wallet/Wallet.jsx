@@ -3,6 +3,8 @@ import styled from "styled-components";
 import WalletCard from "./WalletCard";
 import TransactionHistory from "./TransactionHistory";
 import innerbg from "../../assets/png/innerbg.png";
+import DropdownMenu from "../../static/Sidebar/Dropdownmenu";
+import { FiMenu } from "react-icons/fi"; 
 
 const Bgcolor = styled.div`
   width: 100%;
@@ -29,8 +31,25 @@ const Wrapper = styled.div`
   padding-bottom: 40px;
 `;
 
+const HamburgerMenu = styled.div`
+  position: absolute;
+  top: 250x;
+  left: 150px;
+  z-index: 10;
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+`;
+
 function Wallet() {
   const [transactions, setTransactions] = useState([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
 
   // Mock data for wallet balance
   const storeData = {
@@ -41,78 +60,52 @@ function Wallet() {
   // Mock API call for transactions
   useEffect(() => {
     const fetchTransactions = async () => {
-      // Commented out the mock data for now
-      // const mockData = [
-      //   {
-      //     bank: "Access Bank (*****7890)",
-      //     date: "Nov 22nd, 18:40:26",
-      //     amount: "₦30,000",
-      //     status: "Completed",
-      //   },
-      //   {
-      //     bank: "Access Bank (*****1234)",
-      //     date: "Nov 23rd, 12:10:15",
-      //     amount: "₦100,000",
-      //     status: "Pending",
-      //   },
-      //   {
-      //     bank: "GTBank (*****5678)",
-      //     date: "Nov 24th, 15:30:45",
-      //     amount: "₦50,000",
-      //     status: "Failed",
-      //   },
-      //   {
-      //     bank: "Zenith Bank (*****7890)",
-      //     date: "Nov 25th, 10:00:00",
-      //     amount: "₦40,000",
-      //     status: "Completed",
-      //   },
-      //   {
-      //     bank: "UBA (*****3456)",
-      //     date: "Nov 26th, 14:20:00",
-      //     amount: "₦60,000",
-      //     status: "Pending",
-      //   },
-      //   {
-      //     bank: "First Bank (*****9876)",
-      //     date: "Nov 27th, 16:40:10",
-      //     amount: "₦20,000",
-      //     status: "Completed",
-      //   },
-      //   {
-      //     bank: "EcoBank (*****6543)",
-      //     date: "Nov 28th, 09:30:50",
-      //     amount: "₦80,000",
-      //     status: "Failed",
-      //   },
-      //   {
-      //     bank: "Union Bank (*****1234)",
-      //     date: "Nov 29th, 11:00:00",
-      //     amount: "₦35,000",
-      //     status: "Pending",
-      //   },
-      //   {
-      //     bank: "Sterling Bank (*****4567)",
-      //     date: "Nov 30th, 13:50:25",
-      //     amount: "₦70,000",
-      //     status: "Completed",
-      //   },
-      //   {
-      //     bank: "Fidelity Bank (*****7890)",
-      //     date: "Dec 1st, 10:10:10",
-      //     amount: "₦25,000",
-      //     status: "Completed",
-      //   },
-      // ];
-      const mockData = []; // Empty data while testing or waiting for the actual data
+      const mockData = []; // Empty data for now
       setTransactions(mockData);
     };
 
     fetchTransactions();
   }, []);
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(prevState => !prevState); // Toggle dropdown visibility
+  };
+
+  const closeDropdown = () => {
+    setIsDropdownOpen(false); // Close the dropdown
+  };
+
+  const handleNavigation = (destination) => {
+    // Implement navigation logic
+    console.log("Navigating to:", destination);
+  };
+
+  const handleLogout = () => {
+    // Implement logout logic
+    console.log("Logging out...");
+  };
+
   return (
     <Bgcolor>
+      {/* Hamburger Menu Button */}
+      <HamburgerMenu onClick={toggleDropdown}>
+        <FiMenu size={30} color="#333" />
+      </HamburgerMenu>
+
+      {/* Overlay to close dropdown */}
+      {isDropdownOpen && <Overlay onClick={closeDropdown} />}
+
+      {/* Dropdown menu */}
+      {isDropdownOpen && (
+        <DropdownMenu
+          isOpen={isDropdownOpen}
+          closeDropdown={closeDropdown}
+          handleNavigation={handleNavigation}
+          handleLogout={handleLogout}
+          isLoggedIn={true}
+        />
+      )}
+
       <Container>
         <Wrapper>
           <WalletCard balance={storeData.balance} />

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import QRCode from "qrcode";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../common/AuthContext"; 
-
+import DropdownMenu from "../../static/Sidebar/Dropdownmenu";
 
 const QrCode = () => {
   const [qrCodeUrl, setQrCodeUrl] = useState("");
@@ -51,6 +51,7 @@ const QrCode = () => {
   }
  return (
     <div style={{ textAlign: "center", padding: "20px", marginTop: "100px" }}>
+      
       <h1>Scan QR Code</h1>
       {qrCodeUrl ? (
         <div>

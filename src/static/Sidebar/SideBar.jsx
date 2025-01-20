@@ -103,7 +103,8 @@ export default Sidebar;
 
 // Styled components remain unchanged
 const Container = styled.div`
-  min-height: calc(100vh - 70px);
+  min-height: calc(100vh 
+  + 170px);
   padding-left: 20px;
   background-color: #edeff2;
   margin-top: 70px;

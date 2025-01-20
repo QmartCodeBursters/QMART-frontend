@@ -1,19 +1,27 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
+import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight, MdMenu } from "react-icons/md";
+import DropdownMenu from '../../static/Sidebar/Dropdownmenu';  // Assuming DropdownMenu is the component to use
 
 const Order = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to toggle sidebar visibility
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for dropdown menu
   const totalPages = 3;
 
   const ordersData = {
     1: [
       { orderId: '#1521', name: 'John Doe', date: '2023-01-09', total: '#200.00', status: 'Processing' },
     ],
-
+    2: [
+      { orderId: '#1522', name: 'Jane Smith', date: '2023-01-12', total: '#150.00', status: 'Shipped' },
+    ],
+    3: [
+      { orderId: '#1523', name: 'Alice Brown', date: '2023-01-15', total: '#180.00', status: 'Delivered' },
+    ],
   };
 
   const handlePageChange = (page) => {
@@ -44,93 +52,163 @@ const Order = () => {
 
   const filteredOrders = filterOrdersByDate(ordersData[currentPage]);
 
+  const toggleDropdown = () => setIsDropdownOpen(prev => !prev);
+  const closeDropdown = () => setIsDropdownOpen(false);
+
   return (
     <Wrapper>
-      <Table>
-        <TableHeading>Transaction History</TableHeading>
-        
-        {/* Date Filter */}
-        <DateFilter>
-          <label>Start Date:</label>
-          <input type="date" value={startDate} onChange={handleStartDateChange} />
-          <label>End Date:</label>
-          <input type="date" value={endDate} onChange={handleEndDateChange} />
-          <select name="" id="Options">
-            <option value="Debit">Debit</option>
-            <option value="Credit">Credit</option>
-            <option value="Deposit">Deposit</option>
-            <option value="Withdrawal">Withdrawal</option>
-          </select>
-        </DateFilter>
+      {/* Hamburger Menu Button - Only show when dropdown is closed */}
+      {!isDropdownOpen && (
+        <HamburgerMenu onClick={toggleDropdown}>
+          <MdMenu size={30} color="#333" />
+        </HamburgerMenu>
+      )}
 
-        <TableElement>
-          <thead>
-            <tr className="up">
-              <td>NAME</td>
-              <td>DATE</td>
-              <td>TOTAL</td>
-              <td>STATUS</td>
-              <td> </td>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredOrders.map((order, index) => (
-              <tr key={index}>
-                <td>{order.name}</td>
-                <td>{order.date}</td>
-                <td>{order.total}</td>
-                <td>{order.status}</td>
-                <td className="view-details">
-                  {/* Link to the OrderDetails page with orderId in URL */}
-                  <Link to={`/order/${encodeURIComponent(order.orderId)}`}>View Details</Link>
-                </td>
+      {/* Overlay to close dropdown */}
+      {isDropdownOpen && <Overlay onClick={closeDropdown} />}
+
+      {/* Dropdown menu */}
+      {isDropdownOpen && (
+        <DropdownMenu
+          isOpen={isDropdownOpen}
+          closeDropdown={closeDropdown}
+          handleNavigation={() => {}}
+          handleLogout={() => {}}
+          isLoggedIn={true}
+        />
+      )}
+
+      <MainContent>
+        <Table>
+          <TableHeading>Transaction History</TableHeading>
+
+          {/* Date Filter */}
+          <DateFilter>
+            <label>Start Date:</label>
+            <input type="date" value={startDate} onChange={handleStartDateChange} />
+            <label>End Date:</label>
+            <input type="date" value={endDate} onChange={handleEndDateChange} />
+          </DateFilter>
+
+          <TableElement>
+            <thead>
+              <tr className="up">
+                <td>NAME</td>
+                <td>DATE</td>
+                <td>TOTAL</td>
+                <td>STATUS</td>
+                <td> </td>
               </tr>
-            ))}
-          </tbody>
-        </TableElement>
+            </thead>
+            <tbody>
+              {filteredOrders.map((order, index) => (
+                <tr key={index}>
+                  <td>{order.name}</td>
+                  <td>{order.date}</td>
+                  <td>{order.total}</td>
+                  <td>{order.status}</td>
+                  <td className="view-details">
+                    {/* Link to the OrderDetails page with orderId in URL */}
+                    <Link to={`/order/${encodeURIComponent(order.orderId)}`}>View Details</Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </TableElement>
 
-        <Contain>
-          <button
-            className={currentPage === 1 ? "disabled" : ""}
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            <MdOutlineKeyboardArrowLeft />
-          </button>
-          <button onClick={() => handlePageChange(1)}>1</button>
-          <button onClick={() => handlePageChange(2)}>2</button>
-          <button onClick={() => handlePageChange(3)}>3</button>
-          <button
-            className={currentPage === totalPages ? "disabled" : ""}
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            <MdOutlineKeyboardArrowRight />
-          </button>
-        </Contain>
-      </Table>
+          <Contain>
+            <button
+              className={currentPage === 1 ? "disabled" : ""}
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              <MdOutlineKeyboardArrowLeft />
+            </button>
+
+            {[...Array(totalPages)].map((_, index) => (
+              <button
+                key={index}
+                className={currentPage === index + 1 ? "active" : ""}
+                onClick={() => handlePageChange(index + 1)}
+              >
+                {index + 1}
+              </button>
+            ))}
+
+            <button
+              className={currentPage === totalPages ? "disabled" : ""}
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              <MdOutlineKeyboardArrowRight />
+            </button>
+          </Contain>
+        </Table>
+      </MainContent>
     </Wrapper>
   );
 };
 
 export default Order;
 
-
+// Styled Components
 
 const Wrapper = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
-  margin: 0;
+`;
+
+const HamburgerMenu = styled.div`
+  position:absolute; ;
+  top: 140px;
+  left: 290px;
+  cursor: pointer;
+  z-index: 1000;
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+`;
+
+const Sidebar = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transform: ${(props) => (props.isOpen ? 'translateX(0)' : 'translateX(-100%)')};
+  transition: transform 0.3s ease-in-out;
   padding: 20px;
-  box-sizing: border-box;
+  z-index: 999;
+
+  @media (max-width: 768px) {
+    width: 200px;
+  }
+`;
+
+const MainContent = styled.div`
+  flex: 1;
+  margin-left: 250px;
+  transition: margin-left 0.3s ease-in-out;
+  padding:9rem 2.3rem;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
 `;
 
 const Table = styled.div`
   background-color: white;
   width: 100%;
-  max-width: 900px;  /* Set a max-width for the table */
+  max-width: 900px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
@@ -155,19 +233,10 @@ const DateFilter = styled.div`
     border-radius: 8px;
     border: 1px solid #ddd;
     width: 200px;
-    
+
     &:focus {
       border-color: #fa8232;
       outline: none;
-    }
-  }
-
-  @media (max-width: 600px) {
-    flex-direction: column;
-    gap: 10px;
-
-    input {
-      width: 100%;
     }
   }
 `;
@@ -206,10 +275,6 @@ const Contain = styled.div`
       cursor: not-allowed;
     }
   }
-
-  @media (max-width: 600px) {
-    gap: 5px;
-  }
 `;
 
 const TableHeading = styled.h2`
@@ -220,7 +285,7 @@ const TableHeading = styled.h2`
 const TableElement = styled.table`
   width: 100%;
   border-collapse: collapse; 
-  text-align: left;  
+  text-align: left;
   th, td {
     padding: 12px;
     text-align: left;

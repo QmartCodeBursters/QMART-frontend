@@ -1,8 +1,70 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
 
-// Styled Components
+const ForgotPassword = () => {
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // Initialize the navigate function
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const apiUrl = "http://localhost:2230/api/v1/user/request-password-reset";
+
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const response = await axios.post(apiUrl, { email });
+
+      if (response.data) {
+        toast.success(response.data?.message);
+      }
+
+      setSuccess(true);
+      setTimeout(() => {
+        navigate("/otppage");
+      }, 4000);
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data?.message);
+
+      setSuccess(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Container>
+      <ToastContainer />
+      <FormWrapper>
+        <Title>Forget Password</Title>
+        <form onSubmit={handleSubmit}>
+          <Input
+            type="email"
+            placeholder="Enter your email address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <Button type="submit" disabled={loading}>
+            {loading ? "Please wait..." : "Submit"}
+          </Button>
+        </form>
+        <Message success={success}>{message}</Message>
+      </FormWrapper>
+    </Container>
+  );
+};
+
+export default ForgotPassword;
+
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -58,51 +120,3 @@ const Message = styled.div`
   font-size: 14px;
   color: ${(props) => (props.success ? "green" : "red")};
 `;
-
-const ForgotPassword = () => {
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [success, setSuccess] = useState(false);
-  const navigate = useNavigate(); // Initialize the navigate function
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Simulate backend check for email existence
-    const validEmails = ["user1@example.com", "user2@example.com"]; // Example email list
-
-    if (validEmails.includes(email)) {
-      setSuccess(true);
-      setMessage("Check your email for otp.");
-
-      // Delay routing to OTP page
-      setTimeout(() => {
-        navigate("/otppage");
-      }, 2000); // 2 seconds delay before routing
-    } else {
-      setSuccess(false);
-      setMessage("Email not registered.");
-    }
-  };
-
-  return (
-    <Container>
-      <FormWrapper>
-        <Title>Forget Password</Title>
-        <form onSubmit={handleSubmit}>
-          <Input
-            type="email"
-            placeholder="Enter your email address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <Button type="submit">Submit</Button>
-        </form>
-        {message && <Message success={success}>{message}</Message>}
-      </FormWrapper>
-    </Container>
-  );
-};
-
-export default ForgotPassword;

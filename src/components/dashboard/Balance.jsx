@@ -325,7 +325,7 @@ const Balance = () => {
       <DropdownMenu className={isDropdownOpen ? "open" : ""}>
         {isLoggedIn && (
           <>
-            
+
             <DropdownItem onClick={() => handleNavigation("/profile")}>
               <FaUser /> Profile
             </DropdownItem>

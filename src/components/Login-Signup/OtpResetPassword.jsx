@@ -2,20 +2,21 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useAppContext } from "../../common/AuthContext";
 import Axios from "../../utilis/Axios";
 import summaryAPI from "../../common/summaryAPI";
-import AxiosToastError from "../../utilis/AxiosToastError";
 
 const OtpResetPassword = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const email = location.state?.email || "";
+  const email = location.state?.email;
 
+ 
   useEffect(() => {
     if (!email) {
-      toast.error("Email not found. Please try again.");
-      // navigate("/previous-route");
+      toast.error("Email not found. Redirecting to reset page...");
+      setTimeout(() => {
+        navigate("/reset-password");
+      }, 2000); 
     }
   }, [email, navigate]);
 
@@ -30,9 +31,9 @@ const OtpResetPassword = () => {
   }, [seconds]);
 
   const handleChange = (value, index) => {
-    if (isNaN(value)) return;
+    if (!/^\d?$/.test(value)) return;
     const newOtp = [...otp];
-    newOtp[index] = value.slice(0, 1);
+    newOtp[index] = value;
     setOtp(newOtp);
 
     const nextInput = document.getElementById(`otp-${index + 1}`);
@@ -48,14 +49,10 @@ const OtpResetPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted"); // Debugging log
     const otpCode = otp.join("");
-    if (!otpCode || otpCode.length !== 6) {
+    if (otpCode.length !== 6) {
       return toast.error("Please enter a valid 6-digit OTP.");
     }
-
-    console.log("Submitting OTP:", otpCode); // Debugging log
-    console.log("Submitting Email:", email); // Debugging log
 
     try {
       const response = await Axios({
@@ -64,19 +61,14 @@ const OtpResetPassword = () => {
         data: { otp: otpCode, email },
       });
 
-      console.log("Response from server:", response.data); 
-
       if (response.data.success) {
-        toast.success('OTP verified successfully!');
-        console.log("Navigating to /login...");
-        navigate('/login');
-        console.log("Navigation executed.");
+        toast.success("OTP verified successfully!");
+        navigate("/password-update");
       } else {
-        toast.error(response.data.message);
+        toast.error(response.data.message || "Invalid OTP.");
       }
     } catch (error) {
-      console.error('Error verifying OTP:', error.response ? error.response.data : error);
-      toast.error('Error verifying OTP.');
+      toast.error("Failed to verify OTP. Please try again.");
     }
   };
 
@@ -89,14 +81,13 @@ const OtpResetPassword = () => {
       });
 
       if (response.data.success) {
-        toast.success('OTP sent successfully!');
+        toast.success("OTP sent successfully!");
         setSeconds(60);
       } else {
-        toast.error(response.data.message);
+        toast.error(response.data.message || "Failed to resend OTP.");
       }
     } catch (error) {
-      console.error('Error sending OTP:', error.response ? error.response.data : error);
-      toast.error('Error sending OTP.');
+      toast.error("Error sending OTP. Please try again.");
     }
   };
 
@@ -135,7 +126,11 @@ const OtpResetPassword = () => {
 
             <span>
               Didn't get the code? Resend in {seconds}s{" "}
-              {seconds === 0 && <button onClick={handleRequestOTP}>Resend</button>}
+              {seconds === 0 && (
+                <button type="button" onClick={handleRequestOTP}>
+                  Resend
+                </button>
+              )}
             </span>
           </form>
         </FormCont>
@@ -167,10 +162,6 @@ const FormCont = styled.div`
   border-radius: 8px;
   margin: 0 auto;
 
-  p:nth-child(2) {
-    font-size: 12px;
-  }
-
   form {
     display: flex;
     flex-direction: column;
@@ -182,11 +173,6 @@ const FormCont = styled.div`
       font-size: 12px;
       display: flex;
       justify-content: space-between;
-
-      a {
-        text-decoration: none;
-        color: red;
-      }
 
       button {
         background: transparent;

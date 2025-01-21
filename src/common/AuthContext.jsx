@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import summaryAPI from "./summaryAPI";
+import { MdAccountBalance } from "react-icons/md";
 
 const AppContext = createContext();
 
@@ -12,7 +13,8 @@ export const AppProvider = ({ children }) => {
     lastname: "",
     email: "",
     phoneNumber: "",
-    address: ""
+    address: "",
+    accountBalance: ""
   });
   const [businessName, setBusinessName] = useState("Fetching business name...");
   const [accountNumber, setAccountNumber] = useState(null);
@@ -20,7 +22,7 @@ export const AppProvider = ({ children }) => {
 
   
   useEffect(() => {
-    if (!userDetails?._id) return; // Early return if userDetails or _id is missing
+    if (!userDetails?._id) return;
 
     const fetchBusinessNameAndAccountNumber = async () => {
       const constructedURL = `${summaryAPI.fetchMerchant.url}/${userDetails._id}`;
@@ -35,9 +37,14 @@ export const AppProvider = ({ children }) => {
         }
 
         if (response.data?.accountNumber) {
-          setAccountNumber(response.data.accountNumber); // Set account number if available
+          setAccountNumber(response.data.accountNumber); 
         } else {
           setAccountNumber("Account number not found.");
+        }
+        if (response.data?.accountBalance) {
+          setUserDetails((prev) => ({ ...prev,accountBalance: response.data.accountBalance }));
+        } else {
+          console.error("Error fetchingaccountBalance");
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -51,14 +58,18 @@ export const AppProvider = ({ children }) => {
 
  
   const updateUserDetails = (userData) => {
-    setUserDetails({
+    setUserDetails((prev) => ({
+      ...prev,
+      _id: userData._id,
       firstname: userData.firstname,
       lastname: userData.lastname,
       email: userData.email,
       phoneNumber: userData.phoneNumber,
-      address: userData.address
-    });
+      address: userData.address,
+     accountBalance: userData.accountBalance || prev.accountBalance,
+    }));
   };
+  
 
  
   const updateBusinessName = (name) => {

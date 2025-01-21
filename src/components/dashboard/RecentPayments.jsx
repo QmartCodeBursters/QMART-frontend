@@ -1,4 +1,4 @@
-import React from "react";
+
 import styled from "styled-components";
 
 const Recents = styled.div`
@@ -73,29 +73,63 @@ const Amount = styled.div`
 `;
 
 
-const RecentPayments = ({ transactions }) => (
+import React, { useEffect, useState } from 'react';
+
+const RecentPayments = () => {
+  const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchTransactionHistory = async () => {
+    try {
+      const response = await axios({
+        method: "POST",
+        url: `${baseURL}${summaryAPI.fetchTransactions.url}`,
+        data: { email, password },
+        withCredentials: true,});
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch transactions');
+      }
+
+      const data = await response.json();
+      if (data.success) {
+        setTransactions(data.data); 
+      }
+    } catch (error) {
+      console.error('Error fetching transaction history:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTransactionHistory();
+  }, []);
+
+  return (
     <Recents>
       <HeaderRow>
         <h3>Recent Payment History</h3>
         <a href="/paymenthistory">View All</a>
       </HeaderRow>
-      {transactions.slice(0, 5).map((transaction, index) => (
-        <Transaction key={index}>
-          <Icon>{transaction.name.charAt(0)}</Icon>
-          <Details>
-            <p>{transaction.name}</p>
-            <span>{transaction.date}</span>
-          </Details>
-          <Amount>₦{transaction.amount.toLocaleString()}</Amount>
-        </Transaction>
-      ))}
+      {loading ? (
+        <p>Loading...</p>
+      ) : transactions.length > 0 ? (
+        transactions.slice(0, 5).map((transaction, index) => (
+          <Transaction key={index}>
+            <Icon>{transaction.name.charAt(0)}</Icon>
+            <Details>
+              <p>{transaction.name}</p>
+              <span>{new Date(transaction.createdAt).toLocaleDateString()}</span>
+            </Details>
+            <Amount>₦{transaction.amount.toLocaleString()}</Amount>
+          </Transaction>
+        ))
+      ) : (
+        <p>No recent payments found.</p>
+      )}
     </Recents>
   );
-  
+};
 
 export default RecentPayments;
-
-
-
-
-

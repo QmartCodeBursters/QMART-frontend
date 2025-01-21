@@ -64,34 +64,6 @@ const Withdraw = styled.p`
   }
 `;
 
-// const AddMoney = styled.p`
-//   display: flex;
-//   align-items: center;
-//   background-color: #FF3B30;
-//   ;
-//   color: white;
-//   border-radius: 4px;
-//   padding: 12px 20px;
-//   font-weight: bold;
-//   cursor: pointer;
-//   transition: background-color 0.3s ease;
-//   max-width: 200px;
-//   justify-content: center;
-//   text-align: center;
-//   span {
-//     display: flex;
-//     align-items: center;
-//     font-size: 16px;
-//     margin-left: 5px;
-//   }
-//   &:hover {
-//   background-color: #f53026;
-//   }
-//   @media (max-width: 800px) {
-//     padding: 12px 25px;
-//     font-size: 18px;
-//   }
-// `;
 
 // Image container with card and settings
 const Image = styled.div`
@@ -233,7 +205,7 @@ function WalletCard({ balance }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState("");
   const [pin, setPin] = useState(["", "", "", ""]);
-  const [pinVisible, setPinVisible] = useState([false, false, false, false]); // Track visibility of each digit
+  const [pinVisible, setPinVisible] = useState([false, false, false, false]); 
   const [isWithdrawalSuccessful, setIsWithdrawalSuccessful] = useState(false);
 
   const dummyAccountDetails = {

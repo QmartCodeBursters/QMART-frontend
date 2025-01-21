@@ -313,7 +313,7 @@ const Contactnow = () => {
 
         <Faqlisting>
           <Faqabout>
-            <h3>FAQs About QMart!</h3>
+            <h3>FAQs About Qmart!</h3>
 
             {Faqs.map((faq, index) => (
               <FaqItem key={index}>

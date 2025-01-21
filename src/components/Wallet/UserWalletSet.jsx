@@ -427,7 +427,7 @@ function UserWalletSettings() {
                         type={pinVisible ? "text" : "password"}
                         value={oldPin}
                         onChange={(e) => setOldPin(e.target.value)}
-                        placeholder="Enter old PIN"
+                        placeholder="Default Pin is 1234"
                         maxLength={4}
                       />
                       <EyeIcon onClick={togglePinVisibility}>👁️</EyeIcon>

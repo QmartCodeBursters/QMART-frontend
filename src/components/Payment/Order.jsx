@@ -1,27 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight, MdMenu } from "react-icons/md";
-import DropdownMenu from '../../static/Sidebar/Dropdownmenu';  // Assuming DropdownMenu is the component to use
+
+import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
 
 const Order = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to toggle sidebar visibility
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for dropdown menu
+  
+  
   const totalPages = 3;
 
+  
   const ordersData = {
     1: [
       { orderId: '#1521', name: 'John Doe', date: '2023-01-09', total: '#200.00', status: 'Processing' },
     ],
-    2: [
-      { orderId: '#1522', name: 'Jane Smith', date: '2023-01-12', total: '#150.00', status: 'Shipped' },
-    ],
-    3: [
-      { orderId: '#1523', name: 'Alice Brown', date: '2023-01-15', total: '#180.00', status: 'Delivered' },
-    ],
+
   };
 
   const handlePageChange = (page) => {
@@ -34,7 +30,7 @@ const Order = () => {
   const handleEndDateChange = (e) => setEndDate(e.target.value);
 
   const filterOrdersByDate = (orders) => {
-    if (!startDate && !endDate) return orders;  // Return all orders if no dates are selected
+    if (!startDate && !endDate) return orders;
 
     const filteredOrders = orders.filter((order) => {
       const orderDate = new Date(order.date);
@@ -50,106 +46,87 @@ const Order = () => {
     return filteredOrders;
   };
 
+  
   const filteredOrders = filterOrdersByDate(ordersData[currentPage]);
-
-  const toggleDropdown = () => setIsDropdownOpen(prev => !prev);
-  const closeDropdown = () => setIsDropdownOpen(false);
 
   return (
     <Wrapper>
-      {/* Hamburger Menu Button - Only show when dropdown is closed */}
-      {!isDropdownOpen && (
-        <HamburgerMenu onClick={toggleDropdown}>
-          <MdMenu size={30} color="#333" />
-        </HamburgerMenu>
-      )}
+      
+      <Table>
+        <TableHeading>Transaction History</TableHeading>
+        
+        {/* Date Filter */}
+        <DateFilter>
+          <label>Start Date:</label>
+          <input type="date" value={startDate} onChange={handleStartDateChange} />
+          <label>End Date:</label>
+          <input type="date" value={endDate} onChange={handleEndDateChange} />
+          <select name="" id="Options">
+            <option value="Debit">Debit</option>
+            <option value="Credit">Credit</option>
+            <option value="Deposit">Deposit</option>
+            <option value="Withdrawal">Withdrawal</option>
+          </select>
+        </DateFilter>
 
-      {/* Overlay to close dropdown */}
-      {isDropdownOpen && <Overlay onClick={closeDropdown} />}
-
-      {/* Dropdown menu */}
-      {isDropdownOpen && (
-        <DropdownMenu
-          isOpen={isDropdownOpen}
-          closeDropdown={closeDropdown}
-          handleNavigation={() => {}}
-          handleLogout={() => {}}
-          isLoggedIn={true}
-        />
-      )}
-
-      <MainContent>
-        <Table>
-          <TableHeading>Transaction History</TableHeading>
-
-          {/* Date Filter */}
-          <DateFilter>
-            <label>Start Date:</label>
-            <input type="date" value={startDate} onChange={handleStartDateChange} />
-            <label>End Date:</label>
-            <input type="date" value={endDate} onChange={handleEndDateChange} />
-          </DateFilter>
-
-          <TableElement>
-            <thead>
-              <tr className="up">
-                <td>NAME</td>
-                <td>DATE</td>
-                <td>TOTAL</td>
-                <td>STATUS</td>
-                <td> </td>
+        
+        <TableElement>
+          <thead>
+            <tr className="up">
+              <td>NAME</td>
+              <td>DATE</td>
+              <td>TOTAL</td>
+              <td>STATUS</td>
+              <td> </td>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredOrders.map((order, index) => (
+              <tr key={index}>
+                <td>{order.name}</td>
+                <td>{order.date}</td>
+                <td>{order.total}</td>
+                <td>{order.status}</td>
+                <td className="view-details">
+                  {/* Link to the OrderDetails page with orderId in URL */}
+                  <Link to={`/order/${encodeURIComponent(order.orderId)}`}>View Details</Link>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {filteredOrders.map((order, index) => (
-                <tr key={index}>
-                  <td>{order.name}</td>
-                  <td>{order.date}</td>
-                  <td>{order.total}</td>
-                  <td>{order.status}</td>
-                  <td className="view-details">
-                    {/* Link to the OrderDetails page with orderId in URL */}
-                    <Link to={`/order/${encodeURIComponent(order.orderId)}`}>View Details</Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </TableElement>
-
-          <Contain>
-            <button
-              className={currentPage === 1 ? "disabled" : ""}
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              <MdOutlineKeyboardArrowLeft />
-            </button>
-
-            {[...Array(totalPages)].map((_, index) => (
-              <button
-                key={index}
-                className={currentPage === index + 1 ? "active" : ""}
-                onClick={() => handlePageChange(index + 1)}
-              >
-                {index + 1}
-              </button>
             ))}
+          </tbody>
+        </TableElement>
 
-            <button
-              className={currentPage === totalPages ? "disabled" : ""}
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              <MdOutlineKeyboardArrowRight />
-            </button>
-          </Contain>
-        </Table>
-      </MainContent>
+        
+        <Contain>
+          <button
+            className={currentPage === 1 ? "disabled" : ""}
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            <MdOutlineKeyboardArrowLeft />
+          </button>
+          <button onClick={() => handlePageChange(1)}>1</button>
+          <button onClick={() => handlePageChange(2)}>2</button>
+          <button onClick={() => handlePageChange(3)}>3</button>
+          <button
+            className={currentPage === totalPages ? "disabled" : ""}
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            <MdOutlineKeyboardArrowRight />
+          </button>
+        </Contain>
+      </Table>
     </Wrapper>
   );
 };
 
 export default Order;
+
+
+
+
+
 
 // Styled Components
 

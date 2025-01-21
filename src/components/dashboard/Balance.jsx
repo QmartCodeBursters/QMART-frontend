@@ -1,15 +1,13 @@
-// Balance.js
+// /src/components/Balance.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import AxiosToastError from '../../utilis/AxiosToastError';
 import Axios from '../../utilis/Axios';
+import DropdownMenu from '../../static/Sidebar/Dropdownmenu';  // Ensure you import DropdownMenu correctly
 
-import axios from 'axios';
-
-
-import DropdownMenu from '../../static/Sidebar/Dropdownmenu'; // Adjust the path according to your project structure
+import { FaHome, FaUser, FaHistory, FaQrcode, FaWallet, FaBell, FaCog, FaSignOutAlt } from 'react-icons/fa';
 
 const Container = styled.div`
   position: relative;
@@ -23,12 +21,6 @@ const Header = styled.div`
   margin-bottom: 20px;
   transition: transform 0.3s ease-in-out;
   animation: slideInFromTop 1s ease-out;
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
 `;
 
 const LeftSection = styled.div`
@@ -65,10 +57,6 @@ const RightSection = styled.div`
     font-size: 0.9rem;
     margin: 0;
   }
-
-  @media (max-width: 1024px) {
-    text-align: left;
-  }
 `;
 
 const BalanceCard = styled.div`
@@ -77,52 +65,12 @@ const BalanceCard = styled.div`
   border-radius: 20px;
   color: white;
   margin-bottom: 20px;
-  transition: transform 0.3s ease-in-out;
-  animation: slideInFromTop 1s ease-out;
-
-  @keyframes slideInFromTop {
-    from {
-      transform: translateY(-20px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
-  p {
-    margin: 0;
-    font-size: 1rem;
-  }
-
-  h2 {
-    font-size: 2rem;
-    margin: 10px 0;
-  }
-
-  span {
-    cursor: pointer;
-  }
-
-  @media (max-width: 768px) {
-    padding: 20px;
-
-    h2 {
-      font-size: 1.5rem;
-    }
-  }
 `;
 
 const ButtonGroup = styled.div`
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-
-  button {
-    flex: 1;
-    font-family: 'Poppins', sans-serif;
-  }
 `;
 
 const Button = styled.button`
@@ -187,7 +135,6 @@ const Balance = () => {
       console.log('API Response:', response.data);
 
       if (response.data) {
-        // Update state with API response
         setMerchantDetails({
           accountBalance: response.data.accountBalance || 0,
           accountNumber: response.data.accountNumber || '',
@@ -229,18 +176,33 @@ const Balance = () => {
     closeDropdown();
   };
 
-  const disableBackNavigation = () => {
-    window.history.pushState(null, '', window.location.href);
-    window.onpopstate = () => {
-      window.history.pushState(null, '', window.location.href);
-    };
-  };
+  const handleLogout = async () => {
+    try {
+      const response = await Axios({
+        ...summaryAPI.logOut,
+      });
 
-  
+      if (response.data.error) {
+        toast.error(response.data.message || 'Something went wrong');
+        return;
+      }
+
+      localStorage.clear();
+      sessionStorage.clear();
+      setIsLoggedIn(false);
+
+      toast.success('Logout successful!');
+
+      navigate('/', { replace: true });
+      closeDropdown();
+    } catch (error) {
+      console.error('Logout Error:', error.message);
+      toast.error('Failed to log out.');
+    }
+  };
 
   return (
     <Container>
-      
       {/* Overlay for dropdown menu */}
       <Overlay isOpen={isDropdownOpen} onClick={closeDropdown} />
 
@@ -249,8 +211,8 @@ const Balance = () => {
         isOpen={isDropdownOpen}
         closeDropdown={closeDropdown}
         handleNavigation={handleNavigation}
-        // handleLogout={handleLogout}
         isLoggedIn={isLoggedIn}
+        setIsLoggedIn={setIsLoggedIn}
       />
 
       {/* Header */}

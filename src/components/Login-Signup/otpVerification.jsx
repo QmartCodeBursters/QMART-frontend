@@ -52,14 +52,11 @@ const Otpgen = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted"); // Debugging log
+
     const otpCode = otp.join("");
     if (!otpCode || otpCode.length !== 6) {
       return toast.error("Please enter a valid 6-digit OTP.");
     }
-
-    console.log("Submitting OTP:", otpCode); // Debugging log
-    console.log("Submitting Email:", email); // Debugging log
 
     try {
       const response = await Axios({
@@ -72,9 +69,7 @@ const Otpgen = () => {
 
       if (response.data.success) {
         toast.success('OTP verified successfully!');
-        console.log("Navigating to /login...");
         navigate('/login');
-        console.log("Navigation executed.");
       } else {
         toast.error(response.data.message);
       }

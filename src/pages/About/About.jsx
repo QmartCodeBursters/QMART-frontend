@@ -10,15 +10,15 @@ const About=()=>{
                 About Us
               </Header>
               <Text>
-                At QMart, we’re transforming the way merchants manage their transactions and interact with customers.
+                At Qmart, we’re transforming the way merchants manage their transactions and interact with customers.
                 Our platform is designed to simplify payment processing for businesses of all sizes, enabling seamless and secure
-                transactions with minimal effort. With QMart, merchants can focus on delivering exceptional products and services,
+                transactions with minimal effort. With Qmart, merchants can focus on delivering exceptional products and services,
                 while we handle the complexities of payment integration. <br /><br />
 
-                QMart empowers merchants through features like unique QR code generation for quick payment setups and direct 
+                Qmart empowers merchants through features like unique QR code generation for quick payment setups and direct 
                 linkage to secure payment gateways. Customers simply scan the merchant’s QR code to initiate payments, ensuring 
                 a hassle-free checkout process without the need for additional apps or tools. From tracking sales to receiving 
-                instant confirmations, QMart equips merchants with the tools they need to grow their business while delivering a 
+                instant confirmations, Qmart equips merchants with the tools they need to grow their business while delivering a 
                 smooth customer experience. <br /><br />
 
                 Together, let’s redefine convenience for merchants—streamlined, efficient, and built for success.

@@ -11,28 +11,21 @@ const PrintQRcode = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const componentRef = useRef(null);
-  const { role, userDetails, businessName } = useAppContext();
+  const { role, businessName } = useAppContext();
 
-  const storeName = businessName || userDetails?.business?.businessName || "Default Business Name";
-  const accountNumber = userDetails?.accountNumber || "N/A";
-  const walletBalance = userDetails?.accountBalance || "0.00";
+  const storeName = businessName || "Default Business Name";
 
   useEffect(() => {
     if (role !== "merchant") {
-      navigate("/dashboard"); // Redirect non-merchants to the homepage or another route
+      navigate("/dashboard"); // Redirect non-merchants to the dashboard
       return;
     }
 
     const generateQRCode = async () => {
-      const data = {
-        businessName: storeName,
-        accountNumber,
-        amount: walletBalance,
-        // Other data for QR code
-      };
+      const link = "https://qmartcode.netlify.app";
       try {
         setLoading(true);
-        const qrCode = await QRCode.toDataURL(JSON.stringify(data));
+        const qrCode = await QRCode.toDataURL(link); // Generate QR code for the link
         setQrCodeUrl(qrCode);
         setLoading(false);
       } catch (err) {
@@ -42,7 +35,7 @@ const PrintQRcode = () => {
     };
 
     generateQRCode();
-  }, [role, navigate, storeName, accountNumber, walletBalance]);
+  }, [role, navigate]);
 
   const handleDownloadClick = async () => {
     const element = componentRef.current;
@@ -69,37 +62,17 @@ const PrintQRcode = () => {
     navigate("/dashboard");
   };
 
-  // Simulate checking email after scanning QR code (replace with actual check logic)
-  const handleEmailCheck = (email) => {
-    // Simulate checking email in your system
-    const emailExists = userDetails?.email === email;
-
-    if (!emailExists) {
-      // Navigate to the signup page if email is not found
-      navigate("/signup");
-    }
-  };
-
-  const handleScanQRCode = (scannedData) => {
-    const scannedEmail = scannedData?.email; // Assume scanned data contains email field
-    if (scannedEmail) {
-      handleEmailCheck(scannedEmail);
-    } else {
-      console.log("No email found in scanned QR code.");
-    }
-  };
-
   if (role !== "merchant") {
-    return <p>Unauthorized Access</p>; // Render a message or blank screen for non-merchants
+    return <p>Unauthorized Access</p>;
   }
 
   return (
     <Container>
       <Wrapper ref={componentRef}>
         <Header>{storeName}</Header>
-        <Subhead>Invites you to QMART</Subhead>
+        <Subhead>Scan the QR code below</Subhead>
         <Scan>
-          Scan my QR code, sign up and <Red>Shop NOW!</Red>
+          <Red>to make payment on QMart!</Red>
         </Scan>
         <QrCodeContainer>
           {loading ? (
@@ -123,6 +96,9 @@ const PrintQRcode = () => {
 };
 
 export default PrintQRcode;
+
+
+
 
 
 // Styled components remain the same

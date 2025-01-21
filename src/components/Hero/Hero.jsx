@@ -12,7 +12,7 @@ const Hero = () => {
                 <img src={heroimage} alt="heroimage" />
 
                 <HeroDetails>
-                    <p>Welcome to QMART</p>
+                    <p>Welcome to Qmart</p>
                     <h3>Empowering merchants with seamless payments — scan, pay, and confirm in <span>seconds!</span> </h3>
                     <p>Seamless shopping, anytime, anywhere!</p>
 

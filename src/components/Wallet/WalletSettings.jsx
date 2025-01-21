@@ -1,21 +1,493 @@
-import React, { useState, useEffect } from "react";
+// import React, { useState, useEffect, useContext } from "react";
+// import { useAppContext } from "../../common/AuthContext";
+// import styled from "styled-components";
+// import innerbg from "../../assets/png/innerbg.png";
+// import Card from "../../assets/svg/card.svg";
+// import { Link } from "react-router-dom";
+
+// function WalletSettings() {
+//   const { userDetails } = useAppContext();
+
+//   const [balanceVisible, setBalanceVisible] = useState(true);
+//   const [balance, setBalance] = useState(userDetails.balance || null);
+//   const [walletName, setWalletName] = useState(userDetails.firstName || "");
+//   const [accountNumber, setAccountNumber] = useState(userDetails.accountNumber || "");
+//   const [oldPin, setOldPin] = useState("");
+//   const [newPin, setNewPin] = useState("");
+//   const [confirmPin, setConfirmPin] = useState("");
+//   const [pinVisible, setPinVisible] = useState(false);
+//   const [modalVisible, setModalVisible] = useState(false);
+//   const [password, setPassword] = useState("");
+
+//   useEffect(() => {
+//     if (userDetails) {
+//       setBalance(userDetails.balance);
+//       setWalletName(userDetails.firstName);
+//       setAccountNumber(userDetails.accountNumber);
+//     }
+//   }, [userDetails]);
+
+//   const toggleBalanceVisibility = () => {
+//     setBalanceVisible(!balanceVisible);
+//   };
+
+//   const togglePinVisibility = () => {
+//     setPinVisible(!pinVisible);
+//   };
+
+//   const handleSaveChanges = () => {
+//     if (newPin && confirmPin) {
+//       setModalVisible(true);
+//     }
+//   };
+
+//   const handlePasswordSubmit = () => {
+//     if (password) {
+//       alert("PIN changed!");
+//       setModalVisible(false);
+//     } else {
+//       alert("Please enter your password.");
+//     }
+//   };
+
+//   const formattedBalance =
+//     balance !== null ? new Intl.NumberFormat().format(balance) : " ";
+
+//   const handleUpdateWallet = () => {
+//     const updatedData = {
+//       balance,
+//       walletName,
+//       accountNumber
+//     };
+//     // Call to update the wallet data should be here
+//   };
+
+//   return (
+//     <>
+//       <BgColor>
+//         <Container>
+//           <Wrapper>
+//             <Flexed>
+//               <Flex>
+//                 <Text>
+//                   <Styledlink to="/wallet">
+//                     <p>Back</p>
+//                   </Styledlink>
+//                 </Text>
+//                 <Image>
+//                   <img src={Card} alt="ATM card" />
+//                   <Bal>
+//                     <span id="wallet">
+//                       Wallet Balance:{balance}
+//                       <span
+//                         onClick={toggleBalanceVisibility}
+//                         style={{ cursor: "pointer" }}
+//                       >
+//                         👁️
+//                       </span>
+//                     </span>
+//                     <span id="balance">
+//                       {balance !== null
+//                         ? balanceVisible
+//                           ? `₦${formattedBalance}`
+//                           : "****"
+//                         : " "}
+//                     </span>
+//                   </Bal>
+//                 </Image>
+
+//                 <WithdrawalForm>
+//                   <p>Withdrawal Details</p>
+//                   <div>
+//                     <input type="text" placeholder="Bank Name" />
+//                   </div>
+//                   <div>
+//                     <input type="text" placeholder="Account Name" />
+//                   </div>
+//                   <div>
+//                     <input
+//                       type="text"
+//                       placeholder="Account Number"
+//                       maxLength={10}
+//                     />
+//                   </div>
+//                   <div>
+//                     <input
+//                       type="password"
+//                       placeholder="Create New Pin"
+//                       maxLength={4}
+//                     />
+//                   </div>
+//                   <div>
+//                     <input
+//                       type="password"
+//                       placeholder="Confirm Pin"
+//                       maxLength={4}
+//                     />
+//                   </div>
+//                   <div className="button-wrapper">
+//                     <button>Submit Details</button>
+//                   </div>
+//                 </WithdrawalForm>
+//               </Flex>
+
+//               <FlexText>
+//                 <p id="settings">Wallet Settings</p>
+//                 <div>
+//                   <div>
+//                     <p>Wallet Name</p>
+//                     <input
+//                       type="text"
+//                       value={walletName}
+//                       onChange={(e) => setWalletName(e.target.value)}
+//                       readOnly
+//                     />
+//                   </div>
+//                   <div>
+//                     <p>Account Number</p>
+//                     <input
+//                       type="text"
+//                       value={accountNumber}
+//                       onChange={(e) => setAccountNumber(e.target.value)}
+//                       readOnly
+//                     />
+//                   </div>
+//                   <div>
+//                     <p>Change Pin</p>
+//                     <div style={{ position: "relative" }}>
+//                       <input
+//                         type={pinVisible ? "text" : "password"}
+//                         value={oldPin}
+//                         onChange={(e) => setOldPin(e.target.value)}
+//                         placeholder="Default pin is 1234"
+//                         maxLength={4}
+//                       />
+//                       <EyeIcon onClick={togglePinVisibility}>👁️</EyeIcon>
+//                     </div>
+//                   </div>
+//                   <div>
+//                     <div style={{ position: "relative" }}>
+//                       <input
+//                         type={pinVisible ? "text" : "password"}
+//                         value={newPin}
+//                         onChange={(e) => setNewPin(e.target.value)}
+//                         placeholder="Enter new PIN"
+//                         maxLength={4}
+//                       />
+//                     </div>
+//                   </div>
+//                   <div>
+//                     <div style={{ position: "relative" }}>
+//                       <input
+//                         type={pinVisible ? "text" : "password"}
+//                         value={confirmPin}
+//                         onChange={(e) => setConfirmPin(e.target.value)}
+//                         placeholder="Confirm new PIN"
+//                         maxLength={4}
+//                       />
+//                     </div>
+//                   </div>
+//                 </div>
+//                 <Save onClick={handleSaveChanges}>Save Changes</Save>
+//               </FlexText>
+//             </Flexed>
+//           </Wrapper>
+//         </Container>
+//       </BgColor>
+
+//       {modalVisible && (
+//         <ModalOverlay>
+//           <ModalContent>
+//             <h3>Please enter your password to save changes</h3>
+//             <input
+//               type="password"
+//               value={password}
+//               onChange={(e) => setPassword(e.target.value)}
+//               placeholder="Enter your password"
+//               style={{ padding: "10px", width: "80%", marginBottom: "20px" }}
+//             />
+//             <button onClick={handlePasswordSubmit}>Submit</button>
+//             <button
+//               onClick={() => setModalVisible(false)}
+//               style={{
+//                 backgroundColor: "gray",
+//                 marginTop: "10px",
+//                 color: "white",
+//                 padding: "10px",
+//                 border: "none",
+//                 cursor: "pointer",
+//               }}
+//             >
+//               Cancel
+//             </button>
+//           </ModalContent>
+//         </ModalOverlay>
+//       )}
+//     </>
+//   );
+// }
+
+// export default WalletSettings;
+
+import React, { useState, useEffect, useContext } from "react";
+import { useAppContext } from "../../common/AuthContext";
 import styled from "styled-components";
 import innerbg from "../../assets/png/innerbg.png";
 import Card from "../../assets/svg/card.svg";
 import { Link } from "react-router-dom";
 
-// Mock API to simulate fetching the wallet balance, name, and account number
-const fetchWalletData = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        balance: 1156734534.45, // Simulated balance (in number format)
-        walletName: "Aserikan Moshood Adetola", // Static wallet name
-        accountNumber: "012345678", // Static account number
-      });
-    }, 1000); // Simulate a delay of 1 second
-  });
-};
+function WalletSettings() {
+  const { userDetails } = useAppContext();
+
+  const [balanceVisible, setBalanceVisible] = useState(true);
+  const [balance, setBalance] = useState(userDetails.accountBalance || null);
+  const [walletName, setWalletName] = useState(userDetails.firstName || "");
+  const [accountNumber, setAccountNumber] = useState(userDetails.accountNumber || "");
+  const [oldPin, setOldPin] = useState("");
+  const [newPin, setNewPin] = useState("");
+  const [confirmPin, setConfirmPin] = useState("");
+  const [pinVisible, setPinVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [password, setPassword] = useState("");
+  const [selectedBank, setSelectedBank] = useState("");
+  const [banks, setBanks] = useState([]);
+
+  useEffect(() => {
+    // Fetch list of banks in Nigeria (replace with your API call or bank list)
+    const bankList = [
+      "Access Bank",
+      "GTBank",
+      "First Bank",
+      "Zenith Bank",
+      "Union Bank",
+      "UBA",
+      "Stanbic IBTC",
+      "Ecobank",
+      "Fidelity Bank",
+    ];
+    setBanks(bankList);
+
+    if (userDetails) {
+      setBalance(userDetails.accountBalance);
+      setWalletName(userDetails.firstName);
+      setAccountNumber(userDetails.accountNumber);
+    }
+  }, [userDetails]);
+
+  const toggleBalanceVisibility = () => {
+    setBalanceVisible(!balanceVisible);
+  };
+
+  const togglePinVisibility = () => {
+    setPinVisible(!pinVisible);
+  };
+
+  const handleSaveChanges = () => {
+    if (newPin && confirmPin) {
+      setModalVisible(true);
+    }
+  };
+
+  const handlePasswordSubmit = () => {
+    if (password) {
+      alert("PIN changed!");
+      setModalVisible(false);
+    } else {
+      alert("Please enter your password.");
+    }
+  };
+
+  const formattedBalance =
+    balance !== null ? new Intl.NumberFormat().format(balance) : " ";
+
+  const handleUpdateWallet = () => {
+    const updatedData = {
+      balance,
+      walletName,
+      accountNumber,
+      selectedBank,
+    };
+    // Call to update the wallet data should be here
+  };
+
+  return (
+    <>
+      <BgColor>
+        <Container>
+          <Wrapper>
+            <Flexed>
+              <Flex>
+                <Text>
+                  <Styledlink to="/wallet">
+                    <p>Back</p>
+                  </Styledlink>
+                </Text>
+                <Image>
+                  <img src={Card} alt="ATM card" />
+                  <Bal>
+                    <span id="wallet">
+                      Wallet Balance:{balance}
+                      <span
+                        onClick={toggleBalanceVisibility}
+                        style={{ cursor: "pointer" }}
+                      >
+                        👁️
+                      </span>
+                    </span>
+                    <span id="balance">
+                      {balance !== null
+                        ? balanceVisible
+                          ? `₦${formattedBalance}`
+                          : "****"
+                        : " "}
+                    </span>
+                  </Bal>
+                </Image>
+
+                <WithdrawalForm>
+                  <p>Withdrawal Details</p>
+                  <div>
+                    <SelectBank
+                      value={selectedBank}
+                      onChange={(e) => setSelectedBank(e.target.value)}
+                    >
+                      <option value="">Select Bank</option>
+                      {banks.map((bank, index) => (
+                        <option key={index} value={bank}>
+                          {bank}
+                        </option>
+                      ))}
+                    </SelectBank>
+                  </div>
+                  <div>
+                    <input type="text" placeholder="Account Name" />
+                  </div>
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Account Number"
+                      maxLength={10}
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="password"
+                      placeholder="Create New Pin"
+                      maxLength={4}
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="password"
+                      placeholder="Confirm Pin"
+                      maxLength={4}
+                    />
+                  </div>
+                  <div className="button-wrapper">
+                    <button>Submit Details</button>
+                  </div>
+                </WithdrawalForm>
+              </Flex>
+
+              <FlexText>
+                <p id="settings">Wallet Settings</p>
+                <div>
+                  <div>
+                    <p>Wallet Name</p>
+                    <input
+                      type="text"
+                      value={walletName}
+                      onChange={(e) => setWalletName(e.target.value)}
+                      readOnly
+                    />
+                  </div>
+                  <div>
+                    <p>Account Number</p>
+                    <input
+                      type="text"
+                      value={accountNumber}
+                      onChange={(e) => setAccountNumber(e.target.value)}
+                      readOnly
+                    />
+                  </div>
+                  <div>
+                    <p>Change Pin</p>
+                    <div style={{ position: "relative" }}>
+                      <input
+                        type={pinVisible ? "text" : "password"}
+                        value={oldPin}
+                        onChange={(e) => setOldPin(e.target.value)}
+                        placeholder="Default pin is 1234"
+                        maxLength={4}
+                      />
+                      <EyeIcon onClick={togglePinVisibility}>👁️</EyeIcon>
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ position: "relative" }}>
+                      <input
+                        type={pinVisible ? "text" : "password"}
+                        value={newPin}
+                        onChange={(e) => setNewPin(e.target.value)}
+                        placeholder="Enter new PIN"
+                        maxLength={4}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ position: "relative" }}>
+                      <input
+                        type={pinVisible ? "text" : "password"}
+                        value={confirmPin}
+                        onChange={(e) => setConfirmPin(e.target.value)}
+                        placeholder="Confirm new PIN"
+                        maxLength={4}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <Save onClick={handleSaveChanges}>Save Changes</Save>
+              </FlexText>
+            </Flexed>
+          </Wrapper>
+        </Container>
+      </BgColor>
+
+      {modalVisible && (
+        <ModalOverlay>
+          <ModalContent>
+            <h3>Please enter your password to save changes</h3>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              style={{ padding: "10px", width: "80%", marginBottom: "20px" }}
+            />
+            <button onClick={handlePasswordSubmit}>Submit</button>
+            <button
+              onClick={() => setModalVisible(false)}
+              style={{
+                backgroundColor: "gray",
+                marginTop: "10px",
+                color: "white",
+                padding: "10px",
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              Cancel
+            </button>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+    </>
+  );
+}
+
+export default WalletSettings;
+
+
 
 const BgColor = styled.div`
   width: 100%;
@@ -23,8 +495,8 @@ const BgColor = styled.div`
   background-color: #edeff2;
   background-size: contain;
   background-position: top;
-  height: auto;
-`;
+  height: auto;`
+;
 
 const Container = styled.div`
   max-width: 1280px;
@@ -46,18 +518,18 @@ const Container = styled.div`
   @media (max-width: 480px) {
     width: 100%;
     padding: 0 5px;
-  }
-`;
+  }`
+;
 
 const Wrapper = styled.div`
   margin: auto;
-  width: 90%;
-`;
+  width: 90%;`
+;
 
 const Text = styled.div`
   padding: 20px 0 5px 5px;
-  font-size: 12px;
-`;
+  font-size: 12px;`
+;
 
 const Flexed = styled.div`
   display: flex;
@@ -74,8 +546,8 @@ const Flexed = styled.div`
 
   @media (min-width: 820px) and (max-width: 1240px) {
     gap: 50px; 
-  }
-`;
+  }`
+;
 
 const Flex = styled.div`
   padding: 3px 0;
@@ -98,8 +570,8 @@ const Flex = styled.div`
     img {
       width: 90%;
     }
-  }
-`;
+  }`
+;
 
 const FlexText = styled.div`
   padding: 10px 40px 40px 20px;
@@ -147,8 +619,8 @@ const FlexText = styled.div`
         font-size: 14px;
       }
     }
-  }
-`;
+  }`
+;
 
 const Image = styled.div`
   position: relative;
@@ -165,8 +637,8 @@ const Image = styled.div`
     p {
       right: 5px;
     }
-  }
-`;
+  }`
+;
 
 const Bal = styled.div`
   color: red;
@@ -200,8 +672,8 @@ const Bal = styled.div`
     #balance {
       font-size: 20px;
     }
-  }
-`;
+  }`
+;
 
 const Save = styled.p`
   text-align: center;
@@ -221,13 +693,13 @@ const Save = styled.p`
   @media (max-width: 480px) {
     width: 50%;
     font-size: 12px;
-  }
-`;
+  }`
+;
 
 const Styledlink = styled(Link)`
   text-decoration: none;
-  color: black;
-`;
+  color: black;`
+;
 
 const EyeIcon = styled.span`
   cursor: pointer;
@@ -235,8 +707,8 @@ const EyeIcon = styled.span`
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 18px;
-`;
+  font-size: 18px;`
+;
 
 const WithdrawalForm = styled.div`
   margin-top: 5px;
@@ -288,231 +760,37 @@ const WithdrawalForm = styled.div`
     button {
       width: 60%;
     }
+  }`
+;
+
+const SelectBank = styled.select`
+      width: 85%;
+      padding: 10px 7px;
+      font-size: 16px;
+      border-radius: 5px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      background-color: white;
+      color:grey;
+      outline: none;
+  
+ 
+
+  option {
+    padding: 10px;
+    font-size: 14px;
+    background-color: white;
+    color: #333;
+  }
+
+  &:focus {
+    outline: none;
+    border: 1px solid #eb6123; /* Change border color on focus */
+    background-color: #fff;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+    padding: 14px 18px;
   }
 `;
-
-function WalletSettings() {
-  const [balanceVisible, setBalanceVisible] = useState(true);
-  const [balance, setBalance] = useState(null);
-  const [walletName, setWalletName] = useState("");
-  const [accountNumber, setAccountNumber] = useState("");
-  const [oldPin, setOldPin] = useState("");
-  const [newPin, setNewPin] = useState("");
-  const [confirmPin, setConfirmPin] = useState("");
-  const [pinVisible, setPinVisible] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [password, setPassword] = useState("");
-
-  useEffect(() => {
-    const getWalletData = async () => {
-      const data = await fetchWalletData();
-      setBalance(data.balance);
-      setWalletName(data.walletName);
-      setAccountNumber(data.accountNumber);
-    };
-
-    getWalletData();
-  }, []);
-
-  const toggleBalanceVisibility = () => {
-    setBalanceVisible(!balanceVisible);
-  };
-
-  const togglePinVisibility = () => {
-    setPinVisible(!pinVisible);
-  };
-
-  const handleSaveChanges = () => {
-    if (newPin && confirmPin) {
-      setModalVisible(true);
-    }
-  };
-
-  const handlePasswordSubmit = () => {
-    if (password) {
-      alert("PIN changed!");
-      setModalVisible(false);
-    } else {
-      alert("Please enter your password.");
-    }
-  };
-
-  const formattedBalance =
-    balance !== null ? new Intl.NumberFormat().format(balance) : " ";
-
-  return (
-    <>
-      <BgColor>
-        <Container>
-          <Wrapper>
-            <Flexed>
-              <Flex>
-                <Text>
-                  <Styledlink to="/wallet">
-                    <p>Back</p>
-                  </Styledlink>
-                </Text>
-                <Image>
-                  <img src={Card} alt="ATM card" />
-                  <Bal>
-                    <span id="wallet">
-                      Wallet Balance:{" "}
-                      <span
-                        onClick={toggleBalanceVisibility}
-                        style={{ cursor: "pointer" }}
-                      >
-                        👁️
-                      </span>
-                    </span>
-                    <span id="balance">
-                      {balance !== null
-                        ? balanceVisible
-                          ? `₦${formattedBalance}`
-                          : "****"
-                        : " "}
-                    </span>
-                  </Bal>
-                </Image>
-
-                <WithdrawalForm>
-                  <p>Withdrawal Details</p>
-                  <div>
-                    <input type="text" placeholder="Bank Name" />
-                  </div>
-                  <div>
-                    <input type="text" placeholder="Account Name" />
-                  </div>
-                  <div>
-                    <input
-                      type="text"
-                      placeholder="Account Number"
-                      maxLength={10}
-                    />
-                  </div>
-                  <div>
-                    <input
-                      type="password"
-                      placeholder="Create New Pin"
-                      maxLength={4}
-                    />
-                  </div>
-                  <div>
-                    <input
-                      type="password"
-                      placeholder="Confirm Pin"
-                      maxLength={4}
-                    />
-                  </div>
-                  <div className="button-wrapper">
-                    <button>Submit Details</button>
-                  </div>
-                </WithdrawalForm>
-              </Flex>
-
-              <FlexText>
-                <p id="settings">Wallet Settings</p>
-                <div>
-                  <div>
-                    <p>Wallet Name</p>
-                    <input type="text" value={walletName} readOnly />
-                  </div>
-                  <div>
-                    <p>Account Number</p>
-                    <input type="text" value={accountNumber} readOnly />
-                  </div>
-                  <div>
-                    <p>Change Pin</p>
-                    <div style={{ position: "relative" }}>
-                      <input
-                        type={pinVisible ? "text" : "password"}
-                        value={oldPin}
-                        onChange={(e) => setOldPin(e.target.value)}
-                        placeholder="Enter old PIN"
-                        maxLength={4}
-                      />
-                      <EyeIcon onClick={togglePinVisibility}>👁️</EyeIcon>
-                    </div>
-                  </div>
-                  <div>
-                    <div style={{ position: "relative" }}>
-                      <input
-                        type={pinVisible ? "text" : "password"}
-                        value={newPin}
-                        onChange={(e) => setNewPin(e.target.value)}
-                        placeholder="Enter new PIN"
-                        maxLength={4}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <div style={{ position: "relative" }}>
-                      <input
-                        type={pinVisible ? "text" : "password"}
-                        value={confirmPin}
-                        onChange={(e) => setConfirmPin(e.target.value)}
-                        placeholder="Confirm new PIN"
-                        maxLength={4}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <Save onClick={handleSaveChanges}>Save Changes</Save>
-              </FlexText>
-            </Flexed>
-          </Wrapper>
-        </Container>
-      </BgColor>
-
-      {modalVisible && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            zIndex: 999,
-          }}
-        >
-          <div
-            style={{
-              width: "300px",
-              margin: "auto",
-              background: "white",
-              padding: "20px",
-              borderRadius: "8px",
-              textAlign: "center",
-              marginTop: "100px",
-            }}
-          >
-            <h3>Please enter your password to save changes</h3>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              style={{ padding: "10px", width: "80%", marginBottom: "20px" }}
-            />
-            <button onClick={handlePasswordSubmit}>Submit</button>
-            <button
-              onClick={() => setModalVisible(false)}
-              style={{
-                backgroundColor: "gray",
-                marginTop: "10px",
-                color: "white",
-                padding: "10px",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
-    </>
-  );
-}
-
-export default WalletSettings;

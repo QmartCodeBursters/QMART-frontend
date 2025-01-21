@@ -1,4 +1,6 @@
-export const baseURL = "http://localhost:2230";
+
+export const baseURL = "https://qmart-backend-3.onrender.com";
+
 
 const summaryAPI = {
     signUp: {
@@ -56,7 +58,11 @@ const summaryAPI = {
     verifyPayment: {
         url: '/api/v1/payment/verify',
         method: 'GET'
-    }
+    },
+    fetchTransactions: {
+        url: '/api/v1/history/transactions',
+        method: 'GET'
+    },
 }
 
-export default summaryAPI
+export default summaryAPI;

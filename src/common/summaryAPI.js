@@ -1,5 +1,5 @@
 
-export const baseURL = "https://qmartcode.netlify.app";
+export const baseURL = "http://localhost:2230";
 
 
 const summaryAPI = {
@@ -63,6 +63,10 @@ const summaryAPI = {
         url: '/api/v1/history/transactions',
         method: 'GET'
     },
+    transaction:{
+        url: '/api/v1/transaction/transactionId',
+        method: 'POST'
+    }
 }
 
 export default summaryAPI;

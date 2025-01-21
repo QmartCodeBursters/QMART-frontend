@@ -1,84 +1,108 @@
-
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { PaystackButton } from 'react-paystack';
 import styled from "styled-components";
-import { v4 as uuidv4 } from 'uuid'; // Import uuid library
-
+import { v4 as uuidv4 } from 'uuid';
+import summaryAPI from '../../common/summaryAPI';
+import axios from 'axios';
 
 const PaystackLoad = () => {
-  const publicKey = "pk_test_3217235cf2d6cb8ca24feb4e3b1302cf72995d3d"; // Replace with your Paystack public key
+  const publicKey = "pk_test_3217235cf2d6cb8ca24feb4e3b1302cf72995d3d";
   const [email, setEmail] = useState("");
   const [amount, setAmount] = useState("");
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [wallet, setWallet] = useState(null);
 
+  const merchantId = "merchant_id_placeholder"; // Replace dynamically if necessary
+  
   // Calculate amount with a 0.5% transaction fee
-  const calculatedAmount = parseFloat(amount) * 100 * 1.005; // Convert Naira to Kobo and add 0.5%
-
-  // Generate a unique transaction reference
+  const transactionFee = Math.round(amount * 0.005); // Adjust fee logic if necessary
+  const calculatedAmount = parseFloat(amount) * 100 + transactionFee * 100;
   const transactionReference = uuidv4();
 
-    const componentProps = {
-        email,
-        amount: Math.round(calculatedAmount), // Ensure it's an integer (Kobo)
-        metadata: {
-        name,
-        phone,
-        },
-        publicKey,
-        text: "Pay Now",
-        reference: transactionReference, // Pass the unique reference
-        onSuccess: async (response) => {
-            toast.success(`Payment Successful! Transaction ID: ${response.reference}`, {
-              position: "top-center",
-            });
-          
-            // Send transaction details to the backend
-            try {
-              const res = await fetch("/api/v1/transaction/transactionId", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  transactionId: response.reference,
-                  amount: calculatedAmount,
-                  email,
-                  name,
-                  phone,
-                }),
-              });
-          
-              const textResponse = await res.text();
-              let data = {};
+  // Function to fetch wallet details
+  // const fetchWalletDetails = async (email) => {
+  //   try {
+  //     const res = await fetch(`${summaryAPI.fetchMerchant.url}?email=${email}`, {
+  //       method: summaryAPI.fetchMerchant.method,
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
 
-              try {
-                data = JSON.parse(textResponse);
-              } catch (err) {
-                console.error("Failed to parse JSON:", err);
-                toast.error("Failed to save transaction: Invalid response format.");
-                return;
-              }
+  //     const data = await res.json();
+  //     if (data.success) {
+  //       setWallet(data.wallet);
+  //     } else {
+  //       toast.error("Error fetching wallet details");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching wallet details:", error);
+  //     toast.error("Failed to fetch wallet details.");
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (email) {
+  //     fetchWalletDetails(email);
+  //   }
+  // }, [email]);
+
+  const componentProps = {
+    email,
+    amount: Math.round(calculatedAmount),
+    metadata: {
+      firstName,
+    },
+    publicKey,
+    text: "Pay Now",
+    reference: transactionReference,
+    onSuccess: async (response) => {
+      toast.success(`Payment Successful! Transaction ID: ${response.reference}`, {
+        position: "top-center",
+      });
+
+      // Send transaction details to the backend
+      const handlePaymentSuccess = async (response) => {
+        toast.success(`Payment Successful! Transaction ID: ${response.reference}`, {
+          position: "top-center",
+        });
+      
+        // Send transaction details to the backend using the correct endpoint
+        try {
+          const transactionId = response.reference;  // Use the response reference as the transaction ID
           
-              if (data.success) {
-                toast.success("Transaction saved successfully!");
-              } else {
-                toast.error(`Error saving transaction: ${data.message}`);
-              }
-              
-              if (data.success) {
-                toast.success("Transaction saved successfully!");
-              } else {
-                toast.error(`Error saving transaction: ${data.message}`);
-              }
-            } catch (error) {
-              console.error("Error saving transaction:", error);
-              toast.error("Failed to save transaction.");
-            }
-          },
-    }          
+          // Use dynamic URL with the actual transactionId
+          const res = await axios(`${summaryAPI.transaction.url       }`, {
+            method: summaryAPI.transaction.method, // Ensure this matches the correct method from the API
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              transactionId: response.reference,
+              amount: Math.round(calculatedAmount / 100), // Example of amount sent with the request
+              email,
+              firstName,
+              transactionFee,
+              type: "deposit", 
+            }),
+          });
+      
+          const data = await res.json();
+          if (data.success) {
+            toast.success("Transaction saved successfully!");
+          } else {
+            toast.error(`Error saving transaction: ${data.message}`);
+          }
+        } catch (error) {
+          console.error("Error saving transaction:", error);
+          toast.error("Failed to save transaction.");
+        }
+      };
+      
+    },
+    onClose: () => toast.error("Transaction was not completed"),
+  };
 
   return (
     <Wrapper>
@@ -93,38 +117,32 @@ const PaystackLoad = () => {
         />
         <Input
           type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          placeholder="First Name"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
           required
         />
-      <Input
-          type="text"  
-          placeholder="Phone number"
-          value={phone}
-          onChange={(e) => {
-           
-            const value = e.target.value.replace(/[^0-9]/g, '');
-            setPhone(value);
-          }}
-          inputMode="numeric" 
-          pattern="[0-9]*"    
-        />
-
         <Input
-          type="text" 
+          type="text"
           placeholder="Amount"
           value={amount}
           onChange={(e) => {
-            
             const value = e.target.value.replace(/[^0-9]/g, '');
             setAmount(value);
           }}
-          inputMode="numeric"  
-          pattern="[0-9]*"   
+          inputMode="numeric"
+          pattern="[0-9]*"
         />
 
-        <p>Transaction Fee: 0.5% per transaction</p>
+        <p>Transaction Fee: {transactionFee} Naira (0.5%)</p>
+
+        {wallet ? (
+          <p>
+            Wallet Balance: {wallet.balance} {wallet.currency}
+          </p>
+        ) : (
+          <p>Loading wallet balance...</p>
+        )}
 
         <PayButton>
           <PaystackButton {...componentProps} />
@@ -136,7 +154,6 @@ const PaystackLoad = () => {
 
 export default PaystackLoad;
 
-// Styled Components
 const Wrapper = styled.div`
   padding: 20px;
   margin: 100px 0;
@@ -156,9 +173,9 @@ const FormContainer = styled.div`
   padding: 40px;
   border-radius: 10px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
-  rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-  
-  p{
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+
+  p {
     font-size: 12px;
     margin: 10px 0;
     color: red;

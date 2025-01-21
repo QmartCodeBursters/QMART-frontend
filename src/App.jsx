@@ -109,7 +109,7 @@ function App() {
           <Route path="/order/:orderId" element={<Extend />} />
           <Route path="/payment/failure" element={<PaymentFailure />} />
           <Route path="/paystack-payment" element={<PaystackLoad />} />
-        </Routes>
+          </Routes>
         <Footer />
         <Toaster />
       </BrowserRouter>

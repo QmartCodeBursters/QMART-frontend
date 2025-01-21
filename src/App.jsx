@@ -28,6 +28,7 @@ import PaymentSuccess from "./components/paymentpage/PaymentSuccess";
 import PaymentPagetwo from "./components/paymentpage/unrealPaymentPage";
 import PaymentCallback from "./components/Paystack/paymentCall";
 import PaymentFailure from "./components/Paystack/paymentfailed";
+import PaystackLoad from "./components/Paystack/PaystackLoad";
 
 import Wallet from "./components/Wallet/Wallet";
 import WalletSettings from "./components/Wallet/WalletSettings";
@@ -78,6 +79,7 @@ function App() {
           <Route path="/otppage" element={<OTPPage />} />
           <Route path="/reset-password" element={<VerifyEmailOTP />} />
           <Route path="/otp-password-verification" element={<OtpResetPassword />} />
+          <Route path="/password-update" element={<PasswordUpdate />} />
 
           <Route path="/contact" element={<Contactpage />} />
           <Route path="/aboutUs" element={<About />} />
@@ -98,7 +100,6 @@ function App() {
           <Route path="/UserWallet" element={<UserWallet />} />
           <Route path="/ReceivePayment" element={<ReceivePayment />} />
           <Route path="/payment/callback" element={<PaymentCallback />} />
-          
           <Route path="/notification-settings" element={<NotificationSettings />} />
           <Route path="/QRcode" element={<PrintQRcode />} />
           <Route path="/loading" element={<UserPaymentLoading />} />
@@ -106,9 +107,8 @@ function App() {
           <Route path="/Confam" element={<UserPaymentConfir />} />
           <Route path="/profile" element={<MainUserProfile />} />
           <Route path="/order/:orderId" element={<Extend />} />
-          <Route path="/password-update" element={<PasswordUpdate />} />
-
           <Route path="/payment/failure" element={<PaymentFailure />} />
+          <Route path="/paystack-payment" element={<PaystackLoad />} />
         </Routes>
         <Footer />
         <Toaster />

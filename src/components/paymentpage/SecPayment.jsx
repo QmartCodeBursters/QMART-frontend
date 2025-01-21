@@ -1,6 +1,6 @@
 import "./sec.css";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Modal } from "antd";
@@ -245,52 +245,43 @@ const PinInput = styled.div`
   display: flex;
 `;
 
+
 const PaymentPage = () => {
   const location = useLocation(); // Get location using useLocation hook
-  const { state } = location || {}; 
-  const { userDetails, businessName } = useAppContext(); // Destructure state safely
+  const navigate = useNavigate();
+  const { userDetails, businessName } = useAppContext(); // Destructure app context safely
 
-  const storeName = businessName || userDetails?.business?.businessName || "Default Business Name";
-  const accountNumber = userDetails?.accountNumber || "N/A";
-  const walletBalance = userDetails?.accountBalance || "0.00";
+  // Fetching parameters from URL
+  const queryParams = new URLSearchParams(location.search);
+  const amount = queryParams.get("amount");
+  const storeName = queryParams.get("businessName") || businessName || userDetails?.business?.businessName || "Default Business Name";
+  const accountNumber = queryParams.get("accountNumber") || userDetails?.accountNumber || "N/A";
+  const walletBalance = queryParams.get("walletBalance") || userDetails?.accountBalance || "0.00";
 
-  const [amount, setAmount] = useState("");
+  // Component state
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showCancelPopup, setShowCancelPopup] = useState(false);
   const [showPinPopUp, setShowPinPopUp] = useState(false);
   const [pin, setPin] = useState("");
-  const [transactionFee] = useState("50.00");
-  const [openPinModal, setOpenPinModal] = useState(false);
-  const [userPin, setUserPin] = useState("");
-  const [loading, setLoading] = useState(false);  
-  const { profileImage, setProfileImage } = useAppContext();
+  const [loading, setLoading] = useState(false);
+  const [transactionFee] = useState("0.005");
 
+  const togglePinModalDisplay = () => setShowPinPopUp(!showPinPopUp);
 
-  useEffect(() => {
-    const storedAvatar = localStorage.getItem('avatar');
-    if (storedAvatar) {
-      setProfileImage(storedAvatar); // Restore image from localStorage
-    }
-  }, []);
-  console.log(localStorage.getItem('avatar'));
-
-  
-
-  const navigate = useNavigate();
-
-  const togglePinModalDisplay = () => setOpenPinModal(!openPinModal);
-
+  // Handle payment action
   const handlePayment = () => {
-    togglePinModalDisplay();
+    setShowConfirmation(true);
+    navigate('/paystack-payment')
   };
 
   const confirmUserPin = () => {
     setLoading(true);
     setTimeout(() => {
-      window.location.href = "/transaction-status";
+      navigate("/transaction-status"); // Navigate after payment
     }, 3000);
   };
 
+  // Handle cancellation of the payment
   const handleCancelConfirmation = () => {
     setShowCancelPopup(true);
   };
@@ -304,18 +295,11 @@ const PaymentPage = () => {
 
   const handlePinSubmit = () => {
     if (pin === "1234") {
-      navigate("/paymentsuccess");
+      navigate("/paymentsuccess"); // Navigate to success page on correct PIN
     } else {
       alert("Invalid PIN. Please try again.");
     }
   };
-
-  useEffect(() => {
-      const storedAvatar = localStorage.getItem('avatar');
-      if (storedAvatar) {
-        setProfileImage(storedAvatar); // Restore image from localStorage
-      }
-    }, []);
 
   return (
     <Container>
@@ -324,16 +308,7 @@ const PaymentPage = () => {
 
       <SubHeader>Sending money to</SubHeader>
       <CircleImage>
-        {profileImage ? (
-          <img
-            src={profileImage}
-            alt="Profile"
-            style={{ width: "100%", height: "100%", borderRadius: "50%" }}
-          />
-        ) : (
-          <span>storeName.charAt(0)</span>
-         // Fallback: First letter of storeName
-        )}
+        <span>{storeName.charAt(0)}</span> {/* Fallback: First letter of storeName */}
       </CircleImage>
 
       <Header>{storeName}</Header>
@@ -354,7 +329,7 @@ const PaymentPage = () => {
             <XIcon onClick={handleCancelConfirmation}>✕</XIcon>
             <Header>₦{amount}</Header>
           </ConfirmationHeader>
-          <SubHeader>Business: {businessName}</SubHeader>
+          <SubHeader>Business: {storeName}</SubHeader>
           <SubHeader>Account Number: {accountNumber}</SubHeader>
           <SubHeader>Amount: ₦{amount}</SubHeader>
           <SubHeader>Transaction Fee: ₦{transactionFee}</SubHeader>
@@ -403,6 +378,8 @@ const PaymentPage = () => {
     </Container>
   );
 };
+
+
 
 export default PaymentPage;
 

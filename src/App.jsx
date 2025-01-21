@@ -97,18 +97,18 @@ function App() {
           <Route path="/qr-code" element={<QrCode />} />
           <Route path="/UserWallet" element={<UserWallet />} />
           <Route path="/ReceivePayment" element={<ReceivePayment />} />
+          <Route path="/payment/callback" element={<PaymentCallback />} />
           
           <Route path="/notification-settings" element={<NotificationSettings />} />
           <Route path="/QRcode" element={<PrintQRcode />} />
           <Route path="/loading" element={<UserPaymentLoading />} />
-          <Route path="/transaction-status" element={<UserPaymentSuccessPage />} />
+          <Route path="/transaction/success" element={<UserPaymentSuccessPage />} />
           <Route path="/Confam" element={<UserPaymentConfir />} />
           <Route path="/profile" element={<MainUserProfile />} />
           <Route path="/order/:orderId" element={<Extend />} />
           <Route path="/password-update" element={<PasswordUpdate />} />
 
           <Route path="/payment/failure" element={<PaymentFailure />} />
-          <Route path="/payment/callback" element={<PaymentCallback />} />
         </Routes>
         <Footer />
         <Toaster />

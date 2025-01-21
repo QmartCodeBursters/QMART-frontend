@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -7,88 +7,81 @@ import summaryAPI, { baseURL } from "../../common/summaryAPI";
 import { useAppContext } from "../../common/AuthContext";
 import AxiosToastError from "../../utilis/AxiosToastError";
 
-const Login = () => {
-  const { setEmail, setRole, setUserDetails, balance,  setBusinessName, setAccountNumber } = useAppContext(); // Access context
+const PasswordUpdate = () => {
+  const { email } = useAppContext(); // Access email from context
   const navigate = useNavigate();
-  const [email, setEmailInput] = useState("");
+
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+   
+    if (password !== confirmPassword) {
+      toast.error("New password and confirm password do not match");
+      return;
+    }
+
     try {
+      // Send a request to reset the password
       const response = await axios({
-        method: "POST",
-        url: `${baseURL}${summaryAPI.login.url}`,
-        data: { email, password },
+        method: summaryAPI.resetPassword.method,
+        url: `${baseURL}${summaryAPI.resetPassword.url}`,
+        data: { email, password, confirmPassword },
         withCredentials: true,
       });
 
+      // Handle success and error responses
       if (response.data.success) {
-        toast.success("Login successful!");
-
-        const { user } = response.data.data;
-
-        
-        setEmail(user.email);
-        setRole(user.role);
-        setUserDetails(user); 
-        
-
-        
-        if (user.role === "merchant") {
-          if (user.business) {
-            navigate("/dashboard");
-          } else {
-            navigate("/merchant-create-business");
-          }
-        } else {
-          navigate("/dashboard");
-        }
+        toast.success("Password updated successfully!");
+        navigate("/login");
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.error("Error during login:", error.response ? error.response.data : error.message);
+      console.error("Error during password update:", error.response ? error.response.data : error.message);
       AxiosToastError(error);
     }
   };
+
+  useEffect(() => {
+    // Redirect to OTP verification page if email is not available
+    if (!email) {
+      navigate("/otp-password-verification");
+    }
+  }, [email, navigate]);
 
   return (
     <Wrapper>
       <FormContainer>
         <form onSubmit={handleSubmit}>
-          <h2>LOGIN</h2>
+          <h2>UPDATE YOUR PASSWORD</h2>
 
-          <input
-            type="email"
-            placeholder="Email"
-            required
-            name="email"
-            value={email}
-            onChange={(e) => setEmailInput(e.target.value)}
-          />
+          {/* Input fields for password and confirm password */}
           <input
             type="password"
-            placeholder="Enter your password"
+            placeholder="Enter new password"
             required
-            name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <input
+            type="password"
+            placeholder="Confirm new password"
+            required
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
 
-          <Link to="/reset-password">
-            <p>Forgot Password?</p>
-          </Link>
-
-          <button type="submit">Login</button>
+          <button type="submit">Submit</button>
         </form>
       </FormContainer>
     </Wrapper>
   );
 };
 
-export default Login;
+export default PasswordUpdate;
 
 const Wrapper = styled.div``;
 
@@ -97,7 +90,6 @@ const FormContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* height: 100vh; */
   margin: 0 auto;
 
   form {
@@ -106,7 +98,6 @@ const FormContainer = styled.div`
     justify-content: center;
     width: 80%;
     max-width: 450px;
-    /* background-color: white; */
     padding: 20px 40px;
     border-radius: 10px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
@@ -148,7 +139,6 @@ const FormContainer = styled.div`
       background-color: #fa8232;
       color: white;
       cursor: pointer;
-      /* margin: 10px 0; */
 
       &:hover {
         background-color: #803e00;

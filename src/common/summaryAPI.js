@@ -1,5 +1,5 @@
 
-export const baseURL = "https://qmartcode.netlify.app";
+export const baseURL = "https://qmart-backend-3.onrender.com";
 
 
 const summaryAPI = {

@@ -44,6 +44,7 @@ import { useEffect } from "react";
 import PaymentPagetwo from "./components/paymentpage/unrealPaymentPage";
 import PaymentCallback from "./components/Paystack/paymentCall";
 import PaymentFailure from "./components/Paystack/paymentfailed";
+import PaystackLoad from "./components/Paystack/PaystackLoad";
 
 function ScrollToTop() {
   const location = useLocation();
@@ -105,6 +106,8 @@ function App() {
           <Route path="/profile" element={<MainUserProfile />} />
           <Route path="/order/:orderId" element={<Extend />} />
           <Route path="/payment/failure" element={<PaymentFailure/>} />
+          <Route path="/paystack-payment" element={<PaystackLoad/>} />
+
 
         </Routes>
         <Footer />
